@@ -232,46 +232,6 @@ public class Game extends JFrame {
 						}
 					}
 				}
-				
-				/*for (int i=0; i<3;i++) {
-					for (int j=0; j<9; j++) {
-						if (x>320+72*j && x<384+72*j) {
-							if (y>364+72*i && y<428+72*i) {
-								if (handStack == null) {
-									handStack = inventory.remove(i * 9 + j);
-								} else {
-									if (inventory.get(i * 9 + j) == null) {
-										inventory.add(handStack,i * 9 + j);
-										handStack = null;
-									} else {
-										Stack temp = inventory.remove(i * 9 + j);
-										inventory.add(handStack, i*9+j);
-										handStack = temp;
-									}
-								}
-								return;
-							}
-						}
-					}
-				}*/
-				/*for (int i=0;i<9;i++) {
-					if (x>320+72*i && x<384+72*i) {
-						if (y>596 && y<660){
-							if (handStack == null) {
-								handStack = inventory.remove(27+i);
-							} else {
-								if (inventory.get(27+i) == null) {
-									inventory.add(handStack, 27+i);
-									handStack = null;
-								} else {
-									Stack temp = inventory.remove(27+i);
-									inventory.add(handStack, 27+i);
-									handStack = temp;
-								}
-							}
-						}
-					}
-				}*/
 			}
 
 			public void mouseEntered(MouseEvent e) {
