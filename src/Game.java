@@ -41,31 +41,31 @@ public class Game extends JFrame {
 		this.addMouseListener(mouseListener);
 		panel = new GamePanel();
 		//Might want to remove this later
-		this.inventory = new Inventory(36);
-		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("WoodenSword.png");
-		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
-		Item woodSword = new Sword("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2);
-		Item stick = new Material("Stick", "A wood stick", stickSprite);
-		Stack stackOne = new Stack(1, woodSword);
-		Stack stackTwo = new Stack(20, stick);
-		Stack stackThree = new Stack(10, stick);
-		Stack stackFour = new Stack(23, stick);
-		Stack stackFive = new Stack(24, stick);
-		Stack stackSix = new Stack(29, stick);
-		Stack[] moreStack = new Stack[29];
-		for (int i=0; i<29;i++) {
-			moreStack[i] = new Stack(1, woodSword);
-			inventory.add(moreStack[i]);
-		}
-		inventory.add(stackOne);
-		inventory.add(stackTwo);
-		inventory.add(stackThree);
-		inventory.add(stackFour);
-		inventory.add(stackFive);
-		inventory.add(stackSix);
-		inventoryMenu = new InventoryMenu(inventory);
-//		this.add(panel);
-		this.add(inventoryMenu);
+//		this.inventory = new Inventory(36);
+//		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("WoodenSword.png");
+//		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
+//		Item woodSword = new Sword("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2);
+//		Item stick = new Material("Stick", "A wood stick", stickSprite);
+//		Stack stackOne = new Stack(1, woodSword);
+//		Stack stackTwo = new Stack(20, stick);
+//		Stack stackThree = new Stack(10, stick);
+//		Stack stackFour = new Stack(23, stick);
+//		Stack stackFive = new Stack(24, stick);
+//		Stack stackSix = new Stack(29, stick);
+//		Stack[] moreStack = new Stack[29];
+//		for (int i=0; i<29;i++) {
+//			moreStack[i] = new Stack(1, woodSword);
+//			inventory.add(moreStack[i]);
+//		}
+//		inventory.add(stackOne);
+//		inventory.add(stackTwo);
+//		inventory.add(stackThree);
+//		inventory.add(stackFour);
+//		inventory.add(stackFive);
+//		inventory.add(stackSix);
+//		inventoryMenu = new InventoryMenu(inventory);
+		this.add(panel);
+//		this.add(inventoryMenu);
 		this.setVisible(true);
 		this.requestFocusInWindow();
 	}
