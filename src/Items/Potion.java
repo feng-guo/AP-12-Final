@@ -7,7 +7,7 @@ class Potion extends Consumable{
     private int duration;
 
     public Potion(String name, String description, Image sprite, int healthGain, String effect, int duration){
-        super(name, description, sprite, healthGain);
+        super(name, description, 16, sprite, healthGain);
         this.effect = effect;
         this.duration = duration;
     }

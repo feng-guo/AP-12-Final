@@ -1,8 +1,4 @@
-import Items.Inventory;
-import Items.Stack;
-import Items.Sword;
-import Items.Item;
-import Items.Material;
+import Items.*;
 
 
 import java.awt.*;
@@ -18,6 +14,7 @@ public class Game extends JFrame {
 	private long lastTimeCheck;
 	private long deltaTime;
 	private int frameCount;
+	private JPanel currentPanel;
 
 
 	private Listener listener = new Listener();
@@ -41,31 +38,41 @@ public class Game extends JFrame {
 		this.addMouseListener(mouseListener);
 		panel = new GamePanel();
 		//Might want to remove this later
-//		this.inventory = new Inventory(36);
-//		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("WoodenSword.png");
-//		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
-//		Item woodSword = new Sword("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2);
-//		Item stick = new Material("Stick", "A wood stick", stickSprite);
-//		Stack stackOne = new Stack(1, woodSword);
-//		Stack stackTwo = new Stack(20, stick);
-//		Stack stackThree = new Stack(10, stick);
-//		Stack stackFour = new Stack(23, stick);
-//		Stack stackFive = new Stack(24, stick);
-//		Stack stackSix = new Stack(29, stick);
-//		Stack[] moreStack = new Stack[29];
-//		for (int i=0; i<29;i++) {
-//			moreStack[i] = new Stack(1, woodSword);
-//			inventory.add(moreStack[i]);
-//		}
-//		inventory.add(stackOne);
-//		inventory.add(stackTwo);
-//		inventory.add(stackThree);
-//		inventory.add(stackFour);
-//		inventory.add(stackFive);
-//		inventory.add(stackSix);
-//		inventoryMenu = new InventoryMenu(inventory);
+		this.inventory = new Inventory(36);
+		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("WoodenSword.png");
+		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
+		Image cakeSprite = Toolkit.getDefaultToolkit().createImage("Cake.png");
+		Image breadSprite = Toolkit.getDefaultToolkit().createImage("Bread.png");
+		Item woodSword = new Sword("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2);
+		Item stick = new Material("Stick", "A wood stick", stickSprite);
+		Item cake = new Food("Cake", "A delicious cake lovingly baked by Feng", cakeSprite,0 ,8);
+		Item bread = new Food("Bread", "A delicious loaf of bread lovingly baked by Feng", breadSprite, 0, 5);
+		Stack cakeStack = new Stack(2, cake);
+		Stack breadStack = new Stack(30, bread);
+		inventory.add(cakeStack);
+		inventory.add(breadStack);
+		Stack stackOne = new Stack(1, woodSword);
+		Stack stackTwo = new Stack(20, stick);
+		Stack stackThree = new Stack(10, stick);
+		Stack stackFour = new Stack(23, stick);
+		Stack stackFive = new Stack(24, stick);
+		Stack stackSix = new Stack(29, stick);
+		Stack[] moreStack = new Stack[29];
+		for (int i=0; i<29;i++) {
+			moreStack[i] = new Stack(1, woodSword);
+			inventory.add(moreStack[i]);
+		}
+		inventory.add(stackOne);
+		inventory.add(stackTwo);
+		inventory.add(stackThree);
+		inventory.add(stackFour);
+		inventory.add(stackFive);
+		inventory.add(stackSix);
+		inventoryMenu = new InventoryMenu(inventory);
 		this.add(panel);
+		currentPanel = panel;
 //		this.add(inventoryMenu);
+
 		this.setVisible(true);
 		this.requestFocusInWindow();
 	}
@@ -159,11 +166,7 @@ public class Game extends JFrame {
 			g.fillRect(0,0, 1280, 720);
 
 			g.drawImage(inventoryGUI,288,28,704, 664,null);
-			if (highlightX != 0 && highlightY != 0) {
-				g.setColor(Color.BLUE);
-				g.drawRect(highlightX, highlightY,63,63);
-				g.setColor(Color.BLACK);
-			}
+
 
 			for (int i = 0; i < 3; i++) {
 				for (int j=0; j<9; j++) {
@@ -183,9 +186,32 @@ public class Game extends JFrame {
 					//Nothing here
 				}
 			}
+			if (highlightX != 0 && highlightY != 0) {
+				g.setColor(Color.BLUE);
+				g.drawRect(highlightX, highlightY,63,63);
+				if (handStack == null) {
+					try {
+						int r;
+						if (highlightY == 596) {
+							r = 3;
+						} else {
+							r = (highlightY-364)/72;
+						}
+						int c = (highlightX-320)/72;
+						g.setColor(Color.WHITE);
+						inventory.get(r*9+c).getItem().getName(); //This just forces a nullpointer if it is possible lol
+						g.fillRect(highlightX+64, highlightY, 100, 200);
+						g.setColor(Color.BLACK);
+						g.drawString(inventory.get(r*9+c).getItem().getDescription(), highlightX + 74, highlightY + 30);
+					} catch (NullPointerException e) {
+						//oops
+					}
+				}
+			}
 			if (handStack != null) {
 				g.drawImage(handStack.getItem().getSprite(), mouseX-27, mouseY-27, 58,58, null);
 			}
+
 			//g.fillRect(x,y,10,10);
 			repaint();
 		}
@@ -218,16 +244,56 @@ public class Game extends JFrame {
 							r = checkY / 72;
 						}
 						int c = checkX / 72;
+						int index = r*9+c;
 						if (handStack == null) {
-							handStack = inventory.remove(r * 9 + c);
+							if (e.getButton() == e.BUTTON1) {
+								if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0) {
+									if (index < 27) {
+										inventory.sendDown(index);
+									} else {
+										inventory.sendTop(index);
+									}
+								} else {
+									handStack = inventory.remove(index);
+								}
+							} else if (e.getButton() == e.BUTTON3) {
+								handStack = inventory.dropHalf(index);
+							}
 						} else {
-							if (inventory.get(r * 9 + c) == null) {
-								inventory.add(handStack, r * 9 + c);
-								handStack = null;
+							if (inventory.get(index) == null) {
+								if (e.getButton() == e.BUTTON1) {
+									inventory.add(handStack, index);
+									handStack = null;
+								} else if (e.getButton() == e.BUTTON3) {
+									inventory.add(new Stack(1, handStack.getItem()), index);
+									if (handStack.getStackAmount() > 1) {
+										handStack.remove(1);
+									} else {
+										handStack = null;
+									}
+								}
 							} else {
-								Stack temp = inventory.remove(r * 9 + c);
-								inventory.add(handStack, r * 9 + c);
-								handStack = temp;
+								if (handStack.getItem().getName().equals(inventory.get(index).getItem().getName()) && handStack.getItem().getMaxStack() > 1) {
+									if (e.getButton() == e.BUTTON1) {
+										int remaining = inventory.get(index).add(handStack.getStackAmount());
+										if (remaining > 0) {
+											handStack.setStackAmount(remaining);
+										} else {
+											handStack = null;
+										}
+									} else if (e.getButton() == e.BUTTON3) {
+										inventory.get(index).add(1);
+										if (handStack.getStackAmount() > 1) {
+											handStack.remove(1);
+										} else {
+											handStack = null;
+										}
+									}
+								} else {
+									Stack temp = inventory.remove(index);
+									inventory.add(handStack, index);
+									handStack = temp;
+								}
 							}
 						}
 					}
@@ -255,7 +321,7 @@ public class Game extends JFrame {
 				releasedY = e.getY();
 				int deltaX = Math.abs(releasedX-pressedX);
 				int deltaY = Math.abs(releasedY-pressedY);
-				if (deltaX<15 && deltaY<15 && deltaX!=0 && deltaY!=0) {
+				if (deltaX<100 && deltaY<100 && deltaX!=0 && deltaY!=0) {
 					this.mouseClicked(pressedEvent);
 				}
 			}
@@ -292,18 +358,19 @@ public class Game extends JFrame {
 					highlightY = 0;
 					return;
 				}
-				if (checkX%72<64 && checkX<648) {
-					if (checkY % 72 < 64) {
-						int r;
-						if (fourthRow) {
-							highlightY = 596;
-						} else {
-							r = checkY / 72;
-							highlightY = 364+72*r;
-						}
-						int c = checkX / 72;
-						highlightX = 320+72*c;
+				if (checkX%72<64 && checkX<648 && checkY % 72 < 64) {
+					int r;
+					if (fourthRow) {
+						highlightY = 596;
+					} else {
+						r = checkY / 72;
+						highlightY = 364+72*r;
 					}
+					int c = checkX / 72;
+					highlightX = 320+72*c;
+				} else {
+					highlightY = 0;
+					highlightX = 0;
 				}
 			}
 		}
@@ -326,7 +393,20 @@ public class Game extends JFrame {
 		}
 
 		public void keyTyped(KeyEvent e) {}
-		public void keyReleased(KeyEvent e) {}
+		public void keyReleased(KeyEvent e) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("E")) {
+				if (currentPanel == panel) {
+					remove(panel);
+					add(inventoryMenu);
+					currentPanel = inventoryMenu;
+				} else if (currentPanel == inventoryMenu) {
+					remove(inventoryMenu);
+					add(panel);
+					currentPanel = panel;
+				}
+				repaint();
+			}
+		}
 	}
 
 	private class GameMouseListener implements MouseListener {
