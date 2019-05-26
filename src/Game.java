@@ -40,32 +40,32 @@ public class Game extends JFrame {
 		this.addKeyListener(listener);
 		this.addMouseListener(mouseListener);
 		panel = new GamePanel();
-//		//Might want to remove this later
-//		this.inventory = new Inventory(36);
-//		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("WoodenSword.png");
-//		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
-//		Item woodSword = new Sword("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2);
-//		Item stick = new Material("Stick", "A wood stick", stickSprite);
-//		Stack stackOne = new Stack(1, woodSword);
-//		Stack stackTwo = new Stack(20, stick);
-//		Stack stackThree = new Stack(10, stick);
-//		Stack stackFour = new Stack(23, stick);
-//		Stack stackFive = new Stack(24, stick);
-//		Stack stackSix = new Stack(29, stick);
-//		Stack[] moreStack = new Stack[29];
-//		for (int i=0; i<29;i++) {
-//			moreStack[i] = new Stack(1, woodSword);
-//			inventory.add(moreStack[i]);
-//		}
-//		inventory.add(stackOne);
-//		inventory.add(stackTwo);
-//		inventory.add(stackThree);
-//		inventory.add(stackFour);
-//		inventory.add(stackFive);
-//		inventory.add(stackSix);
-//		inventoryMenu = new InventoryMenu(inventory);
-		this.add(panel);
-//		this.add(inventoryMenu);
+		//Might want to remove this later
+		this.inventory = new Inventory(36);
+		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("WoodenSword.png");
+		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
+		Item woodSword = new Sword("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2);
+		Item stick = new Material("Stick", "A wood stick", stickSprite);
+		Stack stackOne = new Stack(1, woodSword);
+		Stack stackTwo = new Stack(20, stick);
+		Stack stackThree = new Stack(10, stick);
+		Stack stackFour = new Stack(23, stick);
+		Stack stackFive = new Stack(24, stick);
+		Stack stackSix = new Stack(29, stick);
+		Stack[] moreStack = new Stack[29];
+		for (int i=0; i<29;i++) {
+			moreStack[i] = new Stack(1, woodSword);
+			inventory.add(moreStack[i]);
+		}
+		inventory.add(stackOne);
+		inventory.add(stackTwo);
+		inventory.add(stackThree);
+		inventory.add(stackFour);
+		inventory.add(stackFive);
+		inventory.add(stackSix);
+		inventoryMenu = new InventoryMenu(inventory);
+//		this.add(panel);
+		this.add(inventoryMenu);
 		this.setVisible(true);
 		this.requestFocusInWindow();
 	}
@@ -136,6 +136,15 @@ public class Game extends JFrame {
 		private int y;
 		private int mouseX;
 		private int mouseY;
+		private int highlightX;
+		private int highlightY;
+
+		private int pressedX;
+		private int pressedY;
+		private int releasedX;
+		private int releasedY;
+
+		private MouseEvent pressedEvent;
 
 		InventoryMenu(Inventory inventory) {
 			this.inventory = inventory;
@@ -150,6 +159,11 @@ public class Game extends JFrame {
 			g.fillRect(0,0, 1280, 720);
 
 			g.drawImage(inventoryGUI,288,28,704, 664,null);
+			if (highlightX != 0 && highlightY != 0) {
+				g.setColor(Color.BLUE);
+				g.drawRect(highlightX, highlightY,63,63);
+				g.setColor(Color.BLACK);
+			}
 
 			for (int i = 0; i < 3; i++) {
 				for (int j=0; j<9; j++) {
@@ -172,15 +186,54 @@ public class Game extends JFrame {
 			if (handStack != null) {
 				g.drawImage(handStack.getItem().getSprite(), mouseX-27, mouseY-27, 58,58, null);
 			}
-			g.fillRect(x,y,10,10);
+			//g.fillRect(x,y,10,10);
 			repaint();
 		}
 
 		private class PanelMouseListener implements MouseListener {
 			public void mouseClicked(MouseEvent e) {
+//				System.out.println("Mouse clicked: " + e.getX() + " " + e.getY());
 				x = e.getX();
 				y = e.getY();
-				for (int i=0; i<3;i++) {
+				int checkX = x-320;
+				int checkY;
+				boolean fourthRow = false;
+				if (y<596) {
+					checkY = y - 364;
+				} else if (y<660){
+					checkY = y - 596;
+					fourthRow = true;
+				} else {
+					return;
+				}
+				if (checkX<0 || checkY<0) {
+					return;
+				}
+				if (checkX%72<64) {
+					if (checkY % 72 < 64) {
+						int r;
+						if (fourthRow) {
+							r = 3;
+						} else {
+							r = checkY / 72;
+						}
+						int c = checkX / 72;
+						if (handStack == null) {
+							handStack = inventory.remove(r * 9 + c);
+						} else {
+							if (inventory.get(r * 9 + c) == null) {
+								inventory.add(handStack, r * 9 + c);
+								handStack = null;
+							} else {
+								Stack temp = inventory.remove(r * 9 + c);
+								inventory.add(handStack, r * 9 + c);
+								handStack = temp;
+							}
+						}
+					}
+				}
+				
+				/*for (int i=0; i<3;i++) {
 					for (int j=0; j<9; j++) {
 						if (x>320+72*j && x<384+72*j) {
 							if (y>364+72*i && y<428+72*i) {
@@ -200,8 +253,8 @@ public class Game extends JFrame {
 							}
 						}
 					}
-				}
-				for (int i=0;i<9;i++) {
+				}*/
+				/*for (int i=0;i<9;i++) {
 					if (x>320+72*i && x<384+72*i) {
 						if (y>596 && y<660){
 							if (handStack == null) {
@@ -218,7 +271,7 @@ public class Game extends JFrame {
 							}
 						}
 					}
-				}
+				}*/
 			}
 
 			public void mouseEntered(MouseEvent e) {
@@ -230,11 +283,21 @@ public class Game extends JFrame {
 			}
 
 			public void mousePressed(MouseEvent e) {
-
+//				System.out.println("Mouse pressed: " + e.getX() + " " + e.getY());
+				pressedX = e.getX();
+				pressedY = e.getY();
+				pressedEvent = e;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-
+//				System.out.println("Mouse released: " + e.getX() + " " + e.getY());
+				releasedX = e.getX();
+				releasedY = e.getY();
+				int deltaX = Math.abs(releasedX-pressedX);
+				int deltaY = Math.abs(releasedY-pressedY);
+				if (deltaX<15 && deltaY<15 && deltaX!=0 && deltaY!=0) {
+					this.mouseClicked(pressedEvent);
+				}
 			}
 		}
 
@@ -246,6 +309,42 @@ public class Game extends JFrame {
 			public void mouseMoved(MouseEvent e) {
 				mouseX = e.getX();
 				mouseY = e.getY();
+				int checkX = mouseX-320;
+				int checkY;
+				boolean fourthRow = false;
+				if (mouseY<596) {
+					if (mouseY > 572) {
+						highlightX = 0;
+						highlightY = 0;
+						return;
+					}
+					checkY = mouseY - 364;
+				} else if (mouseY < 660) {
+					checkY = mouseY - 596;
+					fourthRow = true;
+				} else {
+					highlightX = 0;
+					highlightY = 0;
+					return;
+				}
+				if (checkX<0 || checkY<0) {
+					highlightX = 0;
+					highlightY = 0;
+					return;
+				}
+				if (checkX%72<64 && checkX<648) {
+					if (checkY % 72 < 64) {
+						int r;
+						if (fourthRow) {
+							highlightY = 596;
+						} else {
+							r = checkY / 72;
+							highlightY = 364+72*r;
+						}
+						int c = checkX / 72;
+						highlightX = 320+72*c;
+					}
+				}
 			}
 		}
 	}
