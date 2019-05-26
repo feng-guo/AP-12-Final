@@ -2,7 +2,7 @@ package Items;
 
 import java.awt.Image;
 
-abstract class Item {
+public abstract class Item {
     private String name;
     private String description;
     private int maxStack;

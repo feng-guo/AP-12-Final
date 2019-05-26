@@ -3,11 +3,11 @@ package Items;
 import java.util.ArrayList;
 
 public class Inventory {
-    private ArrayList<Stack> inventory;
+    private Stack[] inventory;
     private int maxSlots;
 
     public Inventory(int maxSlots) {
-        this.inventory = new ArrayList<>();
+        this.inventory = new Stack[36];
         this.maxSlots = maxSlots;
     }
 
@@ -16,43 +16,64 @@ public class Inventory {
     }
 
     public Stack add(Stack stack) {
-        for (int i=0; i<inventory.size(); i++) {
-            Item inventoryItem = inventory.get(i).getItem();
-            if (inventoryItem.equals(stack.getItem()) && inventory.get(i).getStackAmount() < inventoryItem.getMaxStack()) {
-                if (stack.getStackAmount() + inventory.get(i).getStackAmount() > inventoryItem.getMaxStack() && inventoryItem.getMaxStack() > 1) {
-                    int initialAmount = inventory.get(i).getStackAmount();
-                    inventory.get(i).setStackAmount(inventoryItem.getMaxStack());
-                    stack.setStackAmount((initialAmount + stack.getStackAmount()) - inventoryItem.getMaxStack());
-                } else {
-                    inventory.get(i).setStackAmount(inventoryItem.getMaxStack());
-                    return null;
+        for (int i=0; i<inventory.length; i++) {
+            try {
+                Item inventoryItem = inventory[i].getItem();
+                if (inventoryItem.equals(stack.getItem()) && inventory[i].getStackAmount() < inventoryItem.getMaxStack()) {
+                    if (stack.getStackAmount() + inventory[i].getStackAmount() > inventoryItem.getMaxStack() && inventoryItem.getMaxStack() > 1) {
+                        int initialAmount = inventory[i].getStackAmount();
+                        inventory[i].setStackAmount(inventoryItem.getMaxStack());
+                        stack.setStackAmount((initialAmount + stack.getStackAmount()) - inventoryItem.getMaxStack());
+                    } else {
+                        inventory[i].add(stack.getStackAmount());
+                        return null;
+                    }
                 }
+            } catch (NullPointerException e) {
+                //Is empty
             }
         }
-        if (inventory.size() < maxSlots) {
-            inventory.add(stack);
-            return null;
+
+        for (int i=0; i<inventory.length;i++) {
+            if (inventory[i] == null) {
+                inventory[i] = stack;
+                return null;
+            }
+        }
+        return stack;
+    }
+
+    public boolean add(Stack stack, int i) {
+        if (inventory[i] == null) {
+            inventory[i] = stack;
+            return true;
         } else {
-            return stack;
+            return false;
         }
     }
 
     public Stack remove(int index) {
-        if (index >= inventory.size()) {
+        if (index >= inventory.length) {
             return null;
         } else {
-            return inventory.get(index);
+            Stack toReturn = inventory[index];
+            inventory[index] = null;
+            return toReturn;
         }
     }
-    
+
     public Stack drop(int index, int amount) {
-        if (index >= inventory.size()) {
+        if (index >= inventory.length) {
             return null;
-        } else if (inventory.get(index).getStackAmount() < amount) {
-            return inventory.get(index);
+        } else if (inventory[index].getStackAmount() < amount) {
+            return inventory[index];
         } else {
-            inventory.get(index).setStackAmount(inventory.get(index).getStackAmount() - amount);
-            return new Stack(amount, inventory.get(index).getItem());
+            inventory[index].setStackAmount(inventory[index].getStackAmount() - amount);
+            return new Stack(amount, inventory[index].getItem());
         }
+    }
+
+    public Stack get(int i) {
+        return inventory[i];
     }
 }

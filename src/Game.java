@@ -1,17 +1,27 @@
+import Items.Inventory;
+import Items.Stack;
+import Items.Sword;
+import Items.Item;
+import Items.Material;
+
+
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Game extends JFrame {
 	private GamePanel panel;
+	private InventoryMenu inventoryMenu;
+	private Inventory inventory; // remove this later
 	private String frameRate;
 	private long lastTimeCheck;
 	private long deltaTime;
 	private int frameCount;
 
-	Listener listener = new Listener();
+
+	private Listener listener = new Listener();
+	GameMouseListener mouseListener = new GameMouseListener();
 
 	//*****TEMPORARY VARIABLES*****//
 	//Replace later
@@ -24,12 +34,38 @@ public class Game extends JFrame {
 			{1,1,1,1,1}};
 
 	Game() {
-		this.setSize(1280,720);
+		this.setSize(1280,760);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.addKeyListener(listener);
+		this.addMouseListener(mouseListener);
 		panel = new GamePanel();
+//		//Might want to remove this later
+//		this.inventory = new Inventory(36);
+//		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("WoodenSword.png");
+//		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
+//		Item woodSword = new Sword("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2);
+//		Item stick = new Material("Stick", "A wood stick", stickSprite);
+//		Stack stackOne = new Stack(1, woodSword);
+//		Stack stackTwo = new Stack(20, stick);
+//		Stack stackThree = new Stack(10, stick);
+//		Stack stackFour = new Stack(23, stick);
+//		Stack stackFive = new Stack(24, stick);
+//		Stack stackSix = new Stack(29, stick);
+//		Stack[] moreStack = new Stack[29];
+//		for (int i=0; i<29;i++) {
+//			moreStack[i] = new Stack(1, woodSword);
+//			inventory.add(moreStack[i]);
+//		}
+//		inventory.add(stackOne);
+//		inventory.add(stackTwo);
+//		inventory.add(stackThree);
+//		inventory.add(stackFour);
+//		inventory.add(stackFive);
+//		inventory.add(stackSix);
+//		inventoryMenu = new InventoryMenu(inventory);
 		this.add(panel);
+//		this.add(inventoryMenu);
 		this.setVisible(true);
 		this.requestFocusInWindow();
 	}
@@ -85,6 +121,135 @@ public class Game extends JFrame {
 		}
 	}
 
+	private abstract class Menu extends JPanel {
+		//lol
+	}
+
+	private class InventoryMenu extends Menu {
+		private Image inventoryGUI = Toolkit.getDefaultToolkit().createImage("InventoryGUI.png");
+		private Inventory inventory;
+		private PanelMouseListener mouseListener = new PanelMouseListener();
+		private PanelMouseMotionListener motionListener = new PanelMouseMotionListener();
+		private Stack handStack;
+
+		private int x;
+		private int y;
+		private int mouseX;
+		private int mouseY;
+
+		InventoryMenu(Inventory inventory) {
+			this.inventory = inventory;
+			this.addMouseListener(mouseListener);
+			this.addMouseMotionListener(motionListener);
+			this.setSize(1280,720);
+		}
+
+		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			g.setColor(Color.BLACK);
+			g.fillRect(0,0, 1280, 720);
+
+			g.drawImage(inventoryGUI,288,28,704, 664,null);
+
+			for (int i = 0; i < 3; i++) {
+				for (int j=0; j<9; j++) {
+					try {
+						g.drawImage(inventory.get(i * 9 + j).getItem().getSprite(), 323 + 72 * j, 367 + 72 * i, 58, 58, null);
+						g.drawString(Integer.toString(inventory.get(i * 9 + j).getStackAmount()), 372 + 72 * j, 415 + 72 * i);
+					} catch (NullPointerException e) {
+						//is empty
+					}
+				}
+			}
+			for (int i =0; i<9; i++) {
+				try {
+					g.drawImage(inventory.get(27 + i).getItem().getSprite(), 323 + 72 * i, 599, 58, 58, null);
+					g.drawString(Integer.toString(inventory.get(27 + i).getStackAmount()), 372 + 72 * i, 647);
+				} catch (NullPointerException e) {
+					//Nothing here
+				}
+			}
+			if (handStack != null) {
+				g.drawImage(handStack.getItem().getSprite(), mouseX-27, mouseY-27, 58,58, null);
+			}
+			g.fillRect(x,y,10,10);
+			repaint();
+		}
+
+		private class PanelMouseListener implements MouseListener {
+			public void mouseClicked(MouseEvent e) {
+				x = e.getX();
+				y = e.getY();
+				for (int i=0; i<3;i++) {
+					for (int j=0; j<9; j++) {
+						if (x>320+72*j && x<384+72*j) {
+							if (y>364+72*i && y<428+72*i) {
+								if (handStack == null) {
+									handStack = inventory.remove(i * 9 + j);
+								} else {
+									if (inventory.get(i * 9 + j) == null) {
+										inventory.add(handStack,i * 9 + j);
+										handStack = null;
+									} else {
+										Stack temp = inventory.remove(i * 9 + j);
+										inventory.add(handStack, i*9+j);
+										handStack = temp;
+									}
+								}
+								return;
+							}
+						}
+					}
+				}
+				for (int i=0;i<9;i++) {
+					if (x>320+72*i && x<384+72*i) {
+						if (y>596 && y<660){
+							if (handStack == null) {
+								handStack = inventory.remove(27+i);
+							} else {
+								if (inventory.get(27+i) == null) {
+									inventory.add(handStack, 27+i);
+									handStack = null;
+								} else {
+									Stack temp = inventory.remove(27+i);
+									inventory.add(handStack, 27+i);
+									handStack = temp;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			public void mouseEntered(MouseEvent e) {
+
+			}
+
+			public void mouseExited(MouseEvent e) {
+
+			}
+
+			public void mousePressed(MouseEvent e) {
+
+			}
+
+			public void mouseReleased(MouseEvent e) {
+
+			}
+		}
+
+		private class PanelMouseMotionListener implements MouseMotionListener {
+			public void mouseDragged(MouseEvent e) {
+
+			}
+
+			public void mouseMoved(MouseEvent e) {
+				mouseX = e.getX();
+				mouseY = e.getY();
+			}
+		}
+	}
+
 	private class Listener implements KeyListener {
 		public void keyPressed(KeyEvent e) {
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {  //W
@@ -103,5 +268,27 @@ public class Game extends JFrame {
 
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {}
+	}
+
+	private class GameMouseListener implements MouseListener {
+		public void mouseClicked(MouseEvent e) {
+
+		}
+
+		public void mouseEntered(MouseEvent e) {
+
+		}
+
+		public void mouseExited(MouseEvent e) {
+
+		}
+
+		public void mousePressed(MouseEvent e) {
+
+		}
+
+		public void mouseReleased(MouseEvent e) {
+
+		}
 	}
 }
