@@ -172,7 +172,9 @@ public class Game extends JFrame {
 				for (int j=0; j<9; j++) {
 					try {
 						g.drawImage(inventory.get(i * 9 + j).getItem().getSprite(), 323 + 72 * j, 367 + 72 * i, 58, 58, null);
-						g.drawString(Integer.toString(inventory.get(i * 9 + j).getStackAmount()), 372 + 72 * j, 415 + 72 * i);
+						if (inventory.get(i*9+j).getStackAmount() > 1) {
+							g.drawString(Integer.toString(inventory.get(i * 9 + j).getStackAmount()), 372 + 72 * j, 415 + 72 * i);
+						}
 					} catch (NullPointerException e) {
 						//is empty
 					}
@@ -181,7 +183,9 @@ public class Game extends JFrame {
 			for (int i =0; i<9; i++) {
 				try {
 					g.drawImage(inventory.get(27 + i).getItem().getSprite(), 323 + 72 * i, 599, 58, 58, null);
-					g.drawString(Integer.toString(inventory.get(27 + i).getStackAmount()), 372 + 72 * i, 647);
+					if (inventory.get(27 + i).getStackAmount() > 1) {
+						g.drawString(Integer.toString(inventory.get(27 + i).getStackAmount()), 372 + 72 * i, 647);
+					}
 				} catch (NullPointerException e) {
 					//Nothing here
 				}
@@ -199,10 +203,10 @@ public class Game extends JFrame {
 						}
 						int c = (highlightX-320)/72;
 						g.setColor(Color.WHITE);
-						inventory.get(r*9+c).getItem().getName(); //This just forces a nullpointer if it is possible lol
+//						int stackAmount = inventory.get(r*9+c).getStackAmount(); //This just forces a nullpointer if it is possible lol
 						g.fillRect(highlightX+64, highlightY, 100, 200);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.get(r*9+c).getItem().getDescription(), highlightX + 74, highlightY + 30);
+						g.drawString(inventory.get(r * 9 + c).getItem().getDescription(), highlightX + 74, highlightY + 30);
 					} catch (NullPointerException e) {
 						//oops
 					}
@@ -210,6 +214,10 @@ public class Game extends JFrame {
 			}
 			if (handStack != null) {
 				g.drawImage(handStack.getItem().getSprite(), mouseX-27, mouseY-27, 58,58, null);
+				if (handStack.getStackAmount() > 1) {
+					g.setColor(Color.BLACK);
+					g.drawString(Integer.toString(handStack.getStackAmount()), mouseX+22, mouseY+21);
+				}
 			}
 
 			//g.fillRect(x,y,10,10);
@@ -217,7 +225,7 @@ public class Game extends JFrame {
 		}
 
 		private class PanelMouseListener implements MouseListener {
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 //				System.out.println("Mouse clicked: " + e.getX() + " " + e.getY());
 				x = e.getX();
 				y = e.getY();
@@ -308,22 +316,22 @@ public class Game extends JFrame {
 
 			}
 
-			public void mousePressed(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) {
 //				System.out.println("Mouse pressed: " + e.getX() + " " + e.getY());
-				pressedX = e.getX();
-				pressedY = e.getY();
-				pressedEvent = e;
+//				pressedX = e.getX();
+//				pressedY = e.getY();
+//				pressedEvent = e;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-//				System.out.println("Mouse released: " + e.getX() + " " + e.getY());
+				/*System.out.println("Mouse released: " + e.getX() + " " + e.getY());
 				releasedX = e.getX();
 				releasedY = e.getY();
 				int deltaX = Math.abs(releasedX-pressedX);
 				int deltaY = Math.abs(releasedY-pressedY);
 				if (deltaX<100 && deltaY<100 && deltaX!=0 && deltaY!=0) {
 					this.mouseClicked(pressedEvent);
-				}
+				}*/
 			}
 		}
 
