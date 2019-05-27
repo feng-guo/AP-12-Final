@@ -4,7 +4,7 @@
         <field id="tpd3" name="Name" width="195" order="0"/>
         <field id="tpd4" name="Begin date" width="92" order="1"/>
         <field id="tpd5" name="End date" width="92" order="2"/>
-        <option id="color.recent"><![CDATA[#ccccff #3399ff #33ccff #9999ff #3333ff #66ffff #33ffff]]></option>
+        <option id="color.recent"><![CDATA[#ccccff #9999ff #9933ff #3399ff #33ccff #3333ff #66ffff #33ffff]]></option>
     </view>
     <view id="resource-table">
         <field id="0" name="Name" width="210" order="0"/>
@@ -37,32 +37,35 @@
         <task id="0" name="Graphics" meeting="false" start="2019-05-22" duration="15" complete="0" expand="true">
             <task id="7" name="Sprite Sheets" color="#8cb6ce" meeting="false" start="2019-05-22" duration="7" complete="0" expand="true"/>
             <task id="8" name="Item Sprites" color="#8cb6ce" meeting="false" start="2019-05-24" duration="6" complete="0" expand="true"/>
-            <task id="38" name="Background Images" color="#8cb6ce" meeting="false" start="2019-05-24" duration="13" complete="0" expand="true"/>
-            <task id="39" name="Structures" color="#8cb6ce" meeting="false" start="2019-05-27" duration="11" complete="0" expand="true"/>
+            <task id="38" name="Background Images" color="#8cb6ce" meeting="false" start="2019-05-24" duration="2" complete="0" expand="true"/>
+            <task id="39" name="Structures" color="#8cb6ce" meeting="false" start="2019-05-28" duration="11" complete="0" expand="true"/>
             <task id="41" name="GUI Menus" color="#8cb6ce" meeting="false" start="2019-05-27" duration="3" complete="0" expand="true"/>
         </task>
         <task id="1" name="Mechanics" meeting="false" start="2019-05-27" duration="9" complete="0" expand="true">
-            <task id="15" name="Movement" color="#33ffff" meeting="false" start="2019-05-27" duration="5" complete="0" expand="true"/>
+            <task id="15" name="Movement" color="#33ffff" meeting="false" start="2019-05-27" duration="4" complete="0" expand="true"/>
             <task id="10" name="Inventory" color="#66ffff" meeting="false" start="2019-05-27" duration="5" complete="0" expand="true"/>
             <task id="16" name="Item Usage" color="#66ffff" meeting="false" start="2019-06-03" duration="4" complete="0" expand="true"/>
             <task id="12" name="Material Extraction" color="#66ffff" meeting="false" start="2019-06-03" duration="4" complete="0" expand="true"/>
             <task id="22" name="Health and Death" color="#66ffff" meeting="false" start="2019-06-03" duration="3" complete="0" expand="true"/>
         </task>
-        <task id="13" name="Environment" meeting="false" start="2019-05-28" duration="9" complete="0" expand="true">
-            <task id="18" name="Enemies" color="#ccccff" meeting="false" start="2019-05-28" duration="6" complete="0" expand="true"/>
+        <task id="13" name="Environment" meeting="false" start="2019-05-28" duration="10" complete="0" expand="true">
+            <task id="18" name="Enemies" color="#ccccff" meeting="false" start="2019-06-03" duration="6" complete="0" expand="true"/>
             <task id="20" name="Resources" color="#ccccff" meeting="false" start="2019-05-30" duration="7" complete="0" expand="true"/>
+            <task id="90" name="Interactivity" color="#ccccff" meeting="false" start="2019-05-28" duration="4" complete="0" expand="true"/>
         </task>
         <task id="2" name="World Building" meeting="false" start="2019-05-27" duration="11" complete="0" expand="true">
             <task id="24" name="Spawn Town" color="#3399ff" meeting="false" start="2019-05-27" duration="5" complete="0" expand="true"/>
             <task id="28" name="NPC" color="#3399ff" meeting="false" start="2019-05-29" duration="5" complete="0" expand="true"/>
-            <task id="26" name="Questing" color="#3399ff" meeting="false" start="2019-06-05" duration="4" complete="0" expand="true"/>
-            <task id="30" name="World Generation" color="#3399ff" meeting="false" start="2019-05-30" duration="4" complete="0" expand="true"/>
+            <task id="26" name="Questing" color="#3399ff" meeting="false" start="2019-05-30" duration="8" complete="0" expand="true"/>
+            <task id="30" name="World Generation" color="#3399ff" meeting="false" start="2019-06-03" duration="6" complete="0" expand="true"/>
         </task>
-        <task id="3" name="Multiplayer" meeting="false" start="2019-06-05" duration="4" complete="0" expand="true">
+        <task id="3" name="Multiplayer" meeting="false" start="2019-05-31" duration="8" complete="0" expand="true">
             <task id="34" name="Co-op" color="#9999ff" meeting="false" start="2019-06-05" duration="4" complete="0" expand="true"/>
-            <task id="36" name="PvP" color="#9999ff" meeting="false" start="2019-06-07" duration="2" complete="0" expand="true"/>
+            <task id="36" name="PvP" color="#9999ff" meeting="false" start="2019-06-05" duration="5" complete="0" expand="true"/>
+            <task id="133" name="Handler" color="#9999ff" meeting="false" start="2019-05-31" duration="3" complete="0" expand="true"/>
         </task>
-        <task id="86" name="Content &amp; Debugging" color="#3333ff" meeting="false" start="2019-06-10" duration="5" complete="0" expand="true"/>
+        <task id="135" name="Progress Check &amp; Testing" color="#9933ff" meeting="false" start="2019-06-10" duration="1" complete="0" expand="true"/>
+        <task id="86" name="Content &amp; Debugging" color="#3333ff" meeting="false" start="2019-06-11" duration="5" complete="0" expand="true"/>
     </tasks>
     <resources>
         <resource id="0" name="David Bao" function="SoftwareDevelopment:2" contacts="" phone=""/>
@@ -72,37 +75,43 @@
         <resource id="4" name="Armanya Dalmia" function="SoftwareDevelopment:2" contacts="" phone=""/>
     </resources>
     <allocations>
-        <allocation task-id="41" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
-        <allocation task-id="24" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
+        <allocation task-id="41" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="20.0"/>
+        <allocation task-id="24" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="20.0"/>
         <allocation task-id="86" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
-        <allocation task-id="7" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
-        <allocation task-id="39" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
-        <allocation task-id="8" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
-        <allocation task-id="18" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
-        <allocation task-id="26" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
-        <allocation task-id="30" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
+        <allocation task-id="7" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="20.0"/>
+        <allocation task-id="39" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="20.0"/>
+        <allocation task-id="8" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="20.0"/>
+        <allocation task-id="26" resource-id="0" function="SoftwareDevelopment:2" responsible="false" load="40.0"/>
+        <allocation task-id="38" resource-id="0" function="SoftwareDevelopment:2" responsible="false" load="60.0"/>
+        <allocation task-id="16" resource-id="0" function="SoftwareDevelopment:2" responsible="false" load="40.0"/>
+        <allocation task-id="135" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="40.0"/>
+        <allocation task-id="18" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="50.0"/>
+        <allocation task-id="26" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="20.0"/>
+        <allocation task-id="30" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="30.0"/>
         <allocation task-id="86" resource-id="1" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
-        <allocation task-id="7" resource-id="1" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
-        <allocation task-id="8" resource-id="1" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
-        <allocation task-id="38" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
-        <allocation task-id="10" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="16" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
-        <allocation task-id="12" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
-        <allocation task-id="22" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
-        <allocation task-id="41" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
-        <allocation task-id="18" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
-        <allocation task-id="20" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
-        <allocation task-id="30" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
+        <allocation task-id="8" resource-id="1" function="SoftwareDevelopment:2" responsible="false" load="20.0"/>
+        <allocation task-id="38" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="80.0"/>
+        <allocation task-id="90" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="80.0"/>
+        <allocation task-id="10" resource-id="2" function="Default:0" responsible="true" load="60.0"/>
+        <allocation task-id="22" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="20.0"/>
+        <allocation task-id="41" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="30.0"/>
+        <allocation task-id="18" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="20.0"/>
+        <allocation task-id="20" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="30.0"/>
+        <allocation task-id="30" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="50.0"/>
         <allocation task-id="86" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
-        <allocation task-id="15" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="24" resource-id="3" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
-        <allocation task-id="34" resource-id="3" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
-        <allocation task-id="36" resource-id="3" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
+        <allocation task-id="90" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="10.0"/>
+        <allocation task-id="135" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="30.0"/>
+        <allocation task-id="15" resource-id="3" function="Default:0" responsible="true" load="70.0"/>
+        <allocation task-id="34" resource-id="3" function="SoftwareDevelopment:2" responsible="false" load="80.0"/>
         <allocation task-id="86" resource-id="3" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
+        <allocation task-id="16" resource-id="3" function="SoftwareDevelopment:2" responsible="true" load="20.0"/>
+        <allocation task-id="24" resource-id="3" function="SoftwareDevelopment:2" responsible="false" load="30.0"/>
+        <allocation task-id="133" resource-id="3" function="SoftwareDevelopment:2" responsible="true" load="70.0"/>
+        <allocation task-id="135" resource-id="3" function="SoftwareDevelopment:2" responsible="false" load="20.0"/>
         <allocation task-id="20" resource-id="4" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
-        <allocation task-id="34" resource-id="4" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
-        <allocation task-id="36" resource-id="4" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
         <allocation task-id="86" resource-id="4" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
+        <allocation task-id="36" resource-id="4" function="SoftwareDevelopment:2" responsible="true" load="20.0"/>
+        <allocation task-id="135" resource-id="4" function="SoftwareDevelopment:2" responsible="false" load="80.0"/>
     </allocations>
     <vacations/>
     <previous/>
