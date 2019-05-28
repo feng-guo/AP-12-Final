@@ -13,3 +13,9 @@ public abstract class Quest {
         return reward;
     }
 }
+
+
+//temp code for implementation in main game 
+//ArrayList<Quest> questList = new ArrayList<Quest>();
+//questList.add(new KillQuest(sword,appleTrees,0,10));// template, change reward and figure out a the actual enemy
+  //if killed.Name== target 
