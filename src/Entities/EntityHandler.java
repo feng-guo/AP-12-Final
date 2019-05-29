@@ -1,10 +1,14 @@
 package Entities;
 
-public abstract class EntityHandler {
-    private EntityInstance entity;
+import World.Location;
 
-    public EntityHandler(EntityInstance entity) {
+public abstract class EntityHandler implements Runnable{
+    private EntityInstance entity;
+    private Location location;
+
+    public EntityHandler(EntityInstance entity, Location location) {
         this.entity = entity;
+        this.location = location;
     }
 
     public EntityInstance getEntity() {

@@ -1,10 +1,12 @@
 package Entities;
 
+import World.Location;
+
 public class EnemyHandler extends CharacterHandler {
     private EnemyInstance enemyInstance;
 
-    public EnemyHandler(EnemyInstance enemyInstance) {
-        super(enemyInstance);
+    public EnemyHandler(EnemyInstance enemyInstance, Location location) {
+        super(enemyInstance, location);
         this.enemyInstance = enemyInstance;
     }
 
@@ -19,5 +21,10 @@ public class EnemyHandler extends CharacterHandler {
 
     public void attack() {
         //Code here
+    }
+
+    @Override
+    public void run() {
+
     }
 }

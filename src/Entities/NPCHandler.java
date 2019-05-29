@@ -1,10 +1,12 @@
 package Entities;
 
+import World.Location;
+
 public class NPCHandler extends CharacterHandler {
     private NPCInstance npcInstance;
 
-    public NPCHandler(NPCInstance npcInstance) {
-        super(npcInstance);
+    public NPCHandler(NPCInstance npcInstance, Location location) {
+        super(npcInstance, location);
         this.npcInstance = npcInstance;
     }
 
@@ -14,6 +16,11 @@ public class NPCHandler extends CharacterHandler {
 
     @Override
     public void move() {
+        //code here
+    }
+
+    @Override
+    public void run() {
         //code here
     }
 }

@@ -1,5 +1,7 @@
 package Entities;
 
+import World.Location;
+
 public class WeaponEffectHandler extends EntityHandler {
     private int initialX;
     private int initialY;
@@ -8,8 +10,8 @@ public class WeaponEffectHandler extends EntityHandler {
     private WeaponEffectInstance weaponEffectInstance;
     private double speed;
 
-    public WeaponEffectHandler(WeaponEffectInstance weaponEffectInstance) {
-        super(weaponEffectInstance);
+    public WeaponEffectHandler(WeaponEffectInstance weaponEffectInstance, Location location) {
+        super(weaponEffectInstance, location);
         this.weaponEffectInstance = weaponEffectInstance;
         this.initialX = weaponEffectInstance.getInitialX();
         this.initialY = weaponEffectInstance.getInitialY();
@@ -19,6 +21,11 @@ public class WeaponEffectHandler extends EntityHandler {
 
     @Override
     public void move() {
+
+    }
+
+    @Override
+    public void run() {
 
     }
 
