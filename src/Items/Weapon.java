@@ -2,7 +2,7 @@ package Items;
 
 import java.awt.*;
 
-public abstract class Weapon extends Equipable {
+public class Weapon extends Equipable {
     private int damage;
     private int range;
 
