@@ -401,16 +401,16 @@ public class Game extends JFrame {
 	private class Listener implements KeyListener {
 		public void keyPressed(KeyEvent e) {
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {  //W
-				playerInstance.moveY(-10);
+				playerInstance.moveY(-8);
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")) {  //D
-				playerInstance.moveX(10);
+				playerInstance.moveX(8);
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")) {  //S
-				playerInstance.moveY(10);
+				playerInstance.moveY(8);
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")) {  //A
-				playerInstance.moveX(-10);
+				playerInstance.moveX(-8);
 			}
 		}
 
