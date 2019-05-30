@@ -8,13 +8,9 @@ import java.util.HashMap;
 import java.sql.ResultSet;
 
 public class ItemsList {
-    private HashMap<String, Item> itemHashMap;
+    private static HashMap<String, Item> itemHashMap;
 
-    public ItemsList() {
-        initialize();
-    }
-
-    private void initialize() {
+    public static void initialize() {
         itemHashMap = new HashMap<>();
         String s = "SELECT * FROM Item WHERE itemType = ";
         ResultSet materials = DatabaseConnector.query(s + "'Material'");
@@ -31,7 +27,7 @@ public class ItemsList {
         addToMap(tools, "Tool");
     }
 
-    private void addToMap(ResultSet set, String itemType) {
+    private static void addToMap(ResultSet set, String itemType) {
         try {
             if ("Material".equals(itemType)) {
                 while (set.next()) {
@@ -70,7 +66,7 @@ public class ItemsList {
         }
     }
 
-    public Item getItem(String item) {
+    public static Item getItem(String item) {
         return itemHashMap.get(item);
     }
 }
