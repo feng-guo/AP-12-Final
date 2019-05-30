@@ -1,4 +1,4 @@
-package Quests;
+package NPCMechanics;
 
 import Entities.Enemy;
 import Items.Item;

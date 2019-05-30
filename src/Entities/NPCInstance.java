@@ -2,12 +2,14 @@ package Entities;
 
 import Items.Item;
 import Items.Stack;
-import Quests.Quest;
+import NPCMechanics.Quest;
+import NPCMechanics.Trade;
 
 import java.util.ArrayList;
 
 public class NPCInstance extends CharacterInstance {
     private ArrayList<Quest> quests;
+    private ArrayList<Trade> trades;
     private NPC character;
 
     public NPCInstance(int x, int y, NPC character, ArrayList<Quest> quests) {
@@ -41,6 +43,7 @@ public class NPCInstance extends CharacterInstance {
         return character.getDefaultDialogue();
     }
 
+    //Might want to code this properly!!
     public Stack trade(Item item) {
         return character.getTrades().get(item);
     }

@@ -20,6 +20,7 @@ public class Location {
     private HashMap<Double, WeaponEffectInstance> weaponEffectInstanceHashMap;
     private HashMap<Double, EnvironmentalInstance> environmentalInstanceHashMap;
     private HashMap<Double, ItemDropInstance> itemDropInstanceHashMap;
+    private ArrayList<Structure> structures;
 
     public Location(Image background) {
         this.background = background;
@@ -35,6 +36,7 @@ public class Location {
         weaponEffectInstanceHashMap = new HashMap<>();
         environmentalInstanceHashMap = new HashMap<>();
         itemDropInstanceHashMap = new HashMap<>();
+        structures = new ArrayList<>();
     }
 
     public void addPlayer(PlayerInstance player, double id) {
@@ -119,6 +121,10 @@ public class Location {
         return itemDropInstanceHashMap.get(key);
     }
 
+    public ArrayList<Structure> getStructures() {
+        return structures;
+    }
+
     public void removePlayer(double id) {
         playerInstanceHashMap.remove(id);
         for (int i=0; i<playerIDs.size(); i++) {
@@ -174,6 +180,15 @@ public class Location {
         for (int i=0; i<itemDropIDs.size(); i++) {
             if (itemDropIDs.get(i) == id) {
                 itemDropIDs.remove(i);
+                return;
+            }
+        }
+    }
+
+    public void removeStructure(String name) {
+        for (int i=0;i<structures.size();i++) {
+            if (structures.get(i).getName().equals(name)) {
+                structures.remove(i);
                 return;
             }
         }
