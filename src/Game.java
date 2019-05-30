@@ -1,4 +1,8 @@
+import Entities.Player;
+import Entities.PlayerInstance;
 import Items.*;
+import World.Location;
+import World.WorldDisplayer;
 
 
 import java.awt.*;
@@ -8,6 +12,7 @@ import javax.swing.JPanel;
 
 public class Game extends JFrame {
 	private GamePanel panel;
+	private WorldDisplayer worldPanel;
 	private InventoryMenu inventoryMenu;
 	private Inventory inventory; // remove this later
 	private String frameRate;
@@ -16,19 +21,15 @@ public class Game extends JFrame {
 	private int frameCount;
 	private JPanel currentPanel;
 
-
 	private Listener listener = new Listener();
 	GameMouseListener mouseListener = new GameMouseListener();
 
 	//*****TEMPORARY VARIABLES*****//
 	//Replace later
-	Player player = new Player();
-	int[][] map = {
-			{1,1,1,1,1},
-			{1,0,0,0,1},
-			{1,0,0,0,1},
-			{1,0,0,0,1},
-			{1,1,1,1,1}};
+
+	Player player;
+	PlayerInstance playerInstance;
+	Location map;
 
 	Game() {
 		this.setSize(1280,760);
@@ -36,6 +37,7 @@ public class Game extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.addKeyListener(listener);
 		this.addMouseListener(mouseListener);
+
 		panel = new GamePanel();
 		//Might want to remove this later
 		this.inventory = new Inventory(36);
@@ -47,6 +49,13 @@ public class Game extends JFrame {
 		Item stick = new Material("Stick", "A wood stick", stickSprite);
 		Item cake = new Food("Cake", "A delicious cake lovingly baked by Feng", cakeSprite,0 ,8);
 		Item bread = new Food("Bread", "A delicious loaf of bread lovingly baked by Feng", breadSprite, 0, 5);
+
+		//********ACTUALLY CHANGE THIS LATER**********//
+		player = new Player(breadSprite,10,10,10,10,"1","test");
+		playerInstance = new PlayerInstance(0,0,player);
+		map = new Location(breadSprite);
+		worldPanel = new WorldDisplayer(playerInstance,map);
+
 		Stack cakeStack = new Stack(2, cake);
 		Stack breadStack = new Stack(30, bread);
 		inventory.add(cakeStack);
@@ -69,8 +78,11 @@ public class Game extends JFrame {
 		inventory.add(stackFive);
 		inventory.add(stackSix);
 		inventoryMenu = new InventoryMenu(inventory);
-		this.add(panel);
-		currentPanel = panel;
+
+
+
+		this.add(worldPanel);
+		currentPanel = worldPanel;
 //		this.add(inventoryMenu);
 
 		this.setVisible(true);
@@ -85,13 +97,15 @@ public class Game extends JFrame {
 
 		private class GameLoop implements Runnable {
 			public void run() {
+				Thread worldThread = new Thread(worldPanel);
+				worldThread.run();
 				while (true) {
 					repaint();
 				}
 			}
 		}
 
-		public void paintComponent(Graphics g) {
+		/*public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Dimension panelSize = this.getSize();
 			int[] center = {panelSize.width / 2, panelSize.height / 2};
@@ -112,7 +126,7 @@ public class Game extends JFrame {
 			g.setColor(Color.GRAY);
 			g.drawString(getFrameRate(),10,10);
 			repaint();
-		}
+		}*/
 
 		public String getFrameRate()  {
 			long currentTime = System.currentTimeMillis();  //get the current time
@@ -387,30 +401,30 @@ public class Game extends JFrame {
 	private class Listener implements KeyListener {
 		public void keyPressed(KeyEvent e) {
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {  //W
-				player.y -= 10;
+				playerInstance.moveY(-10);
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")) {  //D
-				player.x += 10;
+				playerInstance.moveX(10);
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")) {  //S
-				player.y += 10;
+				playerInstance.moveY(10);
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")) {  //A
-				player.x -= 10;
+				playerInstance.moveX(-10);
 			}
 		}
 
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("E")) {
-				if (currentPanel == panel) {
-					remove(panel);
+				if (currentPanel == worldPanel) {
+					remove(worldPanel);
 					add(inventoryMenu);
 					currentPanel = inventoryMenu;
 				} else if (currentPanel == inventoryMenu) {
 					remove(inventoryMenu);
-					add(panel);
-					currentPanel = panel;
+					add(worldPanel);
+					currentPanel = worldPanel;
 				}
 				repaint();
 			}

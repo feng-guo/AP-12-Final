@@ -21,6 +21,13 @@ public class Location {
     private HashMap<Double, EnvironmentalInstance> environmentalInstanceHashMap;
     private HashMap<Double, ItemDropInstance> itemDropInstanceHashMap;
     private ArrayList<Structure> structures;
+    //fix later
+    private int[][] map = {
+            {1,1,1,1,1},
+            {1,0,0,0,1},
+            {1,0,0,0,1},
+            {1,0,0,0,1},
+            {1,1,1,1,1}};
 
     public Location(Image background) {
         this.background = background;
@@ -192,5 +199,9 @@ public class Location {
                 return;
             }
         }
+    }
+
+    public int[][] getMap() {
+        return this.map;
     }
 }
