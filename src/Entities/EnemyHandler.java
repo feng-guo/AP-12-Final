@@ -16,7 +16,16 @@ public class EnemyHandler extends CharacterHandler {
 
     @Override
     public void move() {
-        //Code here
+        double rand = Math.random();
+        if (rand<0.25) {
+            enemyInstance.moveX(-10);
+        } else if (rand<0.5) {
+            enemyInstance.moveX(10);
+        } else if (rand<0.75) {
+            enemyInstance.moveY(-10);
+        } else {
+            enemyInstance.moveY(10);
+        }
     }
 
     public void attack() {
@@ -25,6 +34,6 @@ public class EnemyHandler extends CharacterHandler {
 
     @Override
     public void run() {
-
+        move();
     }
 }

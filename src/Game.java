@@ -1,12 +1,13 @@
-import Entities.Player;
-import Entities.PlayerInstance;
+import Entities.*;
 import Items.*;
 import World.Location;
+import World.LocationHandler;
 import World.WorldDisplayer;
 
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -54,13 +55,29 @@ public class Game extends JFrame {
 		player = new Player(breadSprite,10,10,10,10,"1","test");
 		playerInstance = new PlayerInstance(0,0,player);
 		map = new Location(breadSprite);
+		LocationHandler mapHan = new LocationHandler(map);
+		Thread t = new Thread(mapHan);
+		HashMap<Stack, Double> temp = new HashMap<>();
+		Stack stackOne = new Stack(1, woodSword);
+		temp.put(stackOne, 0.4);
+		Enemy enemy1 = new Enemy(cakeSprite, 64, 64, 20, 2, 2, 2, "Cake", "Cake", temp);
+		Enemy enemy2 = new Enemy(stickSprite, 64, 64, 20, 3, 3, 3, "Stick", "Wood", temp);
+		EnemyInstance enemy1Ins = new EnemyInstance(20, 40, enemy1, (Weapon)woodSword);
+		EnemyInstance enemy2Ins = new EnemyInstance(100, 400, enemy2, (Weapon)woodSword);
+		EnemyHandler enemy1Han = new EnemyHandler(enemy1Ins, map);
+		EnemyHandler enemy2Han = new EnemyHandler(enemy2Ins, map);
+
+		Environmental env = new Environmental(woodSwordSprite, 3, 3, 2, woodSword);
+		EnvironmentalInstance envIns = new EnvironmentalInstance(400, 300, env);
+		mapHan.addEnemy(enemy1Han, 0.4);
+		mapHan.addEnemy(enemy2Han, 0.24);
 		worldPanel = new WorldDisplayer(playerInstance,map);
 
 		Stack cakeStack = new Stack(2, cake);
 		Stack breadStack = new Stack(30, bread);
 		inventory.add(cakeStack);
 		inventory.add(breadStack);
-		Stack stackOne = new Stack(1, woodSword);
+
 		Stack stackTwo = new Stack(20, stick);
 		Stack stackThree = new Stack(10, stick);
 		Stack stackFour = new Stack(23, stick);

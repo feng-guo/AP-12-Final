@@ -20,12 +20,28 @@ public class LocationHandler implements Runnable {
     private HashMap<Double, EnvironmentalInstance> environmentalInstanceHashMap;
     private HashMap<Double, ItemDropInstance> itemDropInstanceHashMap;
 
+    private ArrayList<Thread> thread; //HANDLE THIS BETTER!!!
+
     public LocationHandler(Location location) {
         this.location = location;
+        playerIDs = new ArrayList<>();
+        npcIDs = new ArrayList<>();
+        enemyIDs = new ArrayList<>();
+        weaponEffectIDs = new ArrayList<>();
+        environmentalIDs = new ArrayList<>();
+        itemDropIDs = new ArrayList<>();
+        playerHandlerHashMap = new HashMap<>();
+        npcHandlerHashMap = new HashMap<>();
+        enemyHandlerHashMap = new HashMap<>();
+        weaponEffectHandlerHashMap = new HashMap<>();
+        environmentalInstanceHashMap = new HashMap<>();
+        itemDropInstanceHashMap = new HashMap<>();
+        thread = new ArrayList<>();
     }
     
     public void run() {
         //Code here
+        //Might want to handle threads here better
     }
 
     public void addPlayer(PlayerHandler player, double id) {
@@ -152,5 +168,10 @@ public class LocationHandler implements Runnable {
                 return;
             }
         }
+    }
+
+    public void addToThread(EntityHandler e) {
+        Thread t = new Thread(e);
+        thread.add(t);
     }
 }
