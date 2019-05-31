@@ -1,0 +1,19 @@
+package Entities;
+
+import World.Location;
+
+public abstract class EntityHandler implements Runnable{
+    private EntityInstance entity;
+    private Location location;
+
+    public EntityHandler(EntityInstance entity, Location location) {
+        this.entity = entity;
+        this.location = location;
+    }
+
+    public EntityInstance getEntity() {
+        return entity;
+    }
+
+    public abstract void move();
+}

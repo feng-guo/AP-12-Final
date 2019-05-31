@@ -2,11 +2,11 @@ package Items;
 
 import java.awt.*;
 
-abstract class Tool extends Equipable {
-    int toolHit;
+public class Tool extends Weapon {
+    private int toolHit;
 
-    public Tool (String name, String description, Image sprite, int durability, int toolHit) {
-        super(name, description, sprite, durability);
+    public Tool (String name, String description, Image sprite, int durability, int damage, int range, int toolHit) {
+        super(name, description, sprite, durability, damage, range);
         this.toolHit = toolHit;
     }
 

@@ -3,83 +3,38 @@ package Entities;
 import java.awt.*;
 
 abstract class Character extends Entity {
-    private int maxHealth;
-    private int currentHealth;
-    private int speed;
-    private int defense;
-    private int dexterity;
+    private int baseHealth;
+    private int baseSpeed;
+    private int baseDefense;
+    private int baseDexterity;
     private String name;
 
-    public Character(Image sprite, int x, int y, int length, int width, int maxHealth, int speed, int defense, int dexterity, String name) {
-        super(sprite, x, y, length, width);
-        this.maxHealth = maxHealth;
-        this.currentHealth = maxHealth;
-        this.speed = speed;
-        this.defense = defense;
-        this.dexterity = dexterity;
+    public Character(Image sprite, int length, int width, int maxHealth, int speed, int defense, int dexterity, String name) {
+        super(sprite, length, width);
+        this.baseHealth = maxHealth;
+        this.baseSpeed = speed;
+        this.baseDefense = defense;
+        this.baseDexterity = dexterity;
         this.name = name;
     }
 
-    public int getMaxHealth() {
-        return maxHealth;
+    public int getBaseHealth() {
+        return baseHealth;
     }
 
-    public int getCurrentHealth() {
-        return currentHealth;
+    public int getBaseSpeed() {
+        return baseSpeed;
     }
 
-    public int getSpeed() {
-        return speed;
+    public int getBaseDefense() {
+        return baseDefense;
     }
 
-    public int getDefense() {
-        return defense;
-    }
-
-    public int getDexterity() {
-        return dexterity;
+    public int getBaseDexterity() {
+        return baseDexterity;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
-    }
-
-    public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = currentHealth;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public void setDefense(int defense) {
-        this.defense = defense;
-    }
-
-    public void setDexterity(int dexterity) {
-        this.dexterity = dexterity;
-    }
-
-    public void damage(int damage) {
-        int damageDealt = damage - defense;
-        if (damageDealt <= 0) {
-            damageDealt = 1;
-        }
-        currentHealth -= damageDealt;
-        if (currentHealth < 0) {
-            //rip
-        }
-    }
-
-    public void heal(int healAmount) {
-        if (healAmount + currentHealth > maxHealth) {
-            currentHealth = maxHealth;
-        } else {
-            currentHealth += healAmount;
-        }
     }
 }
