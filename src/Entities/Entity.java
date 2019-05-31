@@ -2,7 +2,7 @@ package Entities;
 
 import java.awt.*;
 
-abstract class Entity {
+public abstract class Entity {
     private Image sprite;
     private int length;
     private int width;

@@ -57,6 +57,7 @@ public class Game extends JFrame {
 		map = new Location(breadSprite);
 		LocationHandler mapHan = new LocationHandler(map);
 		Thread t = new Thread(mapHan);
+		t.start();
 		HashMap<Stack, Double> temp = new HashMap<>();
 		Stack stackOne = new Stack(1, woodSword);
 		temp.put(stackOne, 0.4);

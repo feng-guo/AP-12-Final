@@ -34,6 +34,13 @@ public class EnemyHandler extends CharacterHandler {
 
     @Override
     public void run() {
-        move();
+        while (true) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                //lol
+            }
+            move();
+        }
     }
 }
