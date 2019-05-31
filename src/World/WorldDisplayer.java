@@ -1,9 +1,12 @@
 package World;
 
+import Entities.EnemyInstance;
+import Entities.*;
 import Entities.PlayerInstance;
 
 import javax.swing.JPanel;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class WorldDisplayer extends JPanel implements Runnable {
 
@@ -12,6 +15,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	Location map;
 	int[][] mapTile;
 	int size = 64;
+	ArrayList<Double> enemies;
 
 	public WorldDisplayer(PlayerInstance player, Location map) {
 		this.player = player;
@@ -41,6 +45,16 @@ public class WorldDisplayer extends JPanel implements Runnable {
 				//g.fillRect(r*size, c*size, size,size);
 				g.fillRect((r*size) + relative[0],(c*size) + relative[1],size,size);
 			}
+		}
+		enemies = map.getEnemyIDs();
+		g.setColor(Color.GREEN);
+		for (int i = 0; i < enemies.size(); i++) {
+			EnemyInstance enemy = map.getEnemy(enemies.get(i));
+			int x = enemy.getX();
+			int y = enemy.getY();
+			Entity e = enemy.getEntity();
+			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
+			//g.fillRect(x + relative[0] - (size/2),y + relative[1] - (size/2),size,size);
 		}
 		g.setColor(Color.RED);
 		g.fillRect(center[0] - (size / 2), center[1] - (size / 2), size, size);

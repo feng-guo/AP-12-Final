@@ -58,6 +58,7 @@ public class LocationHandler implements Runnable {
 
     public void addEnemy(EnemyHandler enemy, double id) {
         enemyIDs.add(id);
+        addToThread(enemy);
         enemyHandlerHashMap.put(id, enemy);
         location.addEnemy(enemy.getEnemyInstance(), id);
     }
@@ -172,6 +173,7 @@ public class LocationHandler implements Runnable {
 
     public void addToThread(EntityHandler e) {
         Thread t = new Thread(e);
+        t.start();
         thread.add(t);
     }
 }
