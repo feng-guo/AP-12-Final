@@ -1,0 +1,20 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"bar": "block/dispenser_front"
+	},
+	"elements": [
+		{
+			"from": [0, 13, 7],
+			"to": [16, 15, 9],
+			"faces": {
+				"north": {"uv": [13, 3, 16, 16], "rotation": 90, "texture": "#bar"},
+				"east": {"uv": [13, 3, 16, 16], "rotation": 90, "texture": "#bar"},
+				"south": {"uv": [13, 3, 16, 16], "rotation": 90, "texture": "#bar"},
+				"west": {"uv": [13, 3, 16, 16], "rotation": 90, "texture": "#bar"},
+				"up": {"uv": [13, 3, 16, 16], "rotation": 90, "texture": "#bar"},
+				"down": {"uv": [13, 3, 16, 16], "rotation": 90, "texture": "#bar"}
+			}
+		}
+	]
+}

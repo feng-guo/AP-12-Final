@@ -1,0 +1,14 @@
+Description
+You are a zombie that spawned in a zombie village. The plants have taken over the world, and have now started the plant uprising. 
+Your job is to collect resources, rebuild your village, and reclaim civilization.
+
+Features (sorted by priority)
+- free roam exploration/movement
+- save game
+- survival
+- inventory/combat (boss fights)
+- dungeon crawling/mining (randomly generated)
+- multiplayer (pvp/pve coop)
+- village building/management
+- farming
+- potion brewing
