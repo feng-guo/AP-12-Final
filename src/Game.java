@@ -7,9 +7,10 @@ import World.WorldDisplayer;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.HashMap;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 public class Game extends JFrame {
 	private GamePanel panel;
@@ -22,8 +23,15 @@ public class Game extends JFrame {
 	private int frameCount;
 	private JPanel currentPanel;
 
+
+	//START PANELS
+	private JPanel optionPanel;
+	private JPanel serverPanel;
+	private JPanel ipPanel;
+	private JPanel portPanel;
+
+
 	private Listener listener = new Listener();
-	GameMouseListener mouseListener = new GameMouseListener();
 
 	//*****TEMPORARY VARIABLES*****//
 	//Replace later
@@ -37,9 +45,83 @@ public class Game extends JFrame {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.addKeyListener(listener);
-		this.addMouseListener(mouseListener);
+
+		initializeStartPanels();
 
 		panel = new GamePanel();
+
+		//this.add(worldPanel);
+
+
+		this.setVisible(true);
+		this.requestFocusInWindow();
+	}
+
+	private void initializeStartPanels() {
+		optionPanel = new JPanel();
+		optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
+
+		serverPanel = new JPanel();
+		serverPanel.setLayout(new BoxLayout(serverPanel, BoxLayout.Y_AXIS));
+
+		ipPanel = new JPanel();
+		portPanel = new JPanel();
+
+		//Create JButtons
+		JButton singlePlayerButton = new JButton();
+		JButton multiplayerButton = new JButton(); //add later
+		JButton instructionButton = new JButton();
+		JButton quitButton = new JButton();
+		JButton backButton = new JButton();
+
+		singlePlayerButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Play.png")));
+		multiplayerButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("Bread.png")));
+		instructionButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Instructions.png")));
+		quitButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Quit.png")));
+		backButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Back.png")));
+
+		singlePlayerButton.addActionListener(actionEvent -> {
+			startNewSingleplayerGame();
+			removeAllPanels();
+			addPanel(worldPanel);
+			currentPanel = worldPanel;
+            repaint();
+        });
+
+		instructionButton.addActionListener(actionEvent -> {
+			//Code here
+		});
+		quitButton.addActionListener(actionEvent -> {
+			//Code here
+		});
+		backButton.addActionListener(actionEvent -> {
+			//Code here
+		});
+
+		ipPanel.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+		portPanel.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+
+		serverPanel.add(ipPanel);
+		serverPanel.add(Box.createVerticalStrut(10)); //Creates space between components
+		serverPanel.add(portPanel);
+		serverPanel.add(Box.createVerticalStrut(20));
+
+		//Add buttons to panels
+		singlePlayerButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		instructionButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		quitButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
+
+		optionPanel.add(singlePlayerButton);
+		optionPanel.add(Box.createVerticalStrut(10));
+		optionPanel.add(instructionButton);
+		optionPanel.add(Box.createVerticalStrut(10));
+		optionPanel.add(quitButton);
+
+		add(optionPanel);
+
+	}
+
+	private void startNewSingleplayerGame() {
 		//Might want to remove this later
 		this.inventory = new Inventory(36);
 		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("WoodenSword.png");
@@ -96,15 +178,16 @@ public class Game extends JFrame {
 		inventory.add(stackFive);
 		inventory.add(stackSix);
 		inventoryMenu = new InventoryMenu(inventory);
+	}
 
+	private void removeAllPanels() {
+		remove(optionPanel);
+		removeAll();
+	}
 
-
-		this.add(worldPanel);
-		currentPanel = worldPanel;
-//		this.add(inventoryMenu);
-
-		this.setVisible(true);
-		this.requestFocusInWindow();
+	private void addPanel(JPanel panel) {
+		add(panel);
+		repaint();
 	}
 
 	private class GamePanel extends JPanel {
@@ -178,13 +261,6 @@ public class Game extends JFrame {
 		private int highlightX;
 		private int highlightY;
 
-		private int pressedX;
-		private int pressedY;
-		private int releasedX;
-		private int releasedY;
-
-		private MouseEvent pressedEvent;
-
 		InventoryMenu(Inventory inventory) {
 			this.inventory = inventory;
 			this.addMouseListener(mouseListener);
@@ -256,9 +332,15 @@ public class Game extends JFrame {
 			repaint();
 		}
 
+		public void resetHandStack(){
+			if (handStack != null) {
+				inventory.add(handStack);
+				handStack = null;
+			}
+		}
+
 		private class PanelMouseListener implements MouseListener {
 			public void mousePressed(MouseEvent e) {
-//				System.out.println("Mouse clicked: " + e.getX() + " " + e.getY());
 				x = e.getX();
 				y = e.getY();
 				int checkX = x-320;
@@ -272,7 +354,7 @@ public class Game extends JFrame {
 				} else {
 					return;
 				}
-				if (checkX<0 || checkY<0) {
+				if (checkX<0 || checkX > 648 || checkY<0) {
 					return;
 				}
 				if (checkX%72<64) {
@@ -417,6 +499,9 @@ public class Game extends JFrame {
 	}
 
 	private class Listener implements KeyListener {
+
+		//keyPressed has a buffer, please add something to keyreleased to fix this
+
 		public void keyPressed(KeyEvent e) {
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {  //W
 				playerInstance.moveY(-8);
@@ -433,6 +518,8 @@ public class Game extends JFrame {
 		}
 
 		public void keyTyped(KeyEvent e) {}
+
+		//Have a boolean list
 		public void keyReleased(KeyEvent e) {
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("E")) {
 				if (currentPanel == worldPanel) {
@@ -440,6 +527,7 @@ public class Game extends JFrame {
 					add(inventoryMenu);
 					currentPanel = inventoryMenu;
 				} else if (currentPanel == inventoryMenu) {
+					inventoryMenu.resetHandStack();
 					remove(inventoryMenu);
 					add(worldPanel);
 					currentPanel = worldPanel;
@@ -449,25 +537,4 @@ public class Game extends JFrame {
 		}
 	}
 
-	private class GameMouseListener implements MouseListener {
-		public void mouseClicked(MouseEvent e) {
-
-		}
-
-		public void mouseEntered(MouseEvent e) {
-
-		}
-
-		public void mouseExited(MouseEvent e) {
-
-		}
-
-		public void mousePressed(MouseEvent e) {
-
-		}
-
-		public void mouseReleased(MouseEvent e) {
-
-		}
-	}
 }
