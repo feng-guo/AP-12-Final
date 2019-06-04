@@ -6,6 +6,8 @@ public abstract class CharacterInstance extends EntityInstance {
     private int speed;
     private int defense;
     private int dexterity;
+    private int direction;
+    private boolean moving;
 
     public CharacterInstance(int x, int y, Character character) {
         super(x,y,character);
@@ -14,6 +16,7 @@ public abstract class CharacterInstance extends EntityInstance {
         this.speed = character.getBaseSpeed();
         this.defense = character.getBaseDefense();
         this.dexterity = character.getBaseDexterity();
+        this.moving = false;
     }
 
     public int getMaxHealth() {
@@ -56,6 +59,18 @@ public abstract class CharacterInstance extends EntityInstance {
         this.dexterity = dexterity;
     }
 
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
     public void damage(int damage) {
         int damageDealt = damage - defense;
         if (damageDealt <= 0) {
@@ -72,6 +87,15 @@ public abstract class CharacterInstance extends EntityInstance {
             currentHealth = maxHealth;
         } else {
             currentHealth += healAmount;
+        }
+    }
+
+    public void move() {
+        if (this.moving) {
+            int x = (int) (Math.cos(direction));
+            int y = 1 - x;
+            super.moveX(this.speed * x);
+            super.moveY(this.speed * y);
         }
     }
 }

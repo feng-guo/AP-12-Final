@@ -32,6 +32,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Dimension panelSize = this.getSize();
+		player.move();
 		int[] center = {panelSize.width / 2, panelSize.height / 2};
 		int[] relative = {center[0] - player.getX(), center[1] - player.getY()};
 		for (int r = 0; r < mapTile.length; r++) {

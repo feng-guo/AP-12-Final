@@ -419,21 +419,37 @@ public class Game extends JFrame {
 	private class Listener implements KeyListener {
 		public void keyPressed(KeyEvent e) {
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {  //W
-				playerInstance.moveY(-8);
+				playerInstance.setMoving(true);
+				playerInstance.setDirection(90);
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")) {  //D
-				playerInstance.moveX(8);
+				playerInstance.setMoving(true);
+				playerInstance.setDirection(0);
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")) {  //S
-				playerInstance.moveY(8);
+				playerInstance.setMoving(true);
+				playerInstance.setDirection(270);
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")) {  //A
-				playerInstance.moveX(-8);
+				playerInstance.setMoving(true);
+				playerInstance.setDirection(180);
 			}
 		}
 
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {  //W
+				playerInstance.setMoving(false);
+			}
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")) {  //D
+				playerInstance.setMoving(false);
+			}
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")) {  //S
+				playerInstance.setMoving(false);
+			}
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")) {  //A
+				playerInstance.setMoving(false);
+			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("E")) {
 				if (currentPanel == worldPanel) {
 					remove(worldPanel);
