@@ -38,6 +38,7 @@ public class Game extends JFrame {
 
 	Player player;
 	PlayerInstance playerInstance;
+	PlayerHandler playerHandler;
 	Location map;
 
 	Game() {
@@ -46,11 +47,14 @@ public class Game extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.addKeyListener(listener);
 
-		initializeStartPanels();
+		initializeStartPanels(); //FIX THIS
+		//addOptionPanel here
 
 		panel = new GamePanel();
 
-		//this.add(worldPanel);
+		startNewSingleplayerGame();
+		this.add(worldPanel);
+		currentPanel = worldPanel;
 
 
 		this.setVisible(true);
@@ -116,12 +120,13 @@ public class Game extends JFrame {
 		optionPanel.add(instructionButton);
 		optionPanel.add(Box.createVerticalStrut(10));
 		optionPanel.add(quitButton);
-
-		add(optionPanel);
-
 	}
 
 	private void startNewSingleplayerGame() {
+		//Fix database
+//		ItemsList.initialize();
+//		EnemiesList.initialize();
+
 		//Might want to remove this later
 		this.inventory = new Inventory(36);
 		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("WoodenSword.png");
@@ -136,8 +141,11 @@ public class Game extends JFrame {
 		//********ACTUALLY CHANGE THIS LATER**********//
 		player = new Player(breadSprite,10,10,10,10,"1","test");
 		playerInstance = new PlayerInstance(0,0,player);
+		playerHandler = new PlayerHandler(playerInstance, map);
 		map = new Location(breadSprite);
 		LocationHandler mapHan = new LocationHandler(map);
+		Thread p = new Thread(playerHandler);
+		p.start();
 		Thread t = new Thread(mapHan);
 		t.start();
 		HashMap<Stack, Double> temp = new HashMap<>();
@@ -178,6 +186,8 @@ public class Game extends JFrame {
 		inventory.add(stackFive);
 		inventory.add(stackSix);
 		inventoryMenu = new InventoryMenu(inventory);
+
+		listener = new Listener();
 	}
 
 	private void removeAllPanels() {
@@ -504,16 +514,16 @@ public class Game extends JFrame {
 
 		public void keyPressed(KeyEvent e) {
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {  //W
-				playerInstance.moveY(-8);
+				playerHandler.keyPressed("W");
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")) {  //D
-				playerInstance.moveX(8);
+				playerHandler.keyPressed("D");
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")) {  //S
-				playerInstance.moveY(8);
+				playerHandler.keyPressed("S");
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")) {  //A
-				playerInstance.moveX(-8);
+				playerHandler.keyPressed("A");
 			}
 		}
 
@@ -533,6 +543,18 @@ public class Game extends JFrame {
 					currentPanel = worldPanel;
 				}
 				repaint();
+			}
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {  //W
+				playerHandler.keyReleased("W");
+			}
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")) {  //D
+				playerHandler.keyReleased("D");
+			}
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")) {  //S
+				playerHandler.keyReleased("S");
+			}
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")) {  //A
+				playerHandler.keyReleased("A");
 			}
 		}
 	}
