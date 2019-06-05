@@ -60,11 +60,11 @@ public class Game extends JFrame {
 
 		panel = new GamePanel();
 
-		startNewSingleplayerGame();
+		/*startNewSingleplayerGame();
 		this.add(worldPanel);
 		currentPanel = worldPanel;
 		this.setVisible(true);
-		this.requestFocusInWindow();
+		this.requestFocusInWindow();*/
 	}
 
 	private void initializeStartPanels() {
@@ -96,7 +96,6 @@ public class Game extends JFrame {
 			this.repaint();
 			//addPanel(worldPanel);
 			startNewSingleplayerGame();
-			this.addKeyListener(listener);
 			//this.add(worldPanel);
 			//currentPanel = worldPanel;
 			//repaint();
@@ -130,7 +129,8 @@ public class Game extends JFrame {
 		optionPanel.add(instructionButton);
 		optionPanel.add(Box.createVerticalStrut(10));
 		optionPanel.add(quitButton);
-		add(optionPanel);
+		this.add(optionPanel);
+		this.revalidate();
 	}
 
 	private void startNewSingleplayerGame() {
@@ -221,6 +221,9 @@ public class Game extends JFrame {
 		(new Thread(worldPanel)).start();
 		currentPanel = worldPanel;
 		listener = new Listener();
+		this.addKeyListener(listener);
+		this.setFocusable(true);
+		this.requestFocusInWindow();
 	}
 
 	private void initializeAssets() {
