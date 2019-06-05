@@ -203,11 +203,11 @@ public class Game extends JFrame {
 		Stack stackFour = new Stack(23, stick);
 		Stack stackFive = new Stack(24, stick);
 		Stack stackSix = new Stack(29, stick);
-		Stack[] moreStack = new Stack[29];
-		for (int i=0; i<29;i++) {
-			moreStack[i] = new Stack(1, woodSword);
-			inventory.add(moreStack[i]);
-		}
+//		Stack[] moreStack = new Stack[29];
+//		for (int i=0; i<29;i++) {
+//			moreStack[i] = new Stack(1, woodSword);
+//			inventory.add(moreStack[i]);
+//		}
 		inventory.add(stackOne);
 		inventory.add(stackTwo);
 		inventory.add(stackThree);
@@ -370,11 +370,14 @@ public class Game extends JFrame {
 			for (int i = 0; i < 3; i++) {
 				for (int j=0; j<9; j++) {
 					try {
-						if (inventory.get(i*9+j).getItem() != null) {
+						if (inventory.get(i*9+j) != null) {
 							g.drawImage(inventory.get(i * 9 + j).getItem().getSprite(), 323 + 72 * j, 367 + 72 * i, 58, 58, null);
 							int itemCount = inventory.get(i * 9 + j).getStackAmount();
 							if (tempInventory[i*9+j] != null) {
 								itemCount += tempInventory[i*9+j].getStackAmount();
+								g.setColor(Color.YELLOW);
+								g.drawRect(320+72*j, 364+72*i,63,63);
+								g.setColor(Color.BLACK);
 								if (tempInventorySlots > 1) {
 									g.setColor(Color.YELLOW);
 								}
@@ -385,14 +388,17 @@ public class Game extends JFrame {
 							}
 						} else if (tempInventory[i*9+j] != null) {
 							g.drawImage(tempInventory[i*9+j].getItem().getSprite(), 323 + 72 * j, 367 + 72 * i, 58, 58, null);
-								int itemCount = tempInventory[i*9+j].getStackAmount();
-								if (itemCount > 1) {
-									if (tempInventorySlots > 1) {
-										g.setColor(Color.YELLOW);
-									}
-									g.drawString(Integer.toString(itemCount), 372 + 72 * j, 415 + 72 * i);
-									g.setColor(Color.BLACK);
+							int itemCount = tempInventory[i*9+j].getStackAmount();
+							g.setColor(Color.YELLOW);
+							g.drawRect(320+72*j, 364+72*i,63,63);
+							g.setColor(Color.BLACK);
+							if (itemCount > 1) {
+								if (tempInventorySlots > 1) {
+									g.setColor(Color.YELLOW);
 								}
+								g.drawString(Integer.toString(itemCount), 372 + 72 * j, 415 + 72 * i);
+								g.setColor(Color.BLACK);
+							}
 						}
 					} catch (NullPointerException e) {
 						//is empty
@@ -406,6 +412,9 @@ public class Game extends JFrame {
 						int itemCount = inventory.get(27+i).getStackAmount();
 						if (tempInventory[27+i] != null) {
 							itemCount += tempInventory[27+i].getStackAmount();
+							g.setColor(Color.YELLOW);
+							g.drawRect(320+72*i,596,63,63);
+							g.setColor(Color.BLACK);
 							if (tempInventorySlots > 1) {
 								g.setColor(Color.YELLOW);
 							}
@@ -1052,7 +1061,7 @@ public class Game extends JFrame {
 		}
 
 		private void updateTempInventory(int index) {
-			if (tempInventory[index] == null) {
+			if (tempInventory[index] == null && tempInventorySlots < totalHandStackItems) {
 				int amountPerStack = 0;
 				tempInventorySlots++;
 				if (inventory.get(index) != null) {
