@@ -310,7 +310,7 @@ public class Game extends JFrame {
 		private int mouseY;
 		private int highlightX;
 		private int highlightY;
-		private int topItemHighlight;
+		private int topItemHighlight = -1;
 
 		private int mouseButton = -1;
 		private int totalHandStackItems;
@@ -362,7 +362,9 @@ public class Game extends JFrame {
 							int itemCount = inventory.get(i * 9 + j).getStackAmount();
 							if (tempInventory[i*9+j] != null) {
 								itemCount += tempInventory[i*9+j].getStackAmount();
-								g.setColor(Color.YELLOW);
+								if (tempInventorySlots > 1) {
+									g.setColor(Color.YELLOW);
+								}
 							}
 							if (itemCount > 1) {
 								g.drawString(Integer.toString(itemCount), 372 + 72 * j, 415 + 72 * i);
@@ -372,7 +374,9 @@ public class Game extends JFrame {
 							g.drawImage(tempInventory[i*9+j].getItem().getSprite(), 323 + 72 * j, 367 + 72 * i, 58, 58, null);
 								int itemCount = tempInventory[i*9+j].getStackAmount();
 								if (itemCount > 1) {
-									g.setColor(Color.YELLOW);
+									if (tempInventorySlots > 1) {
+										g.setColor(Color.YELLOW);
+									}
 									g.drawString(Integer.toString(itemCount), 372 + 72 * j, 415 + 72 * i);
 									g.setColor(Color.BLACK);
 								}
@@ -389,7 +393,9 @@ public class Game extends JFrame {
 						int itemCount = inventory.get(27+i).getStackAmount();
 						if (tempInventory[27+i] != null) {
 							itemCount += tempInventory[27+i].getStackAmount();
-							g.setColor(Color.YELLOW);
+							if (tempInventorySlots > 1) {
+								g.setColor(Color.YELLOW);
+							}
 						}
 						if (itemCount > 1) {
 							g.drawString(Integer.toString(itemCount), 372 + 72 * i, 647);
@@ -399,7 +405,9 @@ public class Game extends JFrame {
 						g.drawImage(tempInventory[27+i].getItem().getSprite(), 323 + 72 * i, 599, 58, 58, null);
 						int itemCount = tempInventory[27+i].getStackAmount();
 						if (itemCount > 1) {
-							g.setColor(Color.YELLOW);
+							if (tempInventorySlots > 1) {
+								g.setColor(Color.YELLOW);
+							}
 							g.drawString(Integer.toString(itemCount), 372 + 72 * i, 647);
 							g.setColor(Color.BLACK);
 						}
@@ -781,32 +789,32 @@ public class Game extends JFrame {
 							if (e.getButton() == e.BUTTON1) {
 								mouseButton = 0;
 								totalHandStackItems = handStack.getStackAmount();
-								tempInventorySlots = 1;
 								tempItem = handStack.getItem();
 								updateTempInventory(index);
 							} else if (e.getButton() == e.BUTTON3) {
 								mouseButton = 1;
 								totalHandStackItems = handStack.getStackAmount();
-								tempInventorySlots = 1;
 								tempItem = handStack.getItem();
 								updateTempInventory(index);
 							}
 						} else {
-							if (handStack.getItem().getName().equals(inventory.get(index).getItem().getName()) && handStack.getItem().getMaxStack() > 1) {
+							if (handStack.getItem() == inventory.get(index).getItem() && handStack.getItem().getMaxStack() > 1) {
 								if (e.getButton() == e.BUTTON1) {
-									int remaining = inventory.get(index).add(handStack.getStackAmount());
-									if (remaining > 0) {
-										handStack.setStackAmount(remaining);
-									} else {
-										handStack = null;
-									}
+//									int remaining = inventory.get(index).add(handStack.getStackAmount());
+//									if (remaining > 0) {
+//										handStack.setStackAmount(remaining);
+//									} else {
+//										handStack = null;
+//									}
+									mouseButton = 0;
+									totalHandStackItems = handStack.getStackAmount();
+									tempItem = handStack.getItem();
+									updateTempInventory(index);
 								} else if (e.getButton() == e.BUTTON3) {
-									inventory.get(index).add(1);
-									if (handStack.getStackAmount() > 1) {
-										handStack.remove(1);
-									} else {
-										handStack = null;
-									}
+									mouseButton = 1;
+									totalHandStackItems = handStack.getStackAmount();
+									tempItem = handStack.getItem();
+									updateTempInventory(index);
 								}
 							} else {
 								//This is fine to keep for now
@@ -1024,50 +1032,92 @@ public class Game extends JFrame {
 				}
 				int c = checkX / 72;
 				if (inventory.get(r*9+c) == null || inventory.get(r*9+c).getItem() == tempItem) {
+
 					updateTempInventory(r*9+c);
 				}
 			}
 		}
 
 		private void updateTempInventory(int index) {
-			int amountPerStack = 0;
-			if (mouseButton == 0) {
-				amountPerStack = totalHandStackItems / tempInventorySlots;
-			} else if (mouseButton == 1) {
-				amountPerStack = 1;
-			}
-			int itemAmountCounter = 0;
-			for (int i = 0; i < tempInventory.length; i++) {
-				if (tempInventory[i] != null) {
-					if (inventory.get(i) != null) {
-						if (inventory.get(i).getItem() == tempItem) {
-							if (inventory.get(i).getStackAmount() + amountPerStack > inventory.get(i).getItem().getMaxStack()) {
-								tempInventory[i] = new Stack(inventory.get(i).getItem().getMaxStack() - inventory.get(i).getStackAmount(), tempInventory[i].getItem());
-								itemAmountCounter += tempInventory[i].getStackAmount();
-							}
-						}
-					} else {
-						tempInventory[i] = new Stack(amountPerStack, tempInventory[i].getItem());
-						itemAmountCounter += tempInventory[i].getStackAmount();
+			if (tempInventory[index] == null) {
+				int amountPerStack = 0;
+				tempInventorySlots++;
+				if (inventory.get(index) != null) {
+					if (inventory.get(index).getStackAmount() == tempItem.getMaxStack()) {
+						tempInventorySlots--;
 					}
 				}
-			}
-			tempInventory[index] = new Stack(amountPerStack, tempItem);
-			itemAmountCounter += tempInventory[index].getStackAmount();
-			if (itemAmountCounter < totalHandStackItems) {
-				handStack = new Stack(totalHandStackItems - itemAmountCounter, tempItem);
-			} else {
-				handStack = null;
+				if (mouseButton == 0) {
+					amountPerStack = totalHandStackItems / tempInventorySlots;
+				} else if (mouseButton == 1) {
+					amountPerStack = 1;
+				}
+				int itemAmountCounter = 0;
+				if (tempInventorySlots > 1) {
+					for (int i = 0; i < tempInventory.length; i++) {
+						if (tempInventory[i] != null) {
+							if (inventory.get(i) != null) {
+								if (inventory.get(i).getItem().getName().equals(tempItem.getName())) {
+									if (inventory.get(i).getStackAmount() + amountPerStack > inventory.get(i).getItem().getMaxStack()) {
+										if (inventory.get(i).getStackAmount() != inventory.get(i).getItem().getMaxStack()) {
+											int newAmount = tempItem.getMaxStack() - inventory.get(i).getStackAmount();
+											tempInventory[i] = new Stack(newAmount, tempItem);
+											itemAmountCounter += tempInventory[i].getStackAmount();
+										}
+									} else {
+										tempInventory[i] = new Stack(amountPerStack, tempItem);
+										itemAmountCounter += amountPerStack;
+									}
+								}
+							} else {
+								tempInventory[i] = new Stack(amountPerStack, tempInventory[i].getItem());
+								itemAmountCounter += amountPerStack;
+							}
+						}
+					}
+				}
+				if (inventory.get(index) != null) {
+					if (inventory.get(index).getItem().getName().equals(tempItem.getName())) {
+						if (inventory.get(index).getStackAmount() + amountPerStack >= inventory.get(index).getItem().getMaxStack()) {
+							if (inventory.get(index).getStackAmount() != tempItem.getMaxStack()) {
+								int newAmount = tempItem.getMaxStack() - inventory.get(index).getStackAmount();
+								tempInventory[index] = new Stack(newAmount, tempItem);
+								itemAmountCounter += newAmount;
+							}
+						} else {
+							tempInventory[index] = new Stack(amountPerStack, tempItem);
+							itemAmountCounter += amountPerStack;
+						}
+					}
+				} else {
+					tempInventory[index] = new Stack(amountPerStack, tempItem);
+					itemAmountCounter += amountPerStack;
+				}
+				if (itemAmountCounter < totalHandStackItems) {
+					handStack = new Stack(totalHandStackItems - itemAmountCounter, tempItem);
+				} else {
+					handStack = null;
+				}
 			}
 		}
 
 		private void transferTempInventory() {
 			for (int i=0; i<tempInventory.length; i++) {
 				if (tempInventory[i] != null) {
-					inventory.add(tempInventory[i], i);
+					if (inventory.get(i) != null) {
+						if (inventory.get(i).getItem().getName() == tempItem.getName()) {
+							inventory.get(i).add(tempInventory[i].getStackAmount());
+						}
+					} else {
+						inventory.add(tempInventory[i], i);
+					}
 				}
 			}
 			tempInventory = new Stack[36];
+			totalHandStackItems = 0;
+			tempInventorySlots = 0;
+			tempItem = null;
+			mouseButton = -1;
 		}
 
 		private void resetInteractions() {
@@ -1101,20 +1151,10 @@ public class Game extends JFrame {
 			}
 
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("Mouse pressed: " + e.getX() + " " + e.getY());
-//				pressedX = e.getX();
-//				pressedY = e.getY();
-//				pressedEvent = e;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (e.getButton()-1 == mouseButton) {
-					mouseButton = -1;
-					tempInventorySlots = 0;
-					tempItem = null;
-					totalHandStackItems = 0;
-					transferTempInventory();
-				}
+				transferTempInventory();
 			}
 		}
 
