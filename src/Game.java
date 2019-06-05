@@ -290,6 +290,7 @@ public class Game extends JFrame {
 	private class InventoryMenu extends Menu {
 		private BufferedImage inventoryGUI;
 		private Inventory inventory;
+		private Stack[] tempInventory;
 		private PanelMouseListener mouseListener = new PanelMouseListener();
 		private PanelMouseMotionListener motionListener = new PanelMouseMotionListener();
 		private Stack handStack;
@@ -300,12 +301,16 @@ public class Game extends JFrame {
 		private int mouseY;
 		private int highlightX;
 		private int highlightY;
-
 		private int topItemHighlight;
+
+		private int mouseButton = -1;
+		private int totalHandStackItems;
+		private int tempInventorySlots;
+		private Item tempItem;
 
 		InventoryMenu(Inventory inventory) {
 			this.inventory = inventory;
-			//Image temp = Toolkit.getDefaultToolkit().createImage("InventoryGUI_2.png");
+			this.tempInventory = new Stack[36];
 			File f = new File("InventoryGUI_2.png");
 			try {
 				this.inventoryGUI = ImageIO.read(f);
@@ -343,9 +348,25 @@ public class Game extends JFrame {
 			for (int i = 0; i < 3; i++) {
 				for (int j=0; j<9; j++) {
 					try {
-						g.drawImage(inventory.get(i * 9 + j).getItem().getSprite(), 323 + 72 * j, 367 + 72 * i, 58, 58, null);
-						if (inventory.get(i*9+j).getStackAmount() > 1) {
-							g.drawString(Integer.toString(inventory.get(i * 9 + j).getStackAmount()), 372 + 72 * j, 415 + 72 * i);
+						if (inventory.get(i*9+j).getItem() != null) {
+							g.drawImage(inventory.get(i * 9 + j).getItem().getSprite(), 323 + 72 * j, 367 + 72 * i, 58, 58, null);
+							int itemCount = inventory.get(i * 9 + j).getStackAmount();
+							if (tempInventory[i*9+j] != null) {
+								itemCount += tempInventory[i*9+j].getStackAmount();
+								g.setColor(Color.YELLOW);
+							}
+							if (itemCount > 1) {
+								g.drawString(Integer.toString(itemCount), 372 + 72 * j, 415 + 72 * i);
+								g.setColor(Color.BLACK);
+							}
+						} else if (tempInventory[i*9+j] != null) {
+							g.drawImage(tempInventory[i*9+j].getItem().getSprite(), 323 + 72 * j, 367 + 72 * i, 58, 58, null);
+								int itemCount = tempInventory[i*9+j].getStackAmount();
+								if (itemCount > 1) {
+									g.setColor(Color.YELLOW);
+									g.drawString(Integer.toString(itemCount), 372 + 72 * j, 415 + 72 * i);
+									g.setColor(Color.BLACK);
+								}
 						}
 					} catch (NullPointerException e) {
 						//is empty
@@ -354,9 +375,25 @@ public class Game extends JFrame {
 			}
 			for (int i =0; i<9; i++) {
 				try {
-					g.drawImage(inventory.get(27 + i).getItem().getSprite(), 323 + 72 * i, 599, 58, 58, null);
-					if (inventory.get(27 + i).getStackAmount() > 1) {
-						g.drawString(Integer.toString(inventory.get(27 + i).getStackAmount()), 372 + 72 * i, 647);
+					if (inventory.get(27+i) != null) {
+						g.drawImage(inventory.get(27 + i).getItem().getSprite(), 323 + 72 * i, 599, 58, 58, null);
+						int itemCount = inventory.get(27+i).getStackAmount();
+						if (tempInventory[27+i] != null) {
+							itemCount += tempInventory[27+i].getStackAmount();
+							g.setColor(Color.YELLOW);
+						}
+						if (itemCount > 1) {
+							g.drawString(Integer.toString(itemCount), 372 + 72 * i, 647);
+							g.setColor(Color.BLACK);
+						}
+					} else if (tempInventory[27+i] != null) {
+						g.drawImage(tempInventory[27+i].getItem().getSprite(), 323 + 72 * i, 599, 58, 58, null);
+						int itemCount = tempInventory[27+i].getStackAmount();
+						if (itemCount > 1) {
+							g.setColor(Color.YELLOW);
+							g.drawString(Integer.toString(itemCount), 372 + 72 * i, 647);
+							g.setColor(Color.BLACK);
+						}
 					}
 				} catch (NullPointerException e) {
 					//Nothing here
@@ -733,15 +770,17 @@ public class Game extends JFrame {
 					} else {
 						if (inventory.get(index) == null) {
 							if (e.getButton() == e.BUTTON1) {
-								inventory.add(handStack, index);
-								handStack = null;
+								mouseButton = 0;
+								totalHandStackItems = handStack.getStackAmount();
+								tempInventorySlots = 1;
+								tempItem = handStack.getItem();
+								updateTempInventory(index);
 							} else if (e.getButton() == e.BUTTON3) {
-								inventory.add(new Stack(1, handStack.getItem()), index);
-								if (handStack.getStackAmount() > 1) {
-									handStack.remove(1);
-								} else {
-									handStack = null;
-								}
+								mouseButton = 1;
+								totalHandStackItems = handStack.getStackAmount();
+								tempInventorySlots = 1;
+								tempItem = handStack.getItem();
+								updateTempInventory(index);
 							}
 						} else {
 							if (handStack.getItem().getName().equals(inventory.get(index).getItem().getName()) && handStack.getItem().getMaxStack() > 1) {
@@ -761,6 +800,7 @@ public class Game extends JFrame {
 									}
 								}
 							} else {
+								//This is fine to keep for now
 								Stack temp = inventory.remove(index);
 								inventory.add(handStack, index);
 								handStack = temp;
@@ -948,12 +988,96 @@ public class Game extends JFrame {
 			}
 		}
 
+		private void changeTempInventory() {
+			int checkX = mouseX-320;
+			int checkY;
+			boolean fourthRow = false;
+			if (mouseY<596) {
+				if (mouseY > 572) {
+					return;
+				}
+				checkY = mouseY - 364;
+			} else if (mouseY < 660) {
+				checkY = mouseY - 596;
+				fourthRow = true;
+			} else {
+				return;
+			}
+			if (checkX<0 || checkY<0) {
+				return;
+			}
+			if (checkX%72<64 && checkX<648 && checkY % 72 < 64) {
+				int r;
+				if (fourthRow) {
+					r=3;
+				} else {
+					r = checkY / 72;
+				}
+				int c = checkX / 72;
+				if (inventory.get(r*9+c) == null || inventory.get(r*9+c).getItem() == tempItem) {
+					updateTempInventory(r*9+c);
+				}
+			}
+		}
+
+		private void updateTempInventory(int index) {
+			int amountPerStack = 0;
+			if (mouseButton == 0) {
+				amountPerStack = totalHandStackItems / tempInventorySlots;
+			} else if (mouseButton == 1) {
+				amountPerStack = 1;
+			}
+			int itemAmountCounter = 0;
+			for (int i = 0; i < tempInventory.length; i++) {
+				if (tempInventory[i] != null) {
+					if (inventory.get(i) != null) {
+						if (inventory.get(i).getItem() == tempItem) {
+							if (inventory.get(i).getStackAmount() + amountPerStack > inventory.get(i).getItem().getMaxStack()) {
+								tempInventory[i] = new Stack(inventory.get(i).getItem().getMaxStack() - inventory.get(i).getStackAmount(), tempInventory[i].getItem());
+								itemAmountCounter += tempInventory[i].getStackAmount();
+							}
+						}
+					} else {
+						tempInventory[i] = new Stack(amountPerStack, tempInventory[i].getItem());
+						itemAmountCounter += tempInventory[i].getStackAmount();
+					}
+				}
+			}
+			tempInventory[index] = new Stack(amountPerStack, tempItem);
+			itemAmountCounter += tempInventory[index].getStackAmount();
+			if (itemAmountCounter < totalHandStackItems) {
+				handStack = new Stack(totalHandStackItems - itemAmountCounter, tempItem);
+			} else {
+				handStack = null;
+			}
+		}
+
+		private void transferTempInventory() {
+			for (int i=0; i<tempInventory.length; i++) {
+				if (tempInventory[i] != null) {
+					inventory.add(tempInventory[i], i);
+				}
+			}
+			tempInventory = new Stack[36];
+		}
+
+		private void resetInteractions() {
+			resetHandStack();
+			transferTempInventory();
+			mouseButton = -1;
+			tempItem = null;
+			tempInventorySlots = 0;
+			totalHandStackItems = 0;
+		}
+
 		private class PanelMouseListener implements MouseListener {
 			public void mousePressed(MouseEvent e) {
 				x = e.getX();
 				y = e.getY();
 				if (y>360) {
-					determineItemClick(e);
+					if (mouseButton == -1) {
+						determineItemClick(e);
+					}
 				} else if (e.getButton() == e.BUTTON1) {
 					determineArmourClick(e);
 				}
@@ -975,20 +1099,26 @@ public class Game extends JFrame {
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				/*System.out.println("Mouse released: " + e.getX() + " " + e.getY());
-				releasedX = e.getX();
-				releasedY = e.getY();
-				int deltaX = Math.abs(releasedX-pressedX);
-				int deltaY = Math.abs(releasedY-pressedY);
-				if (deltaX<100 && deltaY<100 && deltaX!=0 && deltaY!=0) {
-					this.mouseClicked(pressedEvent);
-				}*/
+				if (e.getButton()-1 == mouseButton) {
+					mouseButton = -1;
+					tempInventorySlots = 0;
+					tempItem = null;
+					totalHandStackItems = 0;
+					transferTempInventory();
+				}
 			}
 		}
 
 		private class PanelMouseMotionListener implements MouseMotionListener {
 			public void mouseDragged(MouseEvent e) {
-
+				mouseX = e.getX();
+				mouseY = e.getY();
+				topItemHighlight = -1;
+				highlightY = 0;
+				highlightX = 0;
+				if (mouseButton != -1) {
+					changeTempInventory();
+				}
 			}
 
 			public void mouseMoved(MouseEvent e) {
@@ -1001,7 +1131,9 @@ public class Game extends JFrame {
 					determineTopItemHighlight();
 				} else {
 					topItemHighlight = -1;
-					determineItemHighlight();
+					if (mouseButton == -1) {
+						determineItemHighlight();
+					}
 				}
 			}
 		}
@@ -1038,7 +1170,7 @@ public class Game extends JFrame {
 					add(inventoryMenu);
 					currentPanel = inventoryMenu;
 				} else if (currentPanel == inventoryMenu) {
-					inventoryMenu.resetHandStack();
+					inventoryMenu.resetInteractions();
 					remove(inventoryMenu);
 					add(worldPanel);
 					currentPanel = worldPanel;
