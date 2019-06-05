@@ -3,10 +3,22 @@ package Items;
 
 public class Inventory {
     private Stack[] inventory;
+    private Armour helmet;
+    private Armour armour;
+    private Armour boots;
+    private Armour[] arms;
+    private Armour[] legs;
+    private Armour[] rings;
     private int maxSlots;
 
     public Inventory(int maxSlots) {
         this.inventory = new Stack[36];
+        helmet = null;
+        armour = null;
+        boots = null;
+        arms = new Armour[2];
+        legs = new Armour[2];
+        rings = new Armour[3];
         this.maxSlots = maxSlots;
     }
 
@@ -165,4 +177,83 @@ public class Inventory {
         }
     }
 
+    public Armour getHelmet() {
+        return helmet;
+    }
+
+    public Armour getArmour() {
+        return armour;
+    }
+
+    public Armour getBoots() {
+        return boots;
+    }
+
+    public Armour[] getArms() {
+        return arms;
+    }
+
+    public Armour[] getLegs() {
+        return legs;
+    }
+
+    public Armour[] getRings() {
+        return rings;
+    }
+
+    public void setHelmet(Armour helmet) {
+        if (helmet == null || helmet.getLocation().equals("Helmet")) {
+            this.helmet = helmet;
+        }
+    }
+
+    public void setArmour(Armour armour) {
+        if (armour == null || armour.getLocation().equals("Armour")) {
+            this.armour = armour;
+        }
+    }
+
+    public void setBoots(Armour boots) {
+        if (boots == null || boots.getLocation().equals("Boots")) {
+            this.boots = boots;
+        }
+    }
+
+    public void setLeftArm(Armour arm) {
+        if (arm == null || arm.getLocation().equals("Arm")) {
+            this.arms[0] = arm;
+        }
+    }
+    public void setRightArm(Armour arm) {
+        if (arm == null || arm.getLocation().equals("Arm")) {
+            this.arms[1] = arm;
+        }
+    }
+
+    public void setLeftLeg(Armour leg) {
+        if (leg == null || leg.getLocation().equals("Leg")) {
+            this.legs[0] = leg;
+        }
+    }
+    public void setRightLeg(Armour leg) {
+        if (leg == null || leg.getLocation().equals("Leg")) {
+            this.legs[1] = leg;
+        }
+    }
+
+    public void setRing1(Armour ring) {
+        if (ring == null || ring.getLocation().equals("Ring")) {
+            this.rings[0] = ring;
+        }
+    }
+    public void setRing2(Armour ring) {
+        if (ring == null || ring.getLocation().equals("Ring")) {
+            this.rings[1] = ring;
+        }
+    }
+    public void setRing3(Armour ring) {
+        if (ring == null || ring.getLocation().equals("Ring")) {
+            this.rings[2] = ring;
+        }
+    }
 }
