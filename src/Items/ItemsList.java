@@ -46,8 +46,13 @@ public class ItemsList {
                 }
             } else if ("Armour".equals(itemType)) {
                 while (set.next()) {
-                    Item armour = new Armour(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString("spriteUrl")), set.getInt("durability"), set.getInt("armourPoints"), set.getString("location"));
-                    itemHashMap.put(set.getString("name"), armour);
+                    if (!set.getBoolean("armourStats")) {
+                        Item armour = new Armour(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString("spriteUrl")), set.getInt("durability"), set.getInt("armourPoints"), set.getString("location"));
+                        itemHashMap.put(set.getString("name"), armour);
+                    } else {
+                        Item armour = new Armour(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString("spriteUrl")), set.getInt("durability"), set.getInt("armourPoints"), set.getString("location"), set.getInt("health"), set.getInt("speed"), set.getInt("dexterity"));
+                        itemHashMap.put(set.getString("name"), armour);
+                    }
                 }
             } else if ("Weapon".equals(itemType)) {
                 while (set.next()) {
