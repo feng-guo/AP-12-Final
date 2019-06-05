@@ -15,7 +15,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	Location map;
 	int[][] mapTile;
 	int size = 64;
-	ArrayList<Double> enemies;
+	//ArrayList<Double> enemies;
 
 	public WorldDisplayer(PlayerInstance player, Location map) {
 		this.player = player;
@@ -47,15 +47,49 @@ public class WorldDisplayer extends JPanel implements Runnable {
 				g.fillRect((r*size) + relative[0],(c*size) + relative[1],size,size);
 			}
 		}
-		enemies = map.getEnemyIDs();
+		//enemies = map.getEnemyIDs();
 		g.setColor(Color.GREEN);
-		for (int i = 0; i < enemies.size(); i++) {
-			EnemyInstance enemy = map.getEnemy(enemies.get(i));
+		for (int i=0; i<map.getStructures().size(); i++) {
+			Structure structure = map.getStructures().get(i);
+			int x = structure.getX();
+			int y = structure.getY();
+			g.drawImage(structure.getImage(),x + relative[0] - (size/2),y + relative[1] - (size/2),structure.getWidth(),structure.getHeight(),null);
+		}
+		for (int i = 0; i < map.getEnemyIDs().size(); i++) {
+			EnemyInstance enemy = map.getEnemy(map.getEnemyIDs().get(i));
 			int x = enemy.getX();
 			int y = enemy.getY();
 			Entity e = enemy.getEntity();
 			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
 			//g.fillRect(x + relative[0] - (size/2),y + relative[1] - (size/2),size,size);
+		}
+		for (int i=0; i<map.getWeaponEffectIDs().size(); i++) {
+			WeaponEffectInstance weaponEffectInstance = map.getWeaponEffectInstance(map.getWeaponEffectIDs().get(i));
+			int x = weaponEffectInstance.getX();
+			int y = weaponEffectInstance.getY();
+			Entity e = weaponEffectInstance.getEntity();
+			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
+		}
+		for (int i=0; i<map.getNpcIDs().size(); i++) {
+			NPCInstance npcInstance = map.getNPC(map.getNpcIDs().get(i));
+			int x = npcInstance.getX();
+			int y = npcInstance.getY();
+			Entity e = npcInstance.getEntity();
+			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
+		}
+		for (int i=0; i<map.getPlayerIDs().size(); i++) {
+			PlayerInstance playerInstance = map.getPlayer(map.getPlayerIDs().get(i));
+			int x = playerInstance.getX();
+			int y = playerInstance.getY();
+			Entity e = playerInstance.getEntity();
+			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
+		}
+		for (int i=0; i<map.getEnvironmentalIDs().size(); i++) {
+			EnvironmentalInstance environmentalInstance = map.getEnvironmental(map.getEnvironmentalIDs().get(i));
+			int x = environmentalInstance.getX();
+			int y = environmentalInstance.getY();
+			Entity e = environmentalInstance.getEntity();
+			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
 		}
 		g.setColor(Color.RED);
 		g.fillRect(center[0] - (size / 2), center[1] - (size / 2), size, size);

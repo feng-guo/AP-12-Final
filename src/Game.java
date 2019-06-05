@@ -3,6 +3,7 @@ import Entities.*;
 import Items.*;
 import World.Location;
 import World.LocationHandler;
+import World.Structure;
 import World.WorldDisplayer;
 
 
@@ -173,6 +174,18 @@ public class Game extends JFrame {
 		playerHandler = new PlayerHandler(playerInstance, map);
 		map = new Location(breadSprite);
 		LocationHandler mapHan = new LocationHandler(map);
+		Environmental copperOre = new Environmental(Toolkit.getDefaultToolkit().createImage("assets/copper_ore.png"), 100,100, 50, copper);
+		Environmental titaniumOre = new Environmental(Toolkit.getDefaultToolkit().createImage("assets/titanium_ore.png"), 100, 100, 20, titanium);
+		Environmental breadOre =  new Environmental(Toolkit.getDefaultToolkit().createImage("assets/bread.png"), 50, 50, 2, bread);
+		EnvironmentalInstance copperOreEnv = new EnvironmentalInstance(20,20,copperOre);
+		EnvironmentalInstance titOre = new EnvironmentalInstance(130, 130, titaniumOre);
+		EnvironmentalInstance breadOreThing = new EnvironmentalInstance(400, 0, breadOre);
+		Structure breadStructure = new Structure(breadSprite, map, "Bread", 400, 200, 1200, 400);
+		map.getStructures().add(breadStructure);
+		mapHan.addEnvironmental(copperOreEnv, 222);
+		mapHan.addEnvironmental(titOre, 69);
+		mapHan.addEnvironmental(breadOreThing, 2333);
+
 		Thread p = new Thread(playerHandler);
 		p.start();
 		Thread t = new Thread(mapHan);
