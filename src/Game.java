@@ -47,9 +47,7 @@ public class Game extends JFrame {
 		this.addKeyListener(listener);
 
 		initializeStartPanels();
-
-		panel = new GamePanel();
-
+		//startNewSingleplayerGame();
 		//this.add(worldPanel);
 
 
@@ -81,12 +79,16 @@ public class Game extends JFrame {
 		backButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Back.png")));
 
 		singlePlayerButton.addActionListener(actionEvent -> {
+			//removeAllPanels();
+			this.remove(optionPanel);
+			this.repaint();
+			//addPanel(worldPanel);
 			startNewSingleplayerGame();
-			removeAllPanels();
-			addPanel(worldPanel);
-			currentPanel = worldPanel;
-            repaint();
-        });
+			this.addKeyListener(listener);
+			//this.add(worldPanel);
+			//currentPanel = worldPanel;
+			//repaint();
+		});
 
 		instructionButton.addActionListener(actionEvent -> {
 			//Code here
@@ -118,7 +120,6 @@ public class Game extends JFrame {
 		optionPanel.add(quitButton);
 
 		add(optionPanel);
-
 	}
 
 	private void startNewSingleplayerGame() {
@@ -178,6 +179,10 @@ public class Game extends JFrame {
 		inventory.add(stackFive);
 		inventory.add(stackSix);
 		inventoryMenu = new InventoryMenu(inventory);
+		this.add(worldPanel);
+		this.revalidate();
+		(new Thread(worldPanel)).start();
+		currentPanel = worldPanel;
 	}
 
 	private void removeAllPanels() {
