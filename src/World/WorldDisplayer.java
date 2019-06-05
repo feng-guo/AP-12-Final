@@ -25,6 +25,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 	public void run() {
 		while (running) {
+			this.setVisible(true);
 			this.repaint();
 		}
 	}
