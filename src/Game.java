@@ -48,7 +48,6 @@ public class Game extends JFrame {
 		this.setSize(1280,760);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.addKeyListener(listener);
 
 		initializeStartPanels();
 		//startNewSingleplayerGame();
@@ -60,11 +59,11 @@ public class Game extends JFrame {
 
 		panel = new GamePanel();
 
-		startNewSingleplayerGame();
+		/*startNewSingleplayerGame();
 		this.add(worldPanel);
 		currentPanel = worldPanel;
 		this.setVisible(true);
-		this.requestFocusInWindow();
+		this.requestFocusInWindow();*/
 	}
 
 	private void initializeStartPanels() {
@@ -96,7 +95,6 @@ public class Game extends JFrame {
 			this.repaint();
 			//addPanel(worldPanel);
 			startNewSingleplayerGame();
-			this.addKeyListener(listener);
 			//this.add(worldPanel);
 			//currentPanel = worldPanel;
 			//repaint();
@@ -130,7 +128,8 @@ public class Game extends JFrame {
 		optionPanel.add(instructionButton);
 		optionPanel.add(Box.createVerticalStrut(10));
 		optionPanel.add(quitButton);
-		add(optionPanel);
+		this.add(optionPanel);
+		this.revalidate();
 	}
 
 	private void startNewSingleplayerGame() {
@@ -221,6 +220,9 @@ public class Game extends JFrame {
 		(new Thread(worldPanel)).start();
 		currentPanel = worldPanel;
 		listener = new Listener();
+		this.addKeyListener(listener);
+		this.setFocusable(true);
+		this.requestFocusInWindow();
 	}
 
 	private void initializeAssets() {
@@ -240,18 +242,29 @@ public class Game extends JFrame {
 	}
 
 	private class GamePanel extends JPanel {
+		Clock clock = new Clock();
 		GamePanel() {
 			Thread t = new Thread(new GameLoop());
 			t.start();
 		}
 
 		private class GameLoop implements Runnable {
+			boolean running;
+			GameLoop() {
+				this.running = true;
+			}
+
 			public void run() {
 				Thread worldThread = new Thread(worldPanel);
 				worldThread.run();
-				while (true) {
+				while (running) {
+					clock.update();
 					repaint();
 				}
+			}
+
+			public void setRunState(boolean state) {
+				this.running = state;
 			}
 		}
 
@@ -1217,11 +1230,13 @@ public class Game extends JFrame {
 				if (currentPanel == worldPanel) {
 					remove(worldPanel);
 					add(inventoryMenu);
+					revalidate();
 					currentPanel = inventoryMenu;
 				} else if (currentPanel == inventoryMenu) {
 					inventoryMenu.resetInteractions();
 					remove(inventoryMenu);
 					add(worldPanel);
+					revalidate();
 					currentPanel = worldPanel;
 				}
 				repaint();
