@@ -22,14 +22,17 @@ public class Location {
     private HashMap<Double, ItemDropInstance> itemDropInstanceHashMap;
     private ArrayList<Structure> structures;
     //fix later
-    private int[][] map = {
+    private int[][] map;
+    /**
+           {
             {1,1,1,1,1},
             {1,0,0,0,1},
             {1,0,0,0,1},
             {1,0,0,0,1},
-            {1,1,1,1,1}};
+            {1,1,1,1,1}};**/
 
-    public Location(Image background) {
+    public Location(Image background, int[][] map) {
+        this.map = map;
         this.background = background;
         playerIDs = new ArrayList<>();
         npcIDs = new ArrayList<>();
