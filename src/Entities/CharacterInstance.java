@@ -7,8 +7,8 @@ public abstract class CharacterInstance extends EntityInstance {
     private int defense;
     private int dexterity;
 
-    public CharacterInstance(int x, int y, Character character) {
-        super(x,y,character);
+    public CharacterInstance(int x, int y, Character character, double id) {
+        super(x,y,character,id);
         this.maxHealth = character.getBaseHealth();
         this.currentHealth = character.getBaseHealth();
         this.speed = character.getBaseSpeed();

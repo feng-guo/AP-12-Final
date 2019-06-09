@@ -8,6 +8,7 @@ public class PlayerHandler extends CharacterHandler {
     private int xDirection;
     private int yDirection;
 
+
     public PlayerHandler(PlayerInstance playerInstance, Location location) {
         super(playerInstance, location);
         this.playerInstance = playerInstance;

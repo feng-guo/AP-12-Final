@@ -3,8 +3,8 @@ package Entities;
 public class EnvironmentalInstance extends EntityInstance {
     private int currentDurability;
 
-    public EnvironmentalInstance(int x, int y, Environmental environmental) {
-        super(x, y, environmental);
+    public EnvironmentalInstance(int x, int y, Environmental environmental, double id) {
+        super(x, y, environmental, id);
         this.currentDurability = environmental.getDurability();
     }
 

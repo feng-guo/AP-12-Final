@@ -13,4 +13,8 @@ public class ItemDrop extends Entity {
     public Stack getStack() {
         return stack;
     }
+
+    public void setStack(Stack stack) {
+        this.stack = stack;
+    }
 }

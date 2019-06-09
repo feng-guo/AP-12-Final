@@ -21,10 +21,7 @@ public class Game extends JFrame {
 	private WorldDisplayer worldPanel;
 	private InventoryMenu inventoryMenu;
 	private Inventory inventory; // remove this later
-	private String frameRate;
-	private long lastTimeCheck;
-	private long deltaTime;
-	private int frameCount;
+
 	private JPanel currentPanel;
 
 	//START PANELS
@@ -43,6 +40,7 @@ public class Game extends JFrame {
 	PlayerInstance playerInstance;
 	PlayerHandler playerHandler;
 	Location map;
+	LocationHandler mapHan;
 
 	Game() {
 		this.setSize(1280,760);
@@ -134,7 +132,7 @@ public class Game extends JFrame {
 
 	private void startNewSingleplayerGame() {
 		//Might want to remove this later
-		this.inventory = new Inventory(36);
+
 		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("WoodenSword.png");
 		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
 		Image cakeSprite = Toolkit.getDefaultToolkit().createImage("Cake.png");
@@ -157,6 +155,9 @@ public class Game extends JFrame {
 		Armour berryRing = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/berry.png"), 200, 20, "Ring");
 		Armour riceRing = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/rice.png"), 200, 20, "Ring");
 		Armour potato = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/root_vegetable.png"), 200, 20, "Ring");
+		playerInstance = new PlayerInstance(0,0,player,1);
+		playerHandler = new PlayerHandler(playerInstance, map);
+		this.inventory = playerInstance.getInventory();
 		inventory.setArmour(titanium);
 		inventory.setHelmet(breadHelmet);
 		inventory.setBoots(gold);
@@ -169,23 +170,23 @@ public class Game extends JFrame {
 		inventory.setRing3(potato);
 
 
-		playerInstance = new PlayerInstance(0,0,player);
-		playerHandler = new PlayerHandler(playerInstance, map);
+
 		String[][] town = getBlocks("Spawntown.txt");
 		map = new Location(breadSprite, getCollision(town));
 
-		LocationHandler mapHan = new LocationHandler(map);
+		mapHan = new LocationHandler(map);
 		Environmental copperOre = new Environmental(Toolkit.getDefaultToolkit().createImage("assets/copper_ore.png"), 100,100, 50, copper);
 		Environmental titaniumOre = new Environmental(Toolkit.getDefaultToolkit().createImage("assets/titanium_ore.png"), 100, 100, 20, titanium);
 		Environmental breadOre =  new Environmental(Toolkit.getDefaultToolkit().createImage("assets/bread.png"), 50, 50, 2, bread);
-		EnvironmentalInstance copperOreEnv = new EnvironmentalInstance(20,20,copperOre);
-		EnvironmentalInstance titOre = new EnvironmentalInstance(130, 130, titaniumOre);
-		EnvironmentalInstance breadOreThing = new EnvironmentalInstance(400, 0, breadOre);
+		EnvironmentalInstance copperOreEnv = new EnvironmentalInstance(20,20,copperOre,1);
+		EnvironmentalInstance titOre = new EnvironmentalInstance(130, 130, titaniumOre,2);
+		EnvironmentalInstance breadOreThing = new EnvironmentalInstance(400, 0, breadOre,3);
 		Structure breadStructure = new Structure(breadSprite, map, "Bread", 400, 200, 1200, 400);
 		map.getStructures().add(breadStructure);
-		mapHan.addEnvironmental(copperOreEnv, 222);
-		mapHan.addEnvironmental(titOre, 69);
-		mapHan.addEnvironmental(breadOreThing, 2333);
+		mapHan.addEnvironmental(copperOreEnv);
+		mapHan.addEnvironmental(titOre);
+		mapHan.addPlayer(playerHandler);
+		mapHan.addEnvironmental(breadOreThing);
 
 		Thread p = new Thread(playerHandler);
 		p.start();
@@ -196,15 +197,19 @@ public class Game extends JFrame {
 		temp.put(stackOne, 0.4);
 		Enemy enemy1 = new Enemy(cakeSprite, 64, 64, 20, 2, 2, 2, "Cake", "Cake", temp);
 		Enemy enemy2 = new Enemy(stickSprite, 64, 64, 20, 3, 3, 3, "Stick", "Wood", temp);
-		EnemyInstance enemy1Ins = new EnemyInstance(20, 40, enemy1, (Weapon)woodSword);
-		EnemyInstance enemy2Ins = new EnemyInstance(100, 400, enemy2, (Weapon)woodSword);
+		EnemyInstance enemy1Ins = new EnemyInstance(20, 40, enemy1, (Weapon)woodSword, 231);
+		EnemyInstance enemy2Ins = new EnemyInstance(100, 400, enemy2, (Weapon)woodSword,22);
 		EnemyHandler enemy1Han = new EnemyHandler(enemy1Ins, map);
 		EnemyHandler enemy2Han = new EnemyHandler(enemy2Ins, map);
 
 		Environmental env = new Environmental(woodSwordSprite, 3, 3, 2, woodSword);
-		EnvironmentalInstance envIns = new EnvironmentalInstance(400, 300, env);
-		mapHan.addEnemy(enemy1Han, 0.4);
-		mapHan.addEnemy(enemy2Han, 0.24);
+		EnvironmentalInstance envIns = new EnvironmentalInstance(400, 300, env, 123);
+		ItemDrop itemDrop = new ItemDrop(stackOne);
+		ItemDropInstance dropTop = new ItemDropInstance(1003, 22, itemDrop, 6999);
+		mapHan.addItemDrop(dropTop);
+		mapHan.addEnvironmental(envIns);
+		mapHan.addEnemy(enemy1Han);
+		mapHan.addEnemy(enemy2Han);
 		worldPanel = new WorldDisplayer(playerInstance,map);
 
 		Stack cakeStack = new Stack(2, cake);
@@ -262,7 +267,7 @@ public class Game extends JFrame {
      int[][] collisions = new int[size][size];
      for(int i = 0; i < size; i++){
       for(int j = 0; j < size; j++){
-       if (blocks[i][j] == "s" || blocks[i][j] == "g" || blocks[i][j] == "p"){
+       if (blocks[i][j].equals("s") || blocks[i][j].equals("g") || blocks[i][j].equals("p")){
         collisions[i][j] = 0;
        } else {
         collisions[i][j] = 1;
@@ -338,18 +343,7 @@ public class Game extends JFrame {
 			repaint();
 		}*/
 
-		public String getFrameRate()  {
-			long currentTime = System.currentTimeMillis();  //get the current time
-			deltaTime += currentTime - lastTimeCheck; //add to the elapsed time
-			lastTimeCheck = currentTime; //update the last time var
-			frameCount++; //Every time this method is called it is a new frame
-			if (deltaTime>=1000) { //when a second has passed, update the string message
-				frameRate = frameCount + " fps";
-				frameCount = 0; //reset the number of frames since last update
-				deltaTime = 0;  //reset the elapsed time
-			}
-			return frameRate;
-		}
+
 	}
 
 	private abstract class Menu extends JPanel {
@@ -1308,6 +1302,17 @@ public class Game extends JFrame {
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")) {  //A
 				playerHandler.keyReleased("A");
+			}
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("F")) {
+				if (playerInstance.getNearbyItem() != null) {
+					Stack s = playerInstance.getInventory().add(playerInstance.getNearbyItem().getStack());
+					if (s != null) {
+						playerInstance.getNearbyItem().getItemDrop().setStack(s);
+					} else {
+						mapHan.removeItemDrop(playerInstance.getNearbyItem().getID());
+						playerInstance.setNearbyItem(null);
+					}
+				}
 			}
 		}
 	}

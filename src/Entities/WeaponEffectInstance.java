@@ -8,8 +8,8 @@ public class WeaponEffectInstance extends EntityInstance {
     private int targetX;
     private int targetY;
 
-    public WeaponEffectInstance(int x, int y, WeaponEffect weaponEffect, int timeCreated, int targetX, int targetY) {
-        super(x, y, weaponEffect);
+    public WeaponEffectInstance(int x, int y, WeaponEffect weaponEffect, int timeCreated, int targetX, int targetY, double id) {
+        super(x, y, weaponEffect, id);
         this.weaponEffect = weaponEffect;
         this.timeCreated = timeCreated;
         this.initialX = x;
