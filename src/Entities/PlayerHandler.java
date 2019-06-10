@@ -1,5 +1,6 @@
 package Entities;
 
+import World.Clock;
 import World.Location;
 
 public class PlayerHandler extends CharacterHandler {
@@ -61,7 +62,7 @@ public class PlayerHandler extends CharacterHandler {
 
     @Override
     public void move() {
-        int d = (int)Math.sqrt(2)*10;
+        int d = (int)Math.sqrt(2) * playerInstance.getSpeed() * Clock.getDelta();
         if (yDirection == -1) {
             if (xDirection == -1) {
                 playerInstance.moveX(-d);
@@ -70,7 +71,7 @@ public class PlayerHandler extends CharacterHandler {
                 playerInstance.moveX(d);
                 playerInstance.moveY(-d);
             } else {
-                playerInstance.moveY(-10);
+                playerInstance.moveY(-playerInstance.getSpeed());
             }
         } else if (yDirection == 1) {
             if (xDirection == -1) {
@@ -80,12 +81,12 @@ public class PlayerHandler extends CharacterHandler {
                 playerInstance.moveX(d);
                 playerInstance.moveY(d);
             } else {
-                playerInstance.moveY(10);
+                playerInstance.moveY(playerInstance.getSpeed());
             }
         } else if (xDirection == -1){
-            playerInstance.moveX(-10);
+            playerInstance.moveX(-playerInstance.getSpeed());
         } else if (xDirection == 1) {
-            playerInstance.moveX(10);
+            playerInstance.moveX(playerInstance.getSpeed());
         }
     }
 

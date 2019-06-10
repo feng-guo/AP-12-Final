@@ -1,6 +1,7 @@
 import Database.DatabaseConnector;
 import Entities.*;
 import Items.*;
+import World.Clock;
 import World.Location;
 import World.LocationHandler;
 import World.Structure;
@@ -310,7 +311,6 @@ public class Game extends JFrame {
 				Thread worldThread = new Thread(worldPanel);
 				worldThread.run();
 				while (running) {
-					clock.update();
 					repaint();
 				}
 			}
