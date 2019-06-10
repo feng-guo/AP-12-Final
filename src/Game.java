@@ -81,11 +81,11 @@ public class Game extends JFrame {
 		JButton quitButton = new JButton();
 		JButton backButton = new JButton();
 
-		singlePlayerButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Play.png")));
-		multiplayerButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("Bread.png")));
-		instructionButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Instructions.png")));
-		quitButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Quit.png")));
-		backButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Back.png")));
+		singlePlayerButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/menu/Play.png")));
+		multiplayerButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("AP-12-Final/Bread.png")));
+		instructionButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/menu/Instructions.png")));
+		quitButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/menu/Quit.png")));
+		backButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/menu/Back.png")));
 
 		singlePlayerButton.addActionListener(actionEvent -> {
 			//removeAllPanels();
@@ -133,10 +133,10 @@ public class Game extends JFrame {
 	private void startNewSingleplayerGame() {
 		//Might want to remove this later
 
-		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("WoodenSword.png");
-		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
-		Image cakeSprite = Toolkit.getDefaultToolkit().createImage("Cake.png");
-		Image breadSprite = Toolkit.getDefaultToolkit().createImage("Bread.png");
+		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("AP-12-Final/WoodenSword.png");
+		Image stickSprite = Toolkit.getDefaultToolkit().createImage("AP-12-Final/Stick.png");
+		Image cakeSprite = Toolkit.getDefaultToolkit().createImage("AP-12-Final/Cake.png");
+		Image breadSprite = Toolkit.getDefaultToolkit().createImage("AP-12-Final/Bread.png");
 		Item woodSword = new Sword("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2);
 		Item stick = new Material("Stick", "A wood stick", stickSprite);
 		Item cake = new Food("Cake", "A delicious cake lovingly baked by Feng", cakeSprite,0 ,8);
@@ -145,16 +145,16 @@ public class Game extends JFrame {
 		//********ACTUALLY CHANGE THIS LATER**********//
 		player = new Player(breadSprite,10,10,10,10,"1","test");
 
-		Armour breadHelmet = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/bread.png"), 200, 20, "Helmet");
-		Armour titanium = new Armour("Titanium", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/titanium.png"), 200, 20, "Armour");
-		Armour gold = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/gold.png"), 200, 20, "Boots");
-		Armour copper = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/copper.png"), 200, 20, "Arm");
-		Armour silver = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/silver.png"), 200, 20, "Arm");
-		Armour coal = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/coal.png"), 200, 20, "Leg");
-		Armour cakeLeg = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/cake.png"), 200, 20, "Leg");
-		Armour berryRing = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/berry.png"), 200, 20, "Ring");
-		Armour riceRing = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/rice.png"), 200, 20, "Ring");
-		Armour potato = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/root_vegetable.png"), 200, 20, "Ring");
+		Armour breadHelmet = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/bread.png"), 200, 20, "Helmet");
+		Armour titanium = new Armour("Titanium", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/titanium.png"), 200, 20, "Armour");
+		Armour gold = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/gold.png"), 200, 20, "Boots");
+		Armour copper = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/copper.png"), 200, 20, "Arm");
+		Armour silver = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/silver.png"), 200, 20, "Arm");
+		Armour coal = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/coal.png"), 200, 20, "Leg");
+		Armour cakeLeg = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/cake.png"), 200, 20, "Leg");
+		Armour berryRing = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/berry.png"), 200, 20, "Ring");
+		Armour riceRing = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/rice.png"), 200, 20, "Ring");
+		Armour potato = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/root_vegetable.png"), 200, 20, "Ring");
 		playerInstance = new PlayerInstance(0,0,player,1);
 		playerHandler = new PlayerHandler(playerInstance, map);
 		this.inventory = playerInstance.getInventory();
@@ -175,9 +175,9 @@ public class Game extends JFrame {
 		map = new Location(breadSprite, getCollision(town));
 
 		mapHan = new LocationHandler(map);
-		Environmental copperOre = new Environmental(Toolkit.getDefaultToolkit().createImage("assets/copper_ore.png"), 100,100, 50, copper);
-		Environmental titaniumOre = new Environmental(Toolkit.getDefaultToolkit().createImage("assets/titanium_ore.png"), 100, 100, 20, titanium);
-		Environmental breadOre =  new Environmental(Toolkit.getDefaultToolkit().createImage("assets/bread.png"), 50, 50, 2, bread);
+		Environmental copperOre = new Environmental(Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/copper_ore.png"), 100,100, 50, copper);
+		Environmental titaniumOre = new Environmental(Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/titanium_ore.png"), 100, 100, 20, titanium);
+		Environmental breadOre =  new Environmental(Toolkit.getDefaultToolkit().createImage("AP-12-Final/assets/bread.png"), 50, 50, 2, bread);
 		EnvironmentalInstance copperOreEnv = new EnvironmentalInstance(20,20,copperOre,1);
 		EnvironmentalInstance titOre = new EnvironmentalInstance(130, 130, titaniumOre,2);
 		EnvironmentalInstance breadOreThing = new EnvironmentalInstance(400, 0, breadOre,3);

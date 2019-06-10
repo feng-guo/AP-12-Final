@@ -95,7 +95,6 @@ public class LocationHandler implements Runnable {
 
     public void addItemDrop(ItemDropInstance itemDrop) {
         double id = itemDrop.getID();
-        System.out.println("PP");
         itemDropIDs.add(id);
         itemDropInstanceHashMap.put(id, itemDrop);
         location.addItemDrop(itemDrop, id);
@@ -239,8 +238,7 @@ public class LocationHandler implements Runnable {
             EnemyInstance e = enemyHandlerHashMap.get(enemyIDs.get(i)).getEnemyInstance();
             if (e.getCurrentHealth() <= 0) {
                 killEnemy(e);
-                enemyHandlerHashMap.remove(enemyIDs.get(i));
-                enemyIDs.remove(i);
+                removeEnemy(enemyIDs.get(i));
                 i--;
             }
         }
