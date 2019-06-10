@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 
 public class ItemsList {
     private static HashMap<String, Item> itemHashMap;
-    private static String s = "AP-12-Final/";
 
     public static void initialize() {
         itemHashMap = new HashMap<>();
@@ -32,37 +31,37 @@ public class ItemsList {
         try {
             if ("Material".equals(itemType)) {
                 while (set.next()) {
-                    Item material = new Material(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString(s+s+"spriteUrl")));
+                    Item material = new Material(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString("spriteUrl")));
                     itemHashMap.put(set.getString("name"), material);
                 }
             } else if ("Food".equals(itemType)) {
                 while (set.next()) {
-                    Item food = new Food(set.getString("name"), set.getString("description"),Toolkit.getDefaultToolkit().createImage(set.getString(s+s+"spriteUrl")),set.getInt("healthGained"),set.getInt("restorationValue"));
+                    Item food = new Food(set.getString("name"), set.getString("description"),Toolkit.getDefaultToolkit().createImage(set.getString("spriteUrl")),set.getInt("healthGained"),set.getInt("restorationValue"));
                     itemHashMap.put(set.getString("name"), food);
                 }
             } else if ("Potion".equals(itemType)) {
                 while (set.next()) {
-                    Item potion = new Potion(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString(s+s+"spriteUrl")), set.getInt("healthGain"), set.getString("effect"), set.getInt("duration"));
+                    Item potion = new Potion(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString("spriteUrl")), set.getInt("healthGain"), set.getString("effect"), set.getInt("duration"));
                     itemHashMap.put(set.getString("name"), potion);
                 }
             } else if ("Armour".equals(itemType)) {
                 while (set.next()) {
                     if (!set.getBoolean("armourStats")) {
-                        Item armour = new Armour(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString(s+"spriteUrl")), set.getInt("durability"), set.getInt("armourPoints"), set.getString("location"));
+                        Item armour = new Armour(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString("spriteUrl")), set.getInt("durability"), set.getInt("armourPoints"), set.getString("location"));
                         itemHashMap.put(set.getString("name"), armour);
                     } else {
-                        Item armour = new Armour(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString(s+"spriteUrl")), set.getInt("durability"), set.getInt("armourPoints"), set.getString("location"), set.getInt("health"), set.getInt("speed"), set.getInt("dexterity"));
+                        Item armour = new Armour(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString("spriteUrl")), set.getInt("durability"), set.getInt("armourPoints"), set.getString("location"), set.getInt("health"), set.getInt("speed"), set.getInt("dexterity"));
                         itemHashMap.put(set.getString("name"), armour);
                     }
                 }
             } else if ("Weapon".equals(itemType)) {
                 while (set.next()) {
-                    Item weapon = new Weapon(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString(s+"spriteUrl")), set.getInt("durability"), set.getInt("damage"), set.getInt("range"));
+                    Item weapon = new Weapon(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString("spriteUrl")), set.getInt("durability"), set.getInt("damage"), set.getInt("range"));
                     itemHashMap.put(set.getString("name"), weapon);
                 }
             } else if ("Tool".equals(itemType)) {
                 while (set.next()) {
-                    Item tool = new Tool(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString(s+"spriteUrl")), set.getInt("durability"), set.getInt("damage"), set.getInt("range"), set.getInt("toolHit"));
+                    Item tool = new Tool(set.getString("name"), set.getString("description"), Toolkit.getDefaultToolkit().createImage(set.getString("spriteUrl")), set.getInt("durability"), set.getInt("damage"), set.getInt("range"), set.getInt("toolHit"));
                     itemHashMap.put(set.getString("name"), tool);
                 }
             }
