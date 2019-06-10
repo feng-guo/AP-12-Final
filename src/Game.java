@@ -262,7 +262,7 @@ public class Game extends JFrame {
      int[][] collisions = new int[size][size];
      for(int i = 0; i < size; i++){
       for(int j = 0; j < size; j++){
-       if (blocks[i][j] == "s" || blocks[i][j] == "g" || blocks[i][j] == "p"){
+       if (blocks[i][j].equals("s") || blocks[i][j].equals("g") || blocks[i][j].equals("p")){
         collisions[i][j] = 0;
        } else {
         collisions[i][j] = 1;
