@@ -1,9 +1,12 @@
 package World;
 
 import Entities.*;
+import Items.Item;
+import Items.Stack;
+import com.sun.corba.se.spi.ior.ObjectKey;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class LocationHandler implements Runnable {
     private Location location;
@@ -45,6 +48,7 @@ public class LocationHandler implements Runnable {
         while(true) {
             checkPlayerItemDrops();
             revalidatePlayerItemDrops();
+            checkEnemies();
             try {
                 Thread.sleep(30);
             } catch (InterruptedException e) {
@@ -91,6 +95,7 @@ public class LocationHandler implements Runnable {
 
     public void addItemDrop(ItemDropInstance itemDrop) {
         double id = itemDrop.getID();
+        System.out.println("PP");
         itemDropIDs.add(id);
         itemDropInstanceHashMap.put(id, itemDrop);
         location.addItemDrop(itemDrop, id);
@@ -223,6 +228,48 @@ public class LocationHandler implements Runnable {
                     player.setNearbyItem(null);
                 }
             }
+            if (playerIDs.size() > 1) {
+                System.out.println("Penis");
+            }
+        }
+    }
+
+    private void checkEnemies() {
+        for (int i=0; i<enemyIDs.size(); i++) {
+            EnemyInstance e = enemyHandlerHashMap.get(enemyIDs.get(i)).getEnemyInstance();
+            if (e.getCurrentHealth() <= 0) {
+                killEnemy(e);
+                enemyHandlerHashMap.remove(enemyIDs.get(i));
+                enemyIDs.remove(i);
+                i--;
+            }
+        }
+    }
+
+    private void killEnemy(EnemyInstance e) {
+        HashMap<Double, Stack> itemHashMap = e.getEnemy().getLootTable();
+        double random = Math.random();
+        Object[] bad = itemHashMap.keySet().toArray();
+        Double[] keys = new Double[bad.length];
+        for (int i=0; i<keys.length; i++) {
+            keys[i] = (Double)bad[i];
+        }
+        List<Double> list = Arrays.asList(keys);
+        Collections.sort(list);
+        for (int i=0; i<list.size(); i++) {
+            if (random < list.get(i)) {
+                ItemDrop itemDrop = new ItemDrop(itemHashMap.get(list.get(i)));
+                ItemDropInstance itemDropInstance = new ItemDropInstance(e.getX(), e.getY(), itemDrop, (double)System.nanoTime());
+                addItemDrop(itemDropInstance);
+
+                return;
+            }
+        }
+    }
+
+    public void killEverything() {
+        for ( int i= 0; i<enemyIDs.size(); i++) {
+            enemyHandlerHashMap.get(enemyIDs.get(i)).getEnemyInstance().setCurrentHealth(0);
         }
     }
 }

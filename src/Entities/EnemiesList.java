@@ -23,10 +23,10 @@ public class EnemiesList {
             while (resultSet.next()) {
                 String lootQuery = "SELECT * FROM " + resultSet.getString("name");
                 ResultSet lootTableSet = DatabaseConnector.query(lootQuery);
-                HashMap<Stack, Double> lootTable = new HashMap<>();
+                HashMap<Double, Stack> lootTable = new HashMap<>();
                 while (lootTableSet.next()) {
                     Stack stack = new Stack(lootTableSet.getInt("stackAmount"), ItemsList.getItem(lootTableSet.getString("item")));
-                    lootTable.put(stack, lootTableSet.getDouble("probability"));
+                    lootTable.put(lootTableSet.getDouble("probability"), stack);
                 }
                 Enemy enemy = new Enemy(Toolkit.getDefaultToolkit().createImage(resultSet.getString("spriteUrl")), resultSet.getInt("length"), resultSet.getInt("width"), resultSet.getInt("maxHealth"), resultSet.getInt("speed"), resultSet.getInt("defense"), resultSet.getInt("dexterity"), resultSet.getString("name"), resultSet.getString("species"), lootTable);
                 enemyHashMap.put(resultSet.getString("name"), enemy);
