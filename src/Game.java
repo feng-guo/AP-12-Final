@@ -467,6 +467,9 @@ public class Game extends JFrame {
 					} else if (tempInventory[27+i] != null) {
 						g.drawImage(tempInventory[27+i].getItem().getSprite(), 323 + 72 * i, 599, 58, 58, null);
 						int itemCount = tempInventory[27+i].getStackAmount();
+						g.setColor(Color.YELLOW);
+						g.drawRect(320+72*i,596,63,63);
+						g.setColor(Color.BLACK);
 						if (itemCount > 1) {
 							if (tempInventorySlots > 1) {
 								g.setColor(Color.YELLOW);
