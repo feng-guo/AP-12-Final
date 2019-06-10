@@ -1,5 +1,6 @@
 package Entities;
 
+import World.Clock;
 import World.Location;
 
 public class EnemyHandler extends CharacterHandler {
@@ -18,13 +19,13 @@ public class EnemyHandler extends CharacterHandler {
     public void move() {
         double rand = Math.random();
         if (rand<0.25) {
-            enemyInstance.moveX(-10);
+            enemyInstance.moveX(-enemyInstance.getSpeed());
         } else if (rand<0.5) {
-            enemyInstance.moveX(10);
+            enemyInstance.moveX(enemyInstance.getSpeed());
         } else if (rand<0.75) {
-            enemyInstance.moveY(-10);
+            enemyInstance.moveY(-enemyInstance.getSpeed());
         } else {
-            enemyInstance.moveY(10);
+            enemyInstance.moveY(enemyInstance.getSpeed());
         }
     }
 
@@ -38,7 +39,7 @@ public class EnemyHandler extends CharacterHandler {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                //lol
+                e.printStackTrace();
             }
             move();
         }

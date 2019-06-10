@@ -1,5 +1,7 @@
 package Entities;
 
+import World.Clock;
+
 abstract public class EntityInstance {
     private int x;
     private int y;
