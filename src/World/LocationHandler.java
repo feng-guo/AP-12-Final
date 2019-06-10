@@ -42,40 +42,55 @@ public class LocationHandler implements Runnable {
     public void run() {
         //Code here
         //Might want to handle threads here better
+        while(true) {
+            checkPlayerItemDrops();
+            revalidatePlayerItemDrops();
+            try {
+                Thread.sleep(30);
+            } catch (InterruptedException e) {
+
+            }
+        }
     }
 
-    public void addPlayer(PlayerHandler player, double id) {
+    public void addPlayer(PlayerHandler player) {
+        double id = player.getEntityInstance().getID();
         playerIDs.add(id);
         playerHandlerHashMap.put(id, player);
         location.addPlayer(player.getPlayerInstance(), id);
     }
 
-    public void addNpc(NPCHandler npc, double id) {
+    public void addNpc(NPCHandler npc) {
+        double id = npc.getEntityInstance().getID();
         npcIDs.add(id);
         npcHandlerHashMap.put(id, npc);
         location.addNpc(npc.getNpcInstance(), id);
     }
 
-    public void addEnemy(EnemyHandler enemy, double id) {
+    public void addEnemy(EnemyHandler enemy) {
+        double id = enemy.getEntityInstance().getID();
         enemyIDs.add(id);
         addToThread(enemy);
         enemyHandlerHashMap.put(id, enemy);
         location.addEnemy(enemy.getEnemyInstance(), id);
     }
 
-    public void addWeaponEffect(WeaponEffectHandler weaponEffect, double id) {
+    public void addWeaponEffect(WeaponEffectHandler weaponEffect) {
+        double id = weaponEffect.getEntityInstance().getID();
         weaponEffectIDs.add(id);
         weaponEffectHandlerHashMap.put(id, weaponEffect);
         location.addWeaponEffect(weaponEffect.getWeaponEffectInstance(), id);
     }
 
-    public void addEnvironmental(EnvironmentalInstance environmental, double id) {
+    public void addEnvironmental(EnvironmentalInstance environmental) {
+        double id = environmental.getID();
         environmentalIDs.add(id);
         environmentalInstanceHashMap.put(id, environmental);
         location.addEnvironmental(environmental, id);
     }
 
-    public void addItemDrop(ItemDropInstance itemDrop, double id) {
+    public void addItemDrop(ItemDropInstance itemDrop) {
+        double id = itemDrop.getID();
         itemDropIDs.add(id);
         itemDropInstanceHashMap.put(id, itemDrop);
         location.addItemDrop(itemDrop, id);
@@ -175,5 +190,39 @@ public class LocationHandler implements Runnable {
         Thread t = new Thread(e);
         t.start();
         thread.add(t);
+    }
+
+    private void checkPlayerItemDrops() {
+        for (int i=0; i<playerIDs.size(); i++) {
+            PlayerInstance player = playerHandlerHashMap.get(playerIDs.get(i)).getPlayerInstance();
+            int playerX = (player.getX()*2 + player.getEntity().getWidth())/2;
+            int playerY = (player.getY()*2 + player.getEntity().getLength())/2;
+            if (player.getNearbyItem() == null) {
+                for (int j = 0; j < itemDropIDs.size(); j++) {
+                    ItemDropInstance itemDropInstance = itemDropInstanceHashMap.get(itemDropIDs.get(i));
+                    int dropX = (itemDropInstance.getX()*2 + itemDropInstance.getEntity().getWidth())/2;
+                    int dropY = (itemDropInstance.getY()*2 + itemDropInstance.getEntity().getLength())/2;
+                    if (Math.abs(playerX-dropX) < 64 && Math.abs(playerY-dropY) < 64) {
+                        player.setNearbyItem(itemDropInstance);
+                    }
+                }
+            }
+        }
+    }
+
+    private void revalidatePlayerItemDrops() {
+        for (int i=0; i<playerIDs.size(); i++) {
+            PlayerInstance player = playerHandlerHashMap.get(playerIDs.get(i)).getPlayerInstance();
+            if (player.getNearbyItem() != null) {
+                int playerX = (player.getX()*2 + player.getEntity().getWidth())/2;
+                int playerY = (player.getY()*2 + player.getEntity().getLength())/2;
+                ItemDropInstance itemDropInstance = player.getNearbyItem();
+                int dropX = (itemDropInstance.getX()*2 + itemDropInstance.getEntity().getWidth())/2;
+                int dropY = (itemDropInstance.getY()*2 + itemDropInstance.getEntity().getLength())/2;
+                if (Math.abs(playerX-dropX) > 64 || Math.abs(playerY-dropY) > 64) {
+                    player.setNearbyItem(null);
+                }
+            }
+        }
     }
 }

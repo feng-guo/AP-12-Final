@@ -11,7 +11,7 @@ public abstract class EntityHandler implements Runnable{
         this.location = location;
     }
 
-    public EntityInstance getEntity() {
+    public EntityInstance getEntityInstance() {
         return entity;
     }
 

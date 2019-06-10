@@ -17,6 +17,24 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	int size = 64;
 	//ArrayList<Double> enemies;
 
+	private String frameRate;
+	private long lastTimeCheck;
+	private long deltaTime;
+	private int frameCount;
+
+	public String getFrameRate()  {
+		long currentTime = System.currentTimeMillis();  //get the current time
+		deltaTime += currentTime - lastTimeCheck; //add to the elapsed time
+		lastTimeCheck = currentTime; //update the last time var
+		frameCount++; //Every time this method is called it is a new frame
+		if (deltaTime>=1000) { //when a second has passed, update the string message
+			frameRate = frameCount + " fps";
+			frameCount = 0; //reset the number of frames since last update
+			deltaTime = 0;  //reset the elapsed time
+		}
+		return frameRate;
+	}
+
 	public WorldDisplayer(PlayerInstance player, Location map) {
 		this.player = player;
 		this.map = map;
@@ -91,8 +109,23 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			Entity e = environmentalInstance.getEntity();
 			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
 		}
+		for (int i=0; i <map.getItemDropIDs().size(); i++) {
+			ItemDropInstance itemDropInstance = map.getItemDrop(map.getItemDropIDs().get(i));
+			int x = itemDropInstance.getX();
+			int y = itemDropInstance.getY();
+			Entity e = itemDropInstance.getEntity();
+			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
+		}
+		if (player.getNearbyItem() != null) {
+			ItemDropInstance e = player.getNearbyItem();
+			int x = e.getX();
+			int y = e.getY();
+			g.setFont(g.getFont().deriveFont(40F));
+			g.drawString(Integer.toString(e.getStack().getStackAmount()),x + relative[0] - (size/2),y + relative[1] - (size/2));
+		}
 		g.setColor(Color.RED);
 		g.fillRect(center[0] - (size / 2), center[1] - (size / 2), size, size);
+		g.drawString(getFrameRate(), 10,10);
 		//g.setColor(Color.GRAY);
 		//g.drawString(getFrameRate(),10,10);
 		repaint();

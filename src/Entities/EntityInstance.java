@@ -4,11 +4,13 @@ abstract public class EntityInstance {
     private int x;
     private int y;
     private Entity entity;
+    private double id;
 
-    public EntityInstance(int x, int y, Entity entity) {
+    public EntityInstance(int x, int y, Entity entity, double id) {
         this.x = x;
         this.y = y;
         this.entity = entity;
+        this.id = id;
     }
 
     public Entity getEntity() {
@@ -37,5 +39,9 @@ abstract public class EntityInstance {
 
     public void moveY(int y) {
         this.y += y;
+    }
+
+    public double getID() {
+        return id;
     }
 }

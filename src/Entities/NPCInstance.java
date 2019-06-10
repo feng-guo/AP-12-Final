@@ -12,8 +12,8 @@ public class NPCInstance extends CharacterInstance {
     private ArrayList<Trade> trades;
     private NPC character;
 
-    public NPCInstance(int x, int y, NPC character, ArrayList<Quest> quests) {
-        super(x, y, character);
+    public NPCInstance(int x, int y, NPC character, ArrayList<Quest> quests, double id) {
+        super(x, y, character, id);
         this.character = character;
         this.quests = quests;
     }
