@@ -7,9 +7,9 @@ import java.util.HashMap;
 
 public class Enemy extends Character {
     private String species;
-    private HashMap<Stack, Double> lootTable;
+    private HashMap<Double, Stack> lootTable;
 
-    public Enemy(Image sprite, int length, int width, int maxHealth, int speed, int defense, int dexterity, String name, String species, HashMap<Stack, Double> lootTable) {
+    public Enemy(Image sprite, int length, int width, int maxHealth, int speed, int defense, int dexterity, String name, String species, HashMap<Double, Stack> lootTable) {
         super(sprite, length, width, maxHealth, speed, defense, dexterity, name);
         this.species = species;
         this.lootTable = lootTable;
@@ -19,7 +19,8 @@ public class Enemy extends Character {
         return species;
     }
 
-    public HashMap<Stack, Double> getLootTable() {
+    public HashMap<Double, Stack> getLootTable() {
         return lootTable;
     }
+
 }

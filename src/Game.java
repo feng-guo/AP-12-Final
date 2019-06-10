@@ -192,9 +192,9 @@ public class Game extends JFrame {
 		p.start();
 		Thread t = new Thread(mapHan);
 		t.start();
-		HashMap<Stack, Double> temp = new HashMap<>();
+		HashMap<Double, Stack> temp = new HashMap<>();
 		Stack stackOne = new Stack(1, woodSword);
-		temp.put(stackOne, 0.4);
+		temp.put(1.0, stackOne);
 		Enemy enemy1 = new Enemy(cakeSprite, 64, 64, 20, 2, 2, 2, "Cake", "Cake", temp);
 		Enemy enemy2 = new Enemy(stickSprite, 64, 64, 20, 3, 3, 3, "Stick", "Wood", temp);
 		EnemyInstance enemy1Ins = new EnemyInstance(20, 40, enemy1, (Weapon)woodSword, 231);
@@ -1313,6 +1313,10 @@ public class Game extends JFrame {
 						playerInstance.setNearbyItem(null);
 					}
 				}
+				return;
+			}
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("K")) {
+				mapHan.killEverything();
 			}
 		}
 	}
