@@ -22,19 +22,6 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	private long deltaTime;
 	private int frameCount;
 
-	public String getFrameRate()  {
-		long currentTime = System.currentTimeMillis();  //get the current time
-		deltaTime += currentTime - lastTimeCheck; //add to the elapsed time
-		lastTimeCheck = currentTime; //update the last time var
-		frameCount++; //Every time this method is called it is a new frame
-		if (deltaTime>=1000) { //when a second has passed, update the string message
-			frameRate = frameCount + " fps";
-			frameCount = 0; //reset the number of frames since last update
-			deltaTime = 0;  //reset the elapsed time
-		}
-		return frameRate;
-	}
-
 	public WorldDisplayer(PlayerInstance player, Location map) {
 		this.player = player;
 		this.map = map;
@@ -44,6 +31,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	public void run() {
 		while (running) {
 			this.setVisible(true);
+			Clock.update();
 			this.repaint();
 		}
 	}
@@ -125,7 +113,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		}
 		g.setColor(Color.RED);
 		g.fillRect(center[0] - (size / 2), center[1] - (size / 2), size, size);
-		g.drawString(getFrameRate(), 10,10);
+		//g.drawString(Double.toString(Clock.getFps()), 10,10);
 		//g.setColor(Color.GRAY);
 		//g.drawString(getFrameRate(),10,10);
 		repaint();
