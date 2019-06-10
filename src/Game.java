@@ -268,9 +268,9 @@ public class Game extends JFrame {
      for(int i = 0; i < size; i++){
       for(int j = 0; j < size; j++){
        if (blocks[i][j].equals("s") || blocks[i][j].equals("g") || blocks[i][j].equals("p")){
-        collisions[i][j] = 0;
+        collisions[j][i] = 0;
        } else {
-        collisions[i][j] = 1;
+        collisions[j][i] = 1;
        }
       }
      }
