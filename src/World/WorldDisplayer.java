@@ -8,6 +8,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.RasterFormatException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +32,9 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	private long deltaTime;
 	private int frameCount;
 
+	BufferedImage healthEmpty;
+	BufferedImage healthFull;
+	BufferedImage currentHealth;
 	BufferedImage hotbar;
 	BufferedImage hotbarSelect;
 	private GameMouseWheelListener gameMouseWheelListener;
@@ -42,6 +47,9 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 		//move this later
 		try {
+			healthEmpty = ImageIO.read(new File("assets/gui/health_empty.png"));
+			healthFull = ImageIO.read(new File("assets/gui/health_full.png"));
+
 			hotbar = ImageIO.read(new File("assets/gui/hotbar.png"));
 			hotbarSelect = ImageIO.read(new File("assets/gui/selected.png"));
 		} catch (IOException e) {
@@ -165,10 +173,11 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 		//Draw UI
 		//Health bar
-		g.setColor(Color.BLACK);
-		g.fillRect(16, 16, 256,32);
-		g.setColor(Color.RED);
-		g.fillRect(16,16,256 * (player.getCurrentHealth() / player.getMaxHealth()), 32);
+		g.drawImage(healthEmpty, center[0] - (hotbar.getWidth() / 2),(2 * center[1]) - (hotbar.getHeight()) - 40, null);
+
+		//Crop full health bar to be a percentage of the max health
+		double percentHealth = (double)(player.getCurrentHealth()) / (double)(player.getMaxHealth());
+		g.drawImage(cropImage(healthFull, percentHealth), center[0] - (hotbar.getWidth() / 2),(2 * center[1]) - (hotbar.getHeight()) - 40, null);
 
 		//Inventory hotbar
 		g.drawImage(hotbar, center[0] - (hotbar.getWidth() / 2), (2 * center[1]) - (hotbar.getHeight()) - 8, null);
@@ -190,6 +199,17 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			}
 		}
 		repaint();
+	}
+
+	private BufferedImage cropImage(BufferedImage src, double percent) {
+		BufferedImage dest;
+		try {
+			dest = src.getSubimage(0, 0, (int)(src.getWidth() * percent), src.getHeight());
+		} catch (RasterFormatException e) {
+			//health is <= 0
+			dest = src.getSubimage(0, 0, 1, src.getHeight());
+		}
+		return dest;
 	}
 
 	private class GameMouseWheelListener implements MouseWheelListener {
