@@ -27,8 +27,6 @@ public class PlayerInstance extends CharacterInstance {
     public void loadSprites() {
         try {
             BufferedImage sheet = ImageIO.read(new File("Zombie Spritesheet.png"));
-            BufferedImage
-            BufferedImage
             final int width = 50;
             final int height = 60;
             final int cols = 4;
