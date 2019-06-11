@@ -174,7 +174,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		g.drawImage(hotbar, center[0] - (hotbar.getWidth() / 2), (2 * center[1]) - (hotbar.getHeight()) - 8, null);
 
 		//Currently selected item
-		int current = player.getInventory().getCurrentItem() - 27;
+		int current = player.getInventory().getCurrentItemIndex() - 27;
 		g.drawImage(hotbarSelect, center[0] - (hotbar.getWidth() / 2) - 4 + (current * 80), (2 * center[1]) - (hotbar.getHeight()) - 12, null);
 
 		//Other items
