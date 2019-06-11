@@ -6,8 +6,8 @@ import Entities.PlayerInstance;
 
 import javax.swing.JPanel;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 public class WorldDisplayer extends JPanel implements Runnable {
 
@@ -16,6 +16,8 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	Location map;
 	int[][] mapTile;
 	int size = 64;
+	private int mouseClickX;
+	private int mouseClickY;
 	//ArrayList<Double> enemies;
 
 	private String frameRate;
@@ -23,10 +25,14 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	private long deltaTime;
 	private int frameCount;
 
+	private GameMouseWheelListener gameMouseWheelListener;
+
 	public WorldDisplayer(PlayerInstance player, Location map) {
 		this.player = player;
 		this.map = map;
 		this.mapTile = map.getMap();
+		this.gameMouseWheelListener = new GameMouseWheelListener();
+		this.addMouseWheelListener(gameMouseWheelListener);
 	}
 
 	public void run() {
@@ -105,14 +111,17 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			Entity e = itemDropInstance.getEntity();
 			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
 		}
+		Font currentFont = g.getFont();
 		if (player.getNearbyItem() != null) {
 			ItemDropInstance e = player.getNearbyItem();
 			int x = e.getX();
 			int y = e.getY();
-			g.setFont(g.getFont().deriveFont(40F));
+
+			Font newFont = currentFont.deriveFont(Font.BOLD);
+			g.setFont(newFont);
 			g.drawString(Integer.toString(e.getStack().getStackAmount()),x + relative[0] - (size/2),y + relative[1] - (size/2));
 		}
-
+		g.setFont(currentFont);
 		g.setColor(Color.RED);
 		g.fillRect(center[0] - (size / 2), center[1] - (size / 2), size, size);
 
@@ -130,7 +139,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		//Inventory hotbar
 		//Currently selected item
 		g.setColor(Color.RED);
-		int current = player.getInventory().getCurrentItem() - 27;
+		int current = player.getInventory().getCurrentItemIndex() - 27;
 		g.drawRect((center[0] - 29) + ((current - 4) * 58),(center[1] * 2) - 58,58,58);
 		//Other items
 		g.setColor(Color.BLACK);
@@ -146,4 +155,14 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		}
 		repaint();
 	}
+
+	private class GameMouseWheelListener implements MouseWheelListener {
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
+			int movement = mouseWheelEvent.getWheelRotation();
+			player.getInventory().changeCurrentItem(movement);
+		}
+	}
+
+
 }
