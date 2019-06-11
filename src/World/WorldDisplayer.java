@@ -128,7 +128,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		}
 
 		g.setFont(currentFont);
-		
+
 		switch(player.getDirection()){
 			case 0:
 				g.drawImage(player.drawDown(), center[0] - (size / 2), center[1] - (size / 2),size,size, null);
