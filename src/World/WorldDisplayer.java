@@ -112,8 +112,10 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			g.setFont(g.getFont().deriveFont(40F));
 			g.drawString(Integer.toString(e.getStack().getStackAmount()),x + relative[0] - (size/2),y + relative[1] - (size/2));
 		}
+
 		g.setColor(Color.RED);
 		g.fillRect(center[0] - (size / 2), center[1] - (size / 2), size, size);
+
 		//g.drawString(Double.toString(Clock.getFps()), 10,10);
 		//g.setColor(Color.GRAY);
 		//g.drawString(getFrameRate(),10,10);
