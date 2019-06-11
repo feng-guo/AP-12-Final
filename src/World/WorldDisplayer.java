@@ -6,6 +6,7 @@ import Entities.PlayerInstance;
 
 import javax.swing.JPanel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class WorldDisplayer extends JPanel implements Runnable {
@@ -111,11 +112,38 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			g.setFont(g.getFont().deriveFont(40F));
 			g.drawString(Integer.toString(e.getStack().getStackAmount()),x + relative[0] - (size/2),y + relative[1] - (size/2));
 		}
+
 		g.setColor(Color.RED);
 		g.fillRect(center[0] - (size / 2), center[1] - (size / 2), size, size);
+
 		//g.drawString(Double.toString(Clock.getFps()), 10,10);
 		//g.setColor(Color.GRAY);
 		//g.drawString(getFrameRate(),10,10);
+
+		//Draw UI
+		//Health bar
+		g.setColor(Color.BLACK);
+		g.fillRect(16, 16, 256,32);
+		g.setColor(Color.RED);
+		g.fillRect(16,16,256 * (player.getCurrentHealth() / player.getMaxHealth()), 32);
+
+		//Inventory hotbar
+		//Currently selected item
+		g.setColor(Color.RED);
+		int current = player.getInventory().getCurrentItem() - 27;
+		g.drawRect((center[0] - 29) + ((current - 4) * 58),(center[1] * 2) - 58,58,58);
+		//Other items
+		g.setColor(Color.BLACK);
+		for (int i = 0; i <= 9; i++) {
+			try {
+				Image image = player.getInventory().get(i + 27).getItem().getSprite();
+				int quantity = player.getInventory().get(i + 27).getStackAmount();
+				g.drawImage(image, (center[0] - 29) + ((i - 4) * 58),(center[1] * 2) - 58,58,58,null);
+				g.drawString(Integer.toString(quantity), (center[0]) + ((i - 4) * 58),(center[1] * 2) - 58);
+			} catch (NullPointerException e) {
+				//No item in slot
+			}
+		}
 		repaint();
 	}
 }

@@ -3,6 +3,10 @@ package World;
 import Entities.*;
 import Items.Item;
 import Items.Stack;
+<<<<<<< HEAD
+=======
+//import com.sun.corba.se.spi.ior.ObjectKey;
+>>>>>>> 43b3ecd9d0575e72e2a3a2f0daac9de99a93af7a
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -44,14 +48,15 @@ public class LocationHandler implements Runnable {
     public void run() {
         //Code here
         //Might want to handle threads here better
+
         while(true) {
             checkPlayerItemDrops();
             revalidatePlayerItemDrops();
             checkEnemies();
             try {
                 Thread.sleep(30);
-            } catch (InterruptedException e) {
 
+            } catch (InterruptedException e) {
             }
         }
     }
@@ -202,7 +207,7 @@ public class LocationHandler implements Runnable {
             int playerY = (player.getY()*2 + player.getEntity().getLength())/2;
             if (player.getNearbyItem() == null) {
                 for (int j = 0; j < itemDropIDs.size(); j++) {
-                    ItemDropInstance itemDropInstance = itemDropInstanceHashMap.get(itemDropIDs.get(i));
+                    ItemDropInstance itemDropInstance = itemDropInstanceHashMap.get(itemDropIDs.get(j));
                     int dropX = (itemDropInstance.getX()*2 + itemDropInstance.getEntity().getWidth())/2;
                     int dropY = (itemDropInstance.getY()*2 + itemDropInstance.getEntity().getLength())/2;
                     if (Math.abs(playerX-dropX) < 64 && Math.abs(playerY-dropY) < 64) {
@@ -225,9 +230,6 @@ public class LocationHandler implements Runnable {
                 if (Math.abs(playerX-dropX) > 64 || Math.abs(playerY-dropY) > 64) {
                     player.setNearbyItem(null);
                 }
-            }
-            if (playerIDs.size() > 1) {
-                System.out.println("Penis");
             }
         }
     }
@@ -256,7 +258,8 @@ public class LocationHandler implements Runnable {
         for (int i=0; i<list.size(); i++) {
             if (random < list.get(i)) {
                 ItemDrop itemDrop = new ItemDrop(itemHashMap.get(list.get(i)));
-                ItemDropInstance itemDropInstance = new ItemDropInstance(e.getX(), e.getY(), itemDrop, (double)System.nanoTime());
+                double id = (double) System.nanoTime();
+                ItemDropInstance itemDropInstance = new ItemDropInstance(e.getX(), e.getY(), itemDrop, id);
                 addItemDrop(itemDropInstance);
 
                 return;
