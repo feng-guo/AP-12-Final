@@ -1209,7 +1209,6 @@ public class Game extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				x = e.getX();
 				y = e.getY();
-				System.out.println(x);
 				if (y>360) {
 					if (mouseButton == -1) {
 						if (!determineItemClick(e) && handStack != null) {
@@ -1398,13 +1397,13 @@ public class Game extends JFrame {
 				} else if (item instanceof Consumable) {
 					if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
 						if (item instanceof Food) {
-							((Food) item).use(); //THIS IS NOT REAL CODE
+							((Food) item).use(playerInstance);
 							playerInstance.getInventory().get(index).remove(1);
 							if (playerInstance.getInventory().get(index).getStackAmount() == 0) {
 								playerInstance.getInventory().remove(index);
 							}
 						} else if (item instanceof Potion) {
-							((Potion) item).use(); //THIS IS ALSO NOT REAL CODE
+							((Potion) item).use(playerInstance);
 							playerInstance.getInventory().remove(index);
 						}
 					}
