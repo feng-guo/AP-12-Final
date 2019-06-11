@@ -13,7 +13,7 @@ public class NPC extends Character{
     private int walkingRange;
 
     public NPC(Image sprite, int length, int width, int maxHealth, int speed, int defense, int dexterity, String name, String defaultDialogue, String title, HashMap<Item, Stack> trades, int walkingRange) {
-        super(sprite, 0, length, width, maxHealth, speed, defense, dexterity, name);
+        super(sprite, length, width, maxHealth, speed, defense, dexterity, name);
         this.defaultDialogue = defaultDialogue;
         this.title = title;
         this.trades = trades;

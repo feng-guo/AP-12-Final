@@ -3,6 +3,9 @@ package Entities;
 import World.Clock;
 import World.Location;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 public class PlayerHandler extends CharacterHandler {
     private PlayerInstance playerInstance;
     private boolean[] keyPresses;
@@ -19,7 +22,15 @@ public class PlayerHandler extends CharacterHandler {
     public PlayerInstance getPlayerInstance() {
         return playerInstance;
     }
+/*
+    public void setCurrentImage(BufferedImage image){
+        currentImage = image;
+    }
 
+    public void draw(Graphics g){
+        g.drawImage(currentImage)
+    }
+*/
     private void determineMovement() {
         if (keyPresses[2]) {
             if (!keyPresses[3]) {

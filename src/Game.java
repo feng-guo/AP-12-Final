@@ -1286,15 +1286,23 @@ public class Game extends JFrame {
 		public void keyPressed(KeyEvent e) {
 			if (currentPanel == worldPanel) {
 				if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {  //W
+					worldPanel.setDirection(1);
+					//playerHandler.move();
 					playerHandler.keyPressed("W");
 				}
 				if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")) {  //D
+					worldPanel.setDirection(2);
+					//playerHandler.move();
 					playerHandler.keyPressed("D");
 				}
 				if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")) {  //S
+					worldPanel.setDirection(0);
+					//playerHandler.move();
 					playerHandler.keyPressed("S");
 				}
 				if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")) {  //A
+					worldPanel.setDirection(3);
+					//playerHandler.move();
 					playerHandler.keyPressed("A");
 				}
 				for (int i = 1; i <= 9; i++) {
@@ -1303,6 +1311,8 @@ public class Game extends JFrame {
 					}
 				}
 			}
+
+
 		}
 
 		public void keyTyped(KeyEvent e) {}
@@ -1326,9 +1336,11 @@ public class Game extends JFrame {
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {  //W
 				playerHandler.keyReleased("W");
+
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")) {  //D
 				playerHandler.keyReleased("D");
+
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")) {  //S
 				playerHandler.keyReleased("S");
