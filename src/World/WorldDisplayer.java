@@ -24,6 +24,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 	public WorldDisplayer(PlayerInstance player, Location map) {
 		this.player = player;
+		player.loadSprites();
 		this.map = map;
 		this.mapTile = map.getMap();
 	}
@@ -34,6 +35,10 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			Clock.update();
 			this.repaint();
 		}
+	}
+	public void setDirection(int direction){
+		player.setDirection(direction);
+		player.move();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -112,8 +117,19 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			g.drawString(Integer.toString(e.getStack().getStackAmount()),x + relative[0] - (size/2),y + relative[1] - (size/2));
 		}
 
+		switch(player.getDirection()){
+			case 0:
+				g.drawImage(player.drawDown(), center[0] - (size / 2), center[1] - (size / 2),size,size, null);
+			case 1:
+				g.drawImage(player.drawUp(),center[0] - (size / 2), center[1] - (size / 2),size,size, null);
+			case 2:
+				g.drawImage(player.drawRight(),center[0] - (size / 2), center[1] - (size / 2),size,size, null);
+			case 3:
+				g.drawImage(player.drawLeft(),center[0] - (size / 2), center[1] - (size / 2),size,size, null)	;
+		}
+
 		g.setColor(Color.RED);
-		g.fillRect(center[0] - (size / 2), center[1] - (size / 2), size, size);
+		//g.fillRect(center[0] - (size / 2), center[1] - (size / 2), size, size);
 
 		//g.drawString(Double.toString(Clock.getFps()), 10,10);
 		//g.setColor(Color.GRAY);
