@@ -811,7 +811,7 @@ public class Game extends JFrame {
 			}
 		}
 
-		private void determineItemClick(MouseEvent e) {
+		private boolean determineItemClick(MouseEvent e) {
 			int checkX = x-320;
 			int checkY;
 			boolean fourthRow = false;
@@ -821,10 +821,10 @@ public class Game extends JFrame {
 				checkY = y - 596;
 				fourthRow = true;
 			} else {
-				return;
+				return false;
 			}
 			if (checkX<0 || checkX > 648 || checkY<0) {
-				return;
+				return false;
 			}
 			if (checkX%72<64) {
 				if (checkY % 72 < 64) {
@@ -850,6 +850,7 @@ public class Game extends JFrame {
 						} else if (e.getButton() == e.BUTTON3) {
 							handStack = inventory.dropHalf(index);
 						}
+						return true;
 					} else {
 						if (inventory.get(index) == null) {
 							if (e.getButton() == e.BUTTON1) {
@@ -889,8 +890,13 @@ public class Game extends JFrame {
 								handStack = temp;
 							}
 						}
+						return true;
 					}
+				} else {
+					return false;
 				}
+			} else {
+				return false;
 			}
 		}
 
@@ -1199,12 +1205,27 @@ public class Game extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				x = e.getX();
 				y = e.getY();
+				System.out.println(x);
 				if (y>360) {
 					if (mouseButton == -1) {
-						determineItemClick(e);
+						if (!determineItemClick(e) && handStack != null) {
+							if (x<290 || x>988) {
+								ItemDrop itemDrop = new ItemDrop(handStack);
+								handStack = null;
+								ItemDropInstance itemDropInstance = new ItemDropInstance(playerInstance.getX(), playerInstance.getY(), itemDrop, (double)System.nanoTime());
+								mapHan.addItemDrop(itemDropInstance);
+							}
+						}
 					}
-				} else if (e.getButton() == e.BUTTON1) {
+				} else if (e.getButton() == e.BUTTON1 && x>290 && x<988) {
 					determineArmourClick(e);
+				} else {
+					if (handStack != null) {
+						ItemDrop itemDrop = new ItemDrop(handStack);
+						handStack = null;
+						ItemDropInstance itemDropInstance = new ItemDropInstance(playerInstance.getX(), playerInstance.getY(), itemDrop, (double)System.nanoTime());
+						mapHan.addItemDrop(itemDropInstance);
+					}
 				}
 			}
 
@@ -1279,6 +1300,11 @@ public class Game extends JFrame {
 					worldPanel.setDirection(3);
 					//playerHandler.move();
 					playerHandler.keyPressed("A");
+				}
+				for (int i = 1; i <= 9; i++) {
+					if (KeyEvent.getKeyText(e.getKeyCode()).equals(Integer.toString(i))) {
+						playerInstance.getInventory().setCurrentItem((26 + i));
+					}
 				}
 			}
 

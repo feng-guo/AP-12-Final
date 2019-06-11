@@ -3,9 +3,6 @@ package World;
 import Entities.*;
 import Items.Item;
 import Items.Stack;
-//import com.sun.corba.se.spi.ior.ObjectKey;
-
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class LocationHandler implements Runnable {
@@ -41,7 +38,7 @@ public class LocationHandler implements Runnable {
         itemDropInstanceHashMap = new HashMap<>();
         thread = new ArrayList<>();
     }
-    
+
     public void run() {
         //Code here
         //Might want to handle threads here better

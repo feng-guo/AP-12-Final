@@ -11,7 +11,7 @@ public class WeaponEffect extends Entity {
     public WeaponEffect(Image sprite, int length, int width, Weapon weapon) {
         super(sprite, length, width);
         this.effectDuration = weapon.getRange();
-        this.damage = weapon.getRange();
+        this.damage = weapon.getDamage();
     }
 
     public int getEffectDuration() {
