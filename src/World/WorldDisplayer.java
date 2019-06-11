@@ -121,16 +121,20 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		//g.drawString(getFrameRate(),10,10);
 
 		//Draw UI
+		//Health bar
 		g.setColor(Color.BLACK);
 		g.fillRect(16, 16, 256,32);
 		g.setColor(Color.RED);
 		g.fillRect(16,16,256 * (player.getCurrentHealth() / player.getMaxHealth()), 32);
 
+		//Inventory hotbar
+		g.setColor(Color.BLACK);
 		for (int i = 0; i <= 9; i++) {
 			try {
 				Image image = player.getInventory().get(i + 27).getItem().getSprite();
 				int quantity = player.getInventory().get(i + 27).getStackAmount();
-				g.drawImage(image, i * 58, 0, 58, 58, null);
+				g.drawImage(image, (center[0] - 29) - ((i - 4) * 58),(center[1] * 2) - 58,58,58,null);
+				g.drawString(Integer.toString(quantity), (center[0]) - ((i - 4) * 58),(center[1] * 2) - 58);
 			} catch (NullPointerException e) {
 				//No item in slot
 			}
