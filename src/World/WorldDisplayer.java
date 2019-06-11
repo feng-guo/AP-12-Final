@@ -6,6 +6,7 @@ import Entities.PlayerInstance;
 
 import javax.swing.JPanel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class WorldDisplayer extends JPanel implements Runnable {
@@ -116,6 +117,22 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		//g.drawString(Double.toString(Clock.getFps()), 10,10);
 		//g.setColor(Color.GRAY);
 		//g.drawString(getFrameRate(),10,10);
+
+		//Draw UI
+		g.setColor(Color.BLACK);
+		g.fillRect(16, 16, 256,32);
+		g.setColor(Color.RED);
+		g.fillRect(16,16,256 * (player.getCurrentHealth() / player.getMaxHealth()), 32);
+
+		for (int i = 0; i <= 9; i++) {
+			try {
+				Image image = player.getInventory().get(i + 27).getItem().getSprite();
+				int quantity = player.getInventory().get(i + 27).getStackAmount();
+				g.drawImage(image, i * 58, 0, 58, 58, null);
+			} catch (NullPointerException e) {
+				//No item in slot
+			}
+		}
 		repaint();
 	}
 }
