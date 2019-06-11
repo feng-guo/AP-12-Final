@@ -2,13 +2,13 @@ package Entities;
 
 public class WeaponEffectInstance extends EntityInstance {
     private WeaponEffect weaponEffect;
-    private int timeCreated;
+    private double timeCreated;
     private int initialX;
     private int initialY;
     private int targetX;
     private int targetY;
 
-    public WeaponEffectInstance(int x, int y, WeaponEffect weaponEffect, int timeCreated, int targetX, int targetY, double id) {
+    public WeaponEffectInstance(int x, int y, WeaponEffect weaponEffect, double timeCreated, int targetX, int targetY, double id) {
         super(x, y, weaponEffect, id);
         this.weaponEffect = weaponEffect;
         this.timeCreated = timeCreated;
@@ -23,7 +23,7 @@ public class WeaponEffectInstance extends EntityInstance {
         return weaponEffect;
     }
 
-    public int getTimeCreated() {
+    public double getTimeCreated() {
         return timeCreated;
     }
 
