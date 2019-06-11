@@ -10,6 +10,7 @@ public class Inventory {
     private Armour[] legs;
     private Armour[] rings;
     private int maxSlots;
+    private int currentItem;
 
     public Inventory(int maxSlots) {
         this.inventory = new Stack[36];
@@ -20,6 +21,7 @@ public class Inventory {
         legs = new Armour[2];
         rings = new Armour[3];
         this.maxSlots = maxSlots;
+        this.currentItem = 27;
     }
 
     public int getMaxSlots() {
@@ -138,6 +140,14 @@ public class Inventory {
                 }
             }
         }
+    }
+
+    public int getCurrentItem() {
+        return currentItem;
+    }
+
+    public void setCurrentItem(int currentItem) {
+        this.currentItem = currentItem;
     }
 
     public void sendDown(int index) {
