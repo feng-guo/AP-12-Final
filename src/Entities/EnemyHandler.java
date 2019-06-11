@@ -5,7 +5,7 @@ import World.Location;
 
 public class EnemyHandler extends CharacterHandler {
     private EnemyInstance enemyInstance;
-    private PlayerInstance playerInstance; // not sure how to get Player's X and Y location
+    private PlayerInstance p;
     private boolean playerSpotted = false;
 
     public EnemyHandler(EnemyInstance enemyInstance, Location location) {
@@ -32,8 +32,8 @@ public class EnemyHandler extends CharacterHandler {
             }
 
         } else {
-            double dX = playerInstance.getX() - enemyInstance.getX();
-            double dY = playerInstance.getY() - enemyInstance.getY();
+            double dX = p.getX() - enemyInstance.getX();
+            double dY = p.getY() - enemyInstance.getY();
 
             double divider = Math.sqrt(dX * dX + dY * dY);
 
@@ -49,14 +49,47 @@ public class EnemyHandler extends CharacterHandler {
     }
 
     public boolean playerInRange () {
-        if (Math.sqrt(Math.pow(playerInstance.getX()-enemyInstance.getX(), 2)+ Math.pow(playerInstance.getY()-enemyInstance.getY(),2)) < 20){
+        getClosestPlayer();
+        if (Math.sqrt(Math.pow(p.getX()-enemyInstance.getX(), 2)+ Math.pow(p.getY()-enemyInstance.getY(),2)) < 20){
             return true;
         }
         return false;
     }
 
+    public void getClosestPlayer() {
+
+        double minDistance = 0;
+        double tempMinDistance = 0;
+        int playerOnMapNumber = -1;
+
+        for (int i =0; i < location.getPlayerIDs().size(); i ++){
+            p = location.getPlayer(location.getIDs.get(i));
+            int playerX = p.getX();
+            int playerY = p.getY();
+            tempMinDistance = Math.sqrt(Math.pow(p.getX()-enemyInstance.getX(), 2)+ Math.pow(p.getY()-enemyInstance.getY(),2));
+            if (i == 0) {
+                minDistance = tempMinDistance;
+                playerOnMapNumber = 0;
+            }
+            if (tempMinDistance < minDistance) {
+                minDistance = tempMinDistance;
+                playerOnMapNumber = i;
+            }
+
+        }
+        p = location.getPlayer(location.getIDs.get(playerOnMapNumber));
+    }
+
+    /**
+     for (int i =0; i < location.getPlayerIDs().size(); i ++){
+     PlayerInstance p = location.getPlayer(location.getIDs.get(i));
+     int playerX = p.getX();
+     int playerY = p.getY();
+     }
+     */
+
     public void attack() {
-        if (Math.sqrt(Math.pow(playerInstance.getX()-enemyInstance.getX(), 2)+ Math.pow(playerInstance.getY()-enemyInstance.getY(),2)) < 5){
+        if (Math.sqrt(Math.pow(p.getX()-enemyInstance.getX(), 2)+ Math.pow(p.getY()-enemyInstance.getY(),2)) < 5){
             int weaponRange = enemyInstance.getWeapon().getRange();
             int weaponDamage = enemyInstance.getWeapon().getDamage();
             // not sure what to do
