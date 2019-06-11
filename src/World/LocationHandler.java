@@ -38,7 +38,7 @@ public class LocationHandler implements Runnable {
         itemDropInstanceHashMap = new HashMap<>();
         thread = new ArrayList<>();
     }
-    
+
     public void run() {
         //Code here
         //Might want to handle threads here better
