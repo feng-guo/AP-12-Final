@@ -11,6 +11,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 public class WorldDisplayer extends JPanel implements Runnable {
 
@@ -19,6 +21,8 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	Location map;
 	int[][] mapTile;
 	int size = 64;
+	private int mouseClickX;
+	private int mouseClickY;
 	//ArrayList<Double> enemies;
 
 	private String frameRate;
@@ -28,6 +32,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 	BufferedImage hotbar;
 	BufferedImage hotbarSelect;
+	private GameMouseWheelListener gameMouseWheelListener;
 
 	public WorldDisplayer(PlayerInstance player, Location map) {
 		this.player = player;
@@ -43,6 +48,8 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			//image not found ?
 		}
 
+		this.gameMouseWheelListener = new GameMouseWheelListener();
+		this.addMouseWheelListener(gameMouseWheelListener);
 	}
 
 	public void run() {
@@ -125,13 +132,18 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			Entity e = itemDropInstance.getEntity();
 			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
 		}
+		Font currentFont = g.getFont();
 		if (player.getNearbyItem() != null) {
 			ItemDropInstance e = player.getNearbyItem();
 			int x = e.getX();
 			int y = e.getY();
-			g.setFont(g.getFont().deriveFont(40F));
+
+			Font newFont = currentFont.deriveFont(Font.BOLD);
+			g.setFont(newFont);
 			g.drawString(Integer.toString(e.getStack().getStackAmount()),x + relative[0] - (size/2),y + relative[1] - (size/2));
 		}
+
+		g.setFont(currentFont);
 
 		switch(player.getDirection()){
 			case 0:
@@ -179,4 +191,14 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		}
 		repaint();
 	}
+
+	private class GameMouseWheelListener implements MouseWheelListener {
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
+			int movement = mouseWheelEvent.getWheelRotation();
+			player.getInventory().changeCurrentItem(movement);
+		}
+	}
+
+
 }

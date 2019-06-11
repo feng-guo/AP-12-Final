@@ -188,6 +188,8 @@ public class Game extends JFrame {
 		mapHan.addEnvironmental(titOre);
 		mapHan.addPlayer(playerHandler);
 		mapHan.addEnvironmental(breadOreThing);
+		gameMouseListener = new GameMouseListener();
+
 
 		Thread p = new Thread(playerHandler);
 		p.start();
@@ -212,6 +214,7 @@ public class Game extends JFrame {
 		mapHan.addEnemy(enemy1Han);
 		mapHan.addEnemy(enemy2Han);
 		worldPanel = new WorldDisplayer(playerInstance, map);
+		worldPanel.addMouseListener(gameMouseListener);
 
 		Stack cakeStack = new Stack(2, cake);
 		Stack breadStack = new Stack(30, bread);
@@ -296,6 +299,7 @@ public class Game extends JFrame {
 
 	private class GamePanel extends JPanel {
 		Clock clock = new Clock();
+
 		GamePanel() {
 			Thread t = new Thread(new GameLoop());
 			t.start();
@@ -1303,7 +1307,7 @@ public class Game extends JFrame {
 				}
 				for (int i = 1; i <= 9; i++) {
 					if (KeyEvent.getKeyText(e.getKeyCode()).equals(Integer.toString(i))) {
-						playerInstance.getInventory().setCurrentItem((26 + i));
+						playerInstance.getInventory().setCurrentItemIndex((26 + i));
 					}
 				}
 			}
@@ -1354,12 +1358,68 @@ public class Game extends JFrame {
 						playerInstance.setNearbyItem(null);
 					}
 				}
-				return;
-			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("K")) {
-				mapHan.killEverything();
 			}
 		}
 	}
 
+	private int mouseClickX;
+	private int mouseClickY;
+	private GameMouseListener gameMouseListener;
+	private class GameMouseListener implements MouseListener {
+		@Override
+		public void mouseClicked(MouseEvent mouseEvent) {
+			mouseClickX = mouseEvent.getX();
+			mouseClickY = mouseEvent.getY();
+			Item item;
+			try {
+				item = playerInstance.getInventory().getCurrentItem().getItem();
+			} catch (NullPointerException e) {
+				//Stack is null
+				return;
+			}
+			int index = playerInstance.getInventory().getCurrentItemIndex();
+			if (item != null) {
+				if (item instanceof Weapon) {
+					if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
+						mapHan.playerAttack(mouseClickX, mouseClickY, playerInstance);
+					} else if (mouseEvent.getButton() == 3) {
+						//code here
+					}
+				} else if (item instanceof Consumable) {
+					if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+						if (item instanceof Food) {
+							((Food) item).use(); //THIS IS NOT REAL CODE
+							playerInstance.getInventory().get(index).remove(1);
+							if (playerInstance.getInventory().get(index).getStackAmount() == 0) {
+								playerInstance.getInventory().remove(index);
+							}
+						} else if (item instanceof Potion) {
+							((Potion) item).use(); //THIS IS ALSO NOT REAL CODE
+							playerInstance.getInventory().remove(index);
+						}
+					}
+				}
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent mouseEvent) {
+
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent mouseEvent) {
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent mouseEvent) {
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent mouseEvent) {
+
+		}
+	}
 }

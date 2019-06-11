@@ -261,9 +261,7 @@ public class LocationHandler implements Runnable {
         }
     }
 
-    public void killEverything() {
-        for ( int i= 0; i<enemyIDs.size(); i++) {
-            enemyHandlerHashMap.get(enemyIDs.get(i)).getEnemyInstance().setCurrentHealth(0);
-        }
+    public void playerAttack(int x, int y, PlayerInstance playerInstance) {
+
     }
 }

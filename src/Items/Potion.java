@@ -2,7 +2,7 @@ package Items;
 
 import java.awt.*;
 
-class Potion extends Consumable{
+public class Potion extends Consumable{
     private String effect;
     private int duration;
 
