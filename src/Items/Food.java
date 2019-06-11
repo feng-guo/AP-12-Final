@@ -1,5 +1,7 @@
 package Items;
 
+import Entities.PlayerInstance;
+
 import java.awt.*;
 
 public class Food extends Consumable {
@@ -10,8 +12,9 @@ public class Food extends Consumable {
         this.restorationValue = restorationValue;
     }
 
-    public void use(){
-        //Figure out later
+    public void use(PlayerInstance player){
+        player.changeCurrentHunger(restorationValue);
+        player.heal(super.getHealthGain());
     }
 
     public int getRestorationValue() {

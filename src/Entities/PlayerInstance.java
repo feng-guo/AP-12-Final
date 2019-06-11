@@ -5,6 +5,7 @@ import Items.Inventory;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
 public class PlayerInstance extends CharacterInstance {
     private int direction;
@@ -15,13 +16,15 @@ public class PlayerInstance extends CharacterInstance {
     private Inventory inventory;
     private ItemDropInstance nearbyItem;
     private int currentSprite;
+    private int currentHunger;
 
     public PlayerInstance(int x, int y, Player player, double id) {
         super(x,y, player, id);
         loadSprites();
         this.direction = 0;
         currentSprite = 0;
-        inventory = new Inventory(36);
+        this.inventory = new Inventory(36);
+        this.currentHunger = 10;
     }
 
     public void loadSprites() {
@@ -80,5 +83,21 @@ public class PlayerInstance extends CharacterInstance {
 
     public int getDirection(){
         return direction;
+    }
+
+    public int getCurrentHunger() {
+        return currentHunger;
+    }
+
+    public void setCurrentHunger(int currentHunger) {
+        this.currentHunger = currentHunger;
+    }
+
+    public void changeCurrentHunger(int c) {
+        if (currentHunger + c > 10) {
+            this.currentHunger = 10;
+        } else {
+            this.currentHunger += c;
+        }
     }
 }

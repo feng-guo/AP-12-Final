@@ -1,6 +1,6 @@
 package Items;
 
-import java.awt.*;
+import java.awt.Image;
 
 abstract class Equipable extends Item {
     private int durability;
