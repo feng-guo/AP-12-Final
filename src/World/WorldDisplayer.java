@@ -4,9 +4,12 @@ import Entities.EnemyInstance;
 import Entities.*;
 import Entities.PlayerInstance;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class WorldDisplayer extends JPanel implements Runnable {
@@ -23,11 +26,23 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	private long deltaTime;
 	private int frameCount;
 
+	BufferedImage hotbar;
+	BufferedImage hotbarSelect;
+
 	public WorldDisplayer(PlayerInstance player, Location map) {
 		this.player = player;
 		player.loadSprites();
 		this.map = map;
 		this.mapTile = map.getMap();
+
+		//move this later
+		try {
+			hotbar = ImageIO.read(new File("assets/gui/hotbar.png"));
+			hotbarSelect = ImageIO.read(new File("assets/gui/selected.png"));
+		} catch (IOException e) {
+			//image not found ?
+		}
+
 	}
 
 	public void run() {
@@ -144,18 +159,20 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		g.fillRect(16,16,256 * (player.getCurrentHealth() / player.getMaxHealth()), 32);
 
 		//Inventory hotbar
+		g.drawImage(hotbar, center[0] - (hotbar.getWidth() / 2), (2 * center[1]) - (hotbar.getHeight()) - 8, null);
+
 		//Currently selected item
-		g.setColor(Color.RED);
 		int current = player.getInventory().getCurrentItem() - 27;
-		g.drawRect((center[0] - 29) + ((current - 4) * 58),(center[1] * 2) - 58,58,58);
+		g.drawImage(hotbarSelect, center[0] - (hotbar.getWidth() / 2) - 4 + (current * 80), (2 * center[1]) - (hotbar.getHeight()) - 12, null);
+
 		//Other items
 		g.setColor(Color.BLACK);
 		for (int i = 0; i <= 9; i++) {
 			try {
 				Image image = player.getInventory().get(i + 27).getItem().getSprite();
 				int quantity = player.getInventory().get(i + 27).getStackAmount();
-				g.drawImage(image, (center[0] - 29) + ((i - 4) * 58),(center[1] * 2) - 58,58,58,null);
-				g.drawString(Integer.toString(quantity), (center[0]) + ((i - 4) * 58),(center[1] * 2) - 58);
+				g.drawImage(image, (center[0] - 29) + ((i - 4) * 80) + 1,(center[1] * 2) - 56 - 24,60,60,null);
+				g.drawString(Integer.toString(quantity), (center[0] - 29) + ((i - 4) * 80) + 52,(center[1] * 2) - 24);
 			} catch (NullPointerException e) {
 				//No item in slot
 			}
