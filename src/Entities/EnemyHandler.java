@@ -5,6 +5,8 @@ import World.Location;
 
 public class EnemyHandler extends CharacterHandler {
     private EnemyInstance enemyInstance;
+    private PlayerInstance playerInstance; // not sure how to get Player's X and Y location
+    private boolean playerSpotted = false;
 
     public EnemyHandler(EnemyInstance enemyInstance, Location location) {
         super(enemyInstance, location);
@@ -17,20 +19,49 @@ public class EnemyHandler extends CharacterHandler {
 
     @Override
     public void move() {
-        double rand = Math.random();
-        if (rand<0.25) {
-            enemyInstance.moveX(-enemyInstance.getSpeed());
-        } else if (rand<0.5) {
-            enemyInstance.moveX(enemyInstance.getSpeed());
-        } else if (rand<0.75) {
-            enemyInstance.moveY(-enemyInstance.getSpeed());
+        if (playerSpotted == false) {
+            double rand = Math.random();
+            if (rand < 0.25) {
+                enemyInstance.moveX(-8 * enemyInstance.getSpeed());
+            } else if (rand < 0.5) {
+                enemyInstance.moveX(8 * enemyInstance.getSpeed());
+            } else if (rand < 0.75) {
+                enemyInstance.moveY(-8 * enemyInstance.getSpeed());
+            } else {
+                enemyInstance.moveY(8 * enemyInstance.getSpeed());
+            }
+
         } else {
-            enemyInstance.moveY(enemyInstance.getSpeed());
+            double dX = playerInstance.getX() - enemyInstance.getX();
+            double dY = playerInstance.getY() - enemyInstance.getY();
+
+            double divider = Math.sqrt(dX * dX + dY * dY);
+
+            dX /= divider;
+            dY /= divider;
+
+            dX *= enemyInstance.getSpeed();
+            dY *= enemyInstance.getSpeed();
+
+            enemyInstance.moveX((int)dX);
+            enemyInstance.moveY((int)dY);
         }
     }
 
+    public boolean playerInRange () {
+        if (Math.sqrt(Math.pow(playerInstance.getX()-enemyInstance.getX(), 2)+ Math.pow(playerInstance.getY()-enemyInstance.getY(),2)) < 20){
+            return true;
+        }
+        return false;
+    }
+
     public void attack() {
-        //Code here
+        if (Math.sqrt(Math.pow(playerInstance.getX()-enemyInstance.getX(), 2)+ Math.pow(playerInstance.getY()-enemyInstance.getY(),2)) < 5){
+            int weaponRange = enemyInstance.getWeapon().getRange();
+            int weaponDamage = enemyInstance.getWeapon().getDamage();
+            // not sure what to do
+
+        }
     }
 
     @Override
