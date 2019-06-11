@@ -1361,13 +1361,13 @@ public class Game extends JFrame {
 				}
 			}
 			// DEBUG CODE
+			/*
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("I")) {
 				playerInstance.setCurrentHealth(playerInstance.getCurrentHealth() - 1);
-				System.out.println(playerInstance.getCurrentHealth());
 			}
 			if (KeyEvent.getKeyText(e.getKeyCode()).equals("O")) {
 				playerInstance.setCurrentHealth(playerInstance.getCurrentHealth() + 1);
-			}
+			}*/
 
 		}
 	}
