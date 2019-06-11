@@ -1272,6 +1272,11 @@ public class Game extends JFrame {
 				if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")) {  //A
 					playerHandler.keyPressed("A");
 				}
+				for (int i = 1; i <= 9; i++) {
+					if (KeyEvent.getKeyText(e.getKeyCode()).equals(Integer.toString(i))) {
+						playerInstance.getInventory().setCurrentItem((26 + i));
+					}
+				}
 			}
 		}
 
