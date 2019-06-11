@@ -211,7 +211,7 @@ public class Game extends JFrame {
 		mapHan.addEnvironmental(envIns);
 		mapHan.addEnemy(enemy1Han);
 		mapHan.addEnemy(enemy2Han);
-		worldPanel = new WorldDisplayer(playerInstance,map);
+		worldPanel = new WorldDisplayer(playerInstance, map);
 
 		Stack cakeStack = new Stack(2, cake);
 		Stack breadStack = new Stack(30, bread);
