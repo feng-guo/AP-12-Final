@@ -1,8 +1,10 @@
 package Items;
 
+import Entities.PlayerInstance;
+
 import java.awt.*;
 
-class Potion extends Consumable{
+public class Potion extends Consumable{
     private String effect;
     private int duration;
 
@@ -12,8 +14,9 @@ class Potion extends Consumable{
         this.duration = duration;
     }
 
-    public void use(){
-        //if effect is whatever, do this
+    public void use(PlayerInstance player) {
+        //We will add effects LATER
+        player.heal(super.getHealthGain());
     }
 
     public String getEffect() {

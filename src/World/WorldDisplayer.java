@@ -4,10 +4,17 @@ import Entities.EnemyInstance;
 import Entities.*;
 import Entities.PlayerInstance;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.RasterFormatException;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 public class WorldDisplayer extends JPanel implements Runnable {
 
@@ -16,6 +23,8 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	Location map;
 	int[][] mapTile;
 	int size = 64;
+	private int mouseClickX;
+	private int mouseClickY;
 	//ArrayList<Double> enemies;
 
 	private String frameRate;
@@ -23,11 +32,32 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	private long deltaTime;
 	private int frameCount;
 
+	BufferedImage healthEmpty;
+	BufferedImage healthFull;
+	BufferedImage currentHealth;
+	BufferedImage hotbar;
+	BufferedImage hotbarSelect;
+	private GameMouseWheelListener gameMouseWheelListener;
+
 	public WorldDisplayer(PlayerInstance player, Location map) {
 		this.player = player;
 		player.loadSprites();
 		this.map = map;
 		this.mapTile = map.getMap();
+
+		//move this later
+		try {
+			healthEmpty = ImageIO.read(new File("assets/gui/health_empty.png"));
+			healthFull = ImageIO.read(new File("assets/gui/health_full.png"));
+
+			hotbar = ImageIO.read(new File("assets/gui/hotbar.png"));
+			hotbarSelect = ImageIO.read(new File("assets/gui/selected.png"));
+		} catch (IOException e) {
+			//image not found ?
+		}
+
+		this.gameMouseWheelListener = new GameMouseWheelListener();
+		this.addMouseWheelListener(gameMouseWheelListener);
 	}
 
 	public void run() {
@@ -110,13 +140,18 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			Entity e = itemDropInstance.getEntity();
 			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
 		}
+		Font currentFont = g.getFont();
 		if (player.getNearbyItem() != null) {
 			ItemDropInstance e = player.getNearbyItem();
 			int x = e.getX();
 			int y = e.getY();
-			g.setFont(g.getFont().deriveFont(40F));
+
+			Font newFont = currentFont.deriveFont(Font.BOLD);
+			g.setFont(newFont);
 			g.drawString(Integer.toString(e.getStack().getStackAmount()),x + relative[0] - (size/2),y + relative[1] - (size/2));
 		}
+
+		g.setFont(currentFont);
 
 		switch(player.getDirection()){
 			case 0:
@@ -142,28 +177,55 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 		//Draw UI
 		//Health bar
-		g.setColor(Color.BLACK);
-		g.fillRect(16, 16, 256,32);
-		g.setColor(Color.RED);
-		g.fillRect(16,16,256 * (player.getCurrentHealth() / player.getMaxHealth()), 32);
+		g.drawImage(healthEmpty, center[0] - (hotbar.getWidth() / 2),(2 * center[1]) - (hotbar.getHeight()) - 40, null);
+
+		//Crop full health bar to be a percentage of the max health
+		double percentHealth = (double)(player.getCurrentHealth()) / (double)(player.getMaxHealth());
+		g.drawImage(cropImage(healthFull, percentHealth), center[0] - (hotbar.getWidth() / 2),(2 * center[1]) - (hotbar.getHeight()) - 40, null);
 
 		//Inventory hotbar
+		g.drawImage(hotbar, center[0] - (hotbar.getWidth() / 2), (2 * center[1]) - (hotbar.getHeight()) - 8, null);
+
 		//Currently selected item
-		g.setColor(Color.RED);
-		int current = player.getInventory().getCurrentItem() - 27;
-		g.drawRect((center[0] - 29) + ((current - 4) * 58),(center[1] * 2) - 58,58,58);
+		int current = player.getInventory().getCurrentItemIndex() - 27;
+		g.drawImage(hotbarSelect, center[0] - (hotbar.getWidth() / 2) - 4 + (current * 80), (2 * center[1]) - (hotbar.getHeight()) - 12, null);
+
 		//Other items
 		g.setColor(Color.BLACK);
 		for (int i = 0; i <= 9; i++) {
 			try {
 				Image image = player.getInventory().get(i + 27).getItem().getSprite();
 				int quantity = player.getInventory().get(i + 27).getStackAmount();
-				g.drawImage(image, (center[0] - 29) + ((i - 4) * 58),(center[1] * 2) - 58,58,58,null);
-				g.drawString(Integer.toString(quantity), (center[0]) + ((i - 4) * 58),(center[1] * 2) - 58);
+				g.drawImage(image, (center[0] - 29) + ((i - 4) * 80) + 1,(center[1] * 2) - 56 - 24,60,60,null);
+				//Only draw stack amount if quantity > 1
+				if (quantity > 1) {
+					g.drawString(Integer.toString(quantity), (center[0] - 29) + ((i - 4) * 80) + 52, (center[1] * 2) - 24);
+				}
 			} catch (NullPointerException e) {
 				//No item in slot
 			}
 		}
 		repaint();
 	}
+
+	private BufferedImage cropImage(BufferedImage src, double percent) {
+		BufferedImage dest;
+		try {
+			dest = src.getSubimage(0, 0, (int)(src.getWidth() * percent), src.getHeight());
+		} catch (RasterFormatException e) {
+			//health is <= 0
+			dest = src.getSubimage(0, 0, 1, src.getHeight());
+		}
+		return dest;
+	}
+
+	private class GameMouseWheelListener implements MouseWheelListener {
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
+			int movement = mouseWheelEvent.getWheelRotation();
+			player.getInventory().changeCurrentItem(movement);
+		}
+	}
+
+
 }

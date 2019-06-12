@@ -62,9 +62,6 @@ public abstract class CharacterInstance extends EntityInstance {
             damageDealt = 1;
         }
         currentHealth -= damageDealt;
-        if (currentHealth < 0) {
-            //rip
-        }
     }
 
     public void heal(int healAmount) {

@@ -10,7 +10,7 @@ public class Inventory {
     private Armour[] legs;
     private Armour[] rings;
     private int maxSlots;
-    private int currentItem;
+    private int currentItemIndex;
 
     public Inventory(int maxSlots) {
         this.inventory = new Stack[36];
@@ -21,7 +21,7 @@ public class Inventory {
         legs = new Armour[2];
         rings = new Armour[3];
         this.maxSlots = maxSlots;
-        this.currentItem = 27;
+        this.currentItemIndex = 27;
     }
 
     public int getMaxSlots() {
@@ -142,12 +142,32 @@ public class Inventory {
         }
     }
 
-    public int getCurrentItem() {
-        return currentItem;
+    public int getCurrentItemIndex() {
+        return currentItemIndex;
     }
 
-    public void setCurrentItem(int currentItem) {
-        this.currentItem = currentItem;
+    public void setCurrentItemIndex(int currentItemIndex) {
+        this.currentItemIndex = currentItemIndex;
+    }
+
+    public void changeCurrentItem(int c) {
+        if (c == 0) {
+            return;
+        } else if (c<0) {
+            if (currentItemIndex == 27) {
+                currentItemIndex = 35;
+            } else {
+                currentItemIndex--;
+            }
+            changeCurrentItem(c+1);
+        } else {
+            if (currentItemIndex == 35) {
+                currentItemIndex = 27;
+            } else {
+                currentItemIndex++;
+            }
+            changeCurrentItem(c-1);
+        }
     }
 
     public void sendDown(int index) {
@@ -265,5 +285,9 @@ public class Inventory {
         if (ring == null || ring.getLocation().equals("Ring")) {
             this.rings[2] = ring;
         }
+    }
+
+    public Stack getCurrentItem() {
+        return this.get(currentItemIndex);
     }
 }

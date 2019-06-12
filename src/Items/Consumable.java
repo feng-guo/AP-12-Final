@@ -1,8 +1,10 @@
 package Items;
 
+import Entities.PlayerInstance;
+
 import java.awt.Image;
 
-abstract class Consumable extends Item{
+public abstract class Consumable extends Item{
     private int healthGain;
 
     public Consumable(String name, String description, int maxStack, Image sprite, int healthGain) {
@@ -10,5 +12,9 @@ abstract class Consumable extends Item{
         this.healthGain = healthGain;
     }
 
-    abstract void use();
+    public abstract void use(PlayerInstance player);
+
+    public int getHealthGain() {
+        return healthGain;
+    }
 }

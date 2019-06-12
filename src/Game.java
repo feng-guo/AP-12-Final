@@ -138,7 +138,7 @@ public class Game extends JFrame {
 		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
 		Image cakeSprite = Toolkit.getDefaultToolkit().createImage("Cake.png");
 		Image breadSprite = Toolkit.getDefaultToolkit().createImage("Bread.png");
-		Item woodSword = new Sword("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2);
+		Item woodSword = new Pickaxe("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2, 5);
 		Item stick = new Material("Stick", "A wood stick", stickSprite);
 		Item cake = new Food("Cake", "A delicious cake lovingly baked by Feng", cakeSprite,0 ,8);
 		Item bread = new Food("Bread", "A delicious loaf of bread lovingly baked by Feng", breadSprite, 0, 5);
@@ -157,7 +157,7 @@ public class Game extends JFrame {
 		Armour riceRing = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/rice.png"), 200, 20, "Ring");
 		Armour potato = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/root_vegetable.png"), 200, 20, "Ring");
 		playerInstance = new PlayerInstance(0,0,player,1);
-		playerHandler = new PlayerHandler(playerInstance, map);
+
 		this.inventory = playerInstance.getInventory();
 		inventory.setArmour(titanium);
 		inventory.setHelmet(breadHelmet);
@@ -176,6 +176,7 @@ public class Game extends JFrame {
 		map = new Location(breadSprite, getCollision(town));
 
 		mapHan = new LocationHandler(map);
+		playerHandler = new PlayerHandler(playerInstance, mapHan);
 		Environmental copperOre = new Environmental(Toolkit.getDefaultToolkit().createImage("assets/copper_ore.png"), 100,100, 50, copper);
 		Environmental titaniumOre = new Environmental(Toolkit.getDefaultToolkit().createImage("assets/titanium_ore.png"), 100, 100, 20, titanium);
 		Environmental breadOre =  new Environmental(Toolkit.getDefaultToolkit().createImage("assets/bread.png"), 50, 50, 2, bread);
@@ -188,6 +189,8 @@ public class Game extends JFrame {
 		mapHan.addEnvironmental(titOre);
 		mapHan.addPlayer(playerHandler);
 		mapHan.addEnvironmental(breadOreThing);
+		gameMouseListener = new GameMouseListener();
+
 
 		Thread p = new Thread(playerHandler);
 		p.start();
@@ -200,8 +203,8 @@ public class Game extends JFrame {
 		Enemy enemy2 = new Enemy(stickSprite, 64, 64, 20, 3, 3, 3, "Stick", "Wood", temp);
 		EnemyInstance enemy1Ins = new EnemyInstance(20, 40, enemy1, (Weapon)woodSword, 231);
 		EnemyInstance enemy2Ins = new EnemyInstance(100, 400, enemy2, (Weapon)woodSword,22);
-		EnemyHandler enemy1Han = new EnemyHandler(enemy1Ins, map);
-		EnemyHandler enemy2Han = new EnemyHandler(enemy2Ins, map);
+		EnemyHandler enemy1Han = new EnemyHandler(enemy1Ins, mapHan);
+		EnemyHandler enemy2Han = new EnemyHandler(enemy2Ins, mapHan);
 
 		Environmental env = new Environmental(woodSwordSprite, 3, 3, 2, woodSword);
 		EnvironmentalInstance envIns = new EnvironmentalInstance(400, 300, env, 123);
@@ -212,6 +215,7 @@ public class Game extends JFrame {
 		mapHan.addEnemy(enemy1Han);
 		mapHan.addEnemy(enemy2Han);
 		worldPanel = new WorldDisplayer(playerInstance, map);
+		worldPanel.addMouseListener(gameMouseListener);
 
 		Stack cakeStack = new Stack(2, cake);
 		Stack breadStack = new Stack(30, bread);
@@ -296,6 +300,7 @@ public class Game extends JFrame {
 
 	private class GamePanel extends JPanel {
 		Clock clock = new Clock();
+
 		GamePanel() {
 			Thread t = new Thread(new GameLoop());
 			t.start();
@@ -1205,7 +1210,6 @@ public class Game extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				x = e.getX();
 				y = e.getY();
-				System.out.println(x);
 				if (y>360) {
 					if (mouseButton == -1) {
 						if (!determineItemClick(e) && handStack != null) {
@@ -1303,9 +1307,10 @@ public class Game extends JFrame {
 				}
 				for (int i = 1; i <= 9; i++) {
 					if (KeyEvent.getKeyText(e.getKeyCode()).equals(Integer.toString(i))) {
-						playerInstance.getInventory().setCurrentItem((26 + i));
+						playerInstance.getInventory().setCurrentItemIndex((26 + i));
 					}
 				}
+
 			}
 
 
@@ -1354,12 +1359,74 @@ public class Game extends JFrame {
 						playerInstance.setNearbyItem(null);
 					}
 				}
-				return;
 			}
-			if (KeyEvent.getKeyText(e.getKeyCode()).equals("K")) {
-				mapHan.killEverything();
+			// DEBUG CODE
+			/*
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("I")) {
+				playerInstance.setCurrentHealth(playerInstance.getCurrentHealth() - 1);
 			}
+			if (KeyEvent.getKeyText(e.getKeyCode()).equals("O")) {
+				playerInstance.setCurrentHealth(playerInstance.getCurrentHealth() + 1);
+			}*/
+
 		}
 	}
 
+	private int mouseClickX;
+	private int mouseClickY;
+	private GameMouseListener gameMouseListener;
+	private class GameMouseListener implements MouseListener {
+		@Override
+		public void mouseClicked(MouseEvent mouseEvent) {
+			mouseClickX = mouseEvent.getX();
+			mouseClickY = mouseEvent.getY();
+			Item item;
+			try {
+				item = playerInstance.getInventory().getCurrentItem().getItem();
+			} catch (NullPointerException e) {
+				//Stack is null
+				return;
+			}
+			int index = playerInstance.getInventory().getCurrentItemIndex();
+			if (item != null) {
+				if (item instanceof Weapon) {
+					if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
+						mapHan.playerAttack(mouseClickX, mouseClickY, playerHandler);
+					} else if (mouseEvent.getButton() == 3) {
+						if (item instanceof Tool) {
+							mapHan.hitEnvironmental((Tool)item, playerHandler);
+						}
+					}
+				} else if (item instanceof Consumable) {
+					if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+						if (item instanceof Food) {
+							playerHandler.eat((Food)item, index);
+						} else if (item instanceof Potion) {
+							playerHandler.drinkPotion((Potion)item, index);
+						}
+					}
+				}
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent mouseEvent) {
+
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent mouseEvent) {
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent mouseEvent) {
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent mouseEvent) {
+
+		}
+	}
 }

@@ -3,6 +3,9 @@ package World;
 import Entities.*;
 import Items.Item;
 import Items.Stack;
+import Items.Tool;
+import Items.Weapon;
+
 import java.util.*;
 
 public class LocationHandler implements Runnable {
@@ -47,6 +50,7 @@ public class LocationHandler implements Runnable {
             checkPlayerItemDrops();
             revalidatePlayerItemDrops();
             checkEnemies();
+            checkEnvironmentals();
             try {
                 Thread.sleep(30);
 
@@ -120,6 +124,10 @@ public class LocationHandler implements Runnable {
 
     public ItemDropInstance getItemDrop(double key) {
         return itemDropInstanceHashMap.get(key);
+    }
+
+    public Location getLocation() {
+        return location;
     }
 
     public void removePlayer(double id) {
@@ -255,15 +263,81 @@ public class LocationHandler implements Runnable {
                 double id = (double) System.nanoTime();
                 ItemDropInstance itemDropInstance = new ItemDropInstance(e.getX(), e.getY(), itemDrop, id);
                 addItemDrop(itemDropInstance);
-
                 return;
             }
         }
     }
 
-    public void killEverything() {
-        for ( int i= 0; i<enemyIDs.size(); i++) {
-            enemyHandlerHashMap.get(enemyIDs.get(i)).getEnemyInstance().setCurrentHealth(0);
+    public void playerAttack(int x, int y, PlayerHandler playerHandler) {
+        double currentTime = System.nanoTime()/1e+9;
+        double delta = currentTime - playerHandler.getLastWeaponUse();
+        double max = (-1/Math.pow(playerHandler.getPlayerInstance().getDexterity()/10, 2)+1) +1.75;
+        if (delta > 2.75 - max) {
+            Weapon weapon = (Weapon) playerHandler.getPlayerInstance().getInventory().getCurrentItem().getItem();
+            WeaponEffect weaponEffect = new WeaponEffect(null, 2, 2, weapon); //THIS IS NOT REAL CODE
+            WeaponEffectInstance weaponEffectInstance = new WeaponEffectInstance(playerHandler.getPlayerInstance().getX(), playerHandler.getPlayerInstance().getY(), weaponEffect, System.nanoTime()/1e+9, x, y, (double)System.nanoTime());
+            WeaponEffectHandler weaponEffectHandler = new WeaponEffectHandler(weaponEffectInstance, this);
+            weaponEffectIDs.add(weaponEffectInstance.getID());
+            weaponEffectHandlerHashMap.put(weaponEffectInstance.getID(),weaponEffectHandler);
+            playerHandler.setLastWeaponUse(currentTime);
+        }
+    }
+
+    public void enemyAttack(int x, int y, EnemyHandler enemyHandler) {
+        double currentTime = System.nanoTime()/1e+9;
+        double delta = currentTime - enemyHandler.getLastWeaponUse();
+        double max = (-1/Math.pow(enemyHandler.getEnemyInstance().getDexterity()/10, 2)+1) +1.75;
+        if (delta > 2.75 - max) {
+            Weapon weapon = enemyHandler.getEnemyInstance().getWeapon();
+            WeaponEffect weaponEffect = new WeaponEffect(null, 2, 2, weapon); //THIS IS NOT REAL CODE
+            WeaponEffectInstance weaponEffectInstance = new WeaponEffectInstance(enemyHandler.getEnemyInstance().getX(), enemyHandler.getEnemyInstance().getY(), weaponEffect, System.nanoTime()/1e+9, x, y, (double)System.nanoTime());
+            WeaponEffectHandler weaponEffectHandler = new WeaponEffectHandler(weaponEffectInstance, this);
+            weaponEffectIDs.add(weaponEffectInstance.getID());
+            weaponEffectHandlerHashMap.put(weaponEffectInstance.getID(),weaponEffectHandler);
+            enemyHandler.setLastWeaponUse(currentTime);
+        }
+    }
+
+    private void checkEnvironmentals() {
+        for (int i=0; i<environmentalIDs.size(); i++){
+            double id = environmentalIDs.get(i);
+            if (environmentalInstanceHashMap.get(id).getCurrentDurability() <= 0) {
+                destroyEnvironmental(id);
+                i--;
+            }
+        }
+    }
+
+    private void destroyEnvironmental(double id) {
+        EnvironmentalInstance environmentalInstance = environmentalInstanceHashMap.get(id);
+        ItemDrop itemDrop = new ItemDrop(environmentalInstance.getEnvironmental().getDrop());
+        ItemDropInstance itemDropInstance = new ItemDropInstance(environmentalInstance.getX(), environmentalInstance.getY(), itemDrop, (double)System.nanoTime());
+        addItemDrop(itemDropInstance);
+        removeEnvironmental(id);
+    }
+    
+    public void hitEnvironmental(Tool tool, PlayerHandler playerHandler) {
+        double currentTime = System.nanoTime()/1e+9;
+        double delta = currentTime - playerHandler.getLastWeaponUse();
+        double max = (-1/Math.pow(playerHandler.getPlayerInstance().getDexterity()/10, 2)+1) +1.75;
+        if (delta > 2.75 - max) {
+            PlayerInstance playerInstance = playerHandler.getPlayerInstance();
+            int playerX = (playerInstance.getX() + playerInstance.getEntity().getWidth())/2;
+            int playerY = (playerInstance.getY() + playerInstance.getEntity().getLength())/2;
+            playerHandler.setLastWeaponUse(currentTime);
+            for (int i=0; i<environmentalIDs.size(); i++) {
+                EnvironmentalInstance environmentalInstance = environmentalInstanceHashMap.get(environmentalIDs.get(i));
+                int environmentalX = (environmentalInstance.getX() + environmentalInstance.getEntity().getWidth())/2;
+                int environmentalY = (environmentalInstance.getY() + environmentalInstance.getEntity().getLength())/2;
+                int deltaX = Math.abs(environmentalX-playerX);
+                int deltaY = Math.abs(environmentalY-playerY);
+                int maxDeltaX = environmentalInstance.getEntity().getWidth()/2 + playerInstance.getEntity().getWidth()/2 + 30;
+                int maxDeltaY = environmentalInstance.getEntity().getLength()/2 + playerInstance.getEntity().getLength()/2 + 30;
+                if (deltaX < maxDeltaX && deltaY < maxDeltaY) {
+                    environmentalInstance.hit(tool.getToolHit());
+                    return;
+                }
+            }
         }
     }
 }
