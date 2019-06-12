@@ -151,13 +151,13 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			Entity e = npcInstance.getEntity();
 			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
 		}
-		for (int i=0; i<map.getPlayerIDs().size(); i++) {
-			PlayerInstance playerInstance = map.getPlayer(map.getPlayerIDs().get(i));
-			int x = playerInstance.getX();
-			int y = playerInstance.getY();
-			Entity e = playerInstance.getEntity();
-			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
-		}
+//		for (int i=0; i<map.getPlayerIDs().size(); i++) {
+//			PlayerInstance playerInstance = map.getPlayer(map.getPlayerIDs().get(i));
+//			int x = playerInstance.getX();
+//			int y = playerInstance.getY();
+//			Entity e = playerInstance.getEntity();
+//			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
+//		}
 		for (int i=0; i<map.getEnvironmentalIDs().size(); i++) {
 			EnvironmentalInstance environmentalInstance = map.getEnvironmental(map.getEnvironmentalIDs().get(i));
 			int x = environmentalInstance.getX();
