@@ -1397,14 +1397,9 @@ public class Game extends JFrame {
 				} else if (item instanceof Consumable) {
 					if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
 						if (item instanceof Food) {
-							((Food) item).use(playerInstance);
-							playerInstance.getInventory().get(index).remove(1);
-							if (playerInstance.getInventory().get(index).getStackAmount() == 0) {
-								playerInstance.getInventory().remove(index);
-							}
+							playerHandler.eat((Food)item, index);
 						} else if (item instanceof Potion) {
-							((Potion) item).use(playerInstance);
-							playerInstance.getInventory().remove(index);
+							playerHandler.drinkPotion((Potion)item, index);
 						}
 					}
 				}

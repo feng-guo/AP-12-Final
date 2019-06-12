@@ -1,5 +1,7 @@
 package Entities;
 
+import Items.Food;
+import Items.Potion;
 import World.Clock;
 import World.Location;
 
@@ -160,8 +162,24 @@ public class PlayerHandler extends CharacterHandler {
         this.lastWeaponUse = lastWeaponUse;
     }
 
-    public void setLastConsumableUse(double lastConsumableUse) {
-        this.lastConsumableUse = lastConsumableUse;
+    public void eat(Food food, int index) {
+        double currentTime = System.nanoTime()/1e+9;
+        if (currentTime - lastConsumableUse > 5) {
+            food.use(playerInstance);
+            playerInstance.getInventory().get(index).remove(1);
+            if (playerInstance.getInventory().get(index).getStackAmount() == 0) {
+                playerInstance.getInventory().remove(index);
+            }
+            lastConsumableUse = currentTime;
+        }
     }
 
+    public void drinkPotion(Potion potion, int index) {
+        double currentTime = System.nanoTime()/1e+9;
+        if (currentTime - lastConsumableUse > 5) {
+            potion.use(playerInstance);
+            playerInstance.getInventory().remove(index);
+            lastConsumableUse = currentTime;
+        }
+    }
 }
