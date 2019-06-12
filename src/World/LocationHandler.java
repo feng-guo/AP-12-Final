@@ -280,6 +280,17 @@ public class LocationHandler implements Runnable {
             weaponEffectIDs.add(weaponEffectInstance.getID());
             weaponEffectHandlerHashMap.put(weaponEffectInstance.getID(),weaponEffectHandler);
             playerHandler.setLastWeaponUse(currentTime);
+            
+            /*
+            enemyHandlerHashMap.forEach((k,enemy)->{
+                if ((Math.abs(weaponEffectHandler.getWeaponEffectInstance().getX -enemy.getEnemyInstance().getX)<=100)&&
+                        (Math.abs(weaponEffectHandler.getWeaponEffectInstance().getY -enemy.getEnemyInstance().getY)<=100)
+                ) {
+                    enemy.getEnemyInstance()  .damage(weaponEffectHandler.getWeaponEffectInstance().getWeaponEffect().getDamage());
+                    return;
+                }
+            });
+            */
         }
     }
 
@@ -307,9 +318,34 @@ public class LocationHandler implements Runnable {
             });
            */
         }
-
     }
-
+    
+    /*
+    public void attackCollision(){
+     weaponEffectHandlerHashMap.forEach((wKey,weaponEffectHandler)->
+                                        {enemyHandlerHashMap.forEach((eKey,enemy) ->{
+       if ((Math.abs(weaponEffectHandler.getWeaponEffectInstance().getX -enemy.getEnemyInstance().getX)<=100)&&
+           (Math.abs(weaponEffectHandler.getWeaponEffectInstance().getY -enemy.getEnemyInstance().getY)<=100)
+          ) {
+         enemy.getEnemyInstance().damage(weaponEffectHandler.getWeaponEffectInstance().getWeaponEffect().getDamage());
+         //return;
+       }                      
+     })
+                                          
+     }
+                                        
+                                        {playerHandlerHashMap.forEach((pKey,player)->{
+                                          if ((Math.abs(weaponEffectHandler.getWeaponEffectInstance().getX -player.getPlayerInstance().getX)<=100)&&
+                                              (Math.abs(weaponEffectHandler.getWeaponEffectInstance().getY -player.getPlayerInstance().getY)<=100)
+                                             ) {
+                                            player.getPlayerInstance().damage(weaponEffectHandler.getWeaponEffectInstance().getWeaponEffect().getDamage());
+                                            //return;
+                                          }
+                                        }
+                                                                      })
+    }
+    */
+    
     private void checkEnvironmentals() {
         for (int i=0; i<environmentalIDs.size(); i++){
             double id = environmentalIDs.get(i);
