@@ -67,6 +67,7 @@ public class PlayerHandler extends CharacterHandler {
         while (true) {
             determineMovement();
             move();
+            decreaseHunger();
             try {
                 Thread.sleep(20);
             } catch (InterruptedException e) {
