@@ -193,7 +193,10 @@ public class WorldDisplayer extends JPanel implements Runnable {
 				Image image = player.getInventory().get(i + 27).getItem().getSprite();
 				int quantity = player.getInventory().get(i + 27).getStackAmount();
 				g.drawImage(image, (center[0] - 29) + ((i - 4) * 80) + 1,(center[1] * 2) - 56 - 24,60,60,null);
-				g.drawString(Integer.toString(quantity), (center[0] - 29) + ((i - 4) * 80) + 52,(center[1] * 2) - 24);
+				//Only draw stack amount if quantity > 1
+				if (quantity > 1) {
+					g.drawString(Integer.toString(quantity), (center[0] - 29) + ((i - 4) * 80) + 52, (center[1] * 2) - 24);
+				}
 			} catch (NullPointerException e) {
 				//No item in slot
 			}
