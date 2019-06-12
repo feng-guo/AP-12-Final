@@ -324,6 +324,7 @@ public class LocationHandler implements Runnable {
             PlayerInstance playerInstance = playerHandler.getPlayerInstance();
             int playerX = (playerInstance.getX() + playerInstance.getEntity().getWidth())/2;
             int playerY = (playerInstance.getY() + playerInstance.getEntity().getLength())/2;
+            playerHandler.setLastWeaponUse(currentTime);
             for (int i=0; i<environmentalIDs.size(); i++) {
                 EnvironmentalInstance environmentalInstance = environmentalInstanceHashMap.get(environmentalIDs.get(i));
                 int environmentalX = (environmentalInstance.getX() + environmentalInstance.getEntity().getWidth())/2;
@@ -334,10 +335,9 @@ public class LocationHandler implements Runnable {
                 int maxDeltaY = environmentalInstance.getEntity().getLength()/2 + playerInstance.getEntity().getLength()/2 + 30;
                 if (deltaX < maxDeltaX && deltaY < maxDeltaY) {
                     environmentalInstance.hit(tool.getToolHit());
-                    i = environmentalIDs.size();
+                    return;
                 }
             }
-            playerHandler.setLastWeaponUse(currentTime);
         }
     }
 }
