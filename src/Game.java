@@ -157,7 +157,7 @@ public class Game extends JFrame {
 		Armour riceRing = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/rice.png"), 200, 20, "Ring");
 		Armour potato = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/root_vegetable.png"), 200, 20, "Ring");
 		playerInstance = new PlayerInstance(0,0,player,1);
-		playerHandler = new PlayerHandler(playerInstance, map);
+
 		this.inventory = playerInstance.getInventory();
 		inventory.setArmour(titanium);
 		inventory.setHelmet(breadHelmet);
@@ -176,6 +176,7 @@ public class Game extends JFrame {
 		map = new Location(breadSprite, getCollision(town));
 
 		mapHan = new LocationHandler(map);
+		playerHandler = new PlayerHandler(playerInstance, mapHan);
 		Environmental copperOre = new Environmental(Toolkit.getDefaultToolkit().createImage("assets/copper_ore.png"), 100,100, 50, copper);
 		Environmental titaniumOre = new Environmental(Toolkit.getDefaultToolkit().createImage("assets/titanium_ore.png"), 100, 100, 20, titanium);
 		Environmental breadOre =  new Environmental(Toolkit.getDefaultToolkit().createImage("assets/bread.png"), 50, 50, 2, bread);
@@ -202,8 +203,8 @@ public class Game extends JFrame {
 		Enemy enemy2 = new Enemy(stickSprite, 64, 64, 20, 3, 3, 3, "Stick", "Wood", temp);
 		EnemyInstance enemy1Ins = new EnemyInstance(20, 40, enemy1, (Weapon)woodSword, 231);
 		EnemyInstance enemy2Ins = new EnemyInstance(100, 400, enemy2, (Weapon)woodSword,22);
-		EnemyHandler enemy1Han = new EnemyHandler(enemy1Ins, map);
-		EnemyHandler enemy2Han = new EnemyHandler(enemy2Ins, map);
+		EnemyHandler enemy1Han = new EnemyHandler(enemy1Ins, mapHan);
+		EnemyHandler enemy2Han = new EnemyHandler(enemy2Ins, mapHan);
 
 		Environmental env = new Environmental(woodSwordSprite, 3, 3, 2, woodSword);
 		EnvironmentalInstance envIns = new EnvironmentalInstance(400, 300, env, 123);

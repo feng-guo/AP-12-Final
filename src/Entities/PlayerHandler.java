@@ -4,6 +4,7 @@ import Items.Food;
 import Items.Potion;
 import World.Clock;
 import World.Location;
+import World.LocationHandler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -20,7 +21,7 @@ public class PlayerHandler extends CharacterHandler {
     private double lastStarveChange;
 
 
-    public PlayerHandler(PlayerInstance playerInstance, Location location) {
+    public PlayerHandler(PlayerInstance playerInstance, LocationHandler location) {
         super(playerInstance, location);
         this.playerInstance = playerInstance;
         this.keyPresses = new boolean[4];

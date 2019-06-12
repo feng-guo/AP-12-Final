@@ -124,6 +124,10 @@ public class LocationHandler implements Runnable {
         return itemDropInstanceHashMap.get(key);
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
     public void removePlayer(double id) {
         playerHandlerHashMap.remove(id);
         location.removePlayer(id);
@@ -270,10 +274,25 @@ public class LocationHandler implements Runnable {
             Weapon weapon = (Weapon) playerHandler.getPlayerInstance().getInventory().getCurrentItem().getItem();
             WeaponEffect weaponEffect = new WeaponEffect(null, 2, 2, weapon); //THIS IS NOT REAL CODE
             WeaponEffectInstance weaponEffectInstance = new WeaponEffectInstance(playerHandler.getPlayerInstance().getX(), playerHandler.getPlayerInstance().getY(), weaponEffect, System.nanoTime()/1e+9, x, y, (double)System.nanoTime());
-            WeaponEffectHandler weaponEffectHandler = new WeaponEffectHandler(weaponEffectInstance, location);
+            WeaponEffectHandler weaponEffectHandler = new WeaponEffectHandler(weaponEffectInstance, this);
             weaponEffectIDs.add(weaponEffectInstance.getID());
             weaponEffectHandlerHashMap.put(weaponEffectInstance.getID(),weaponEffectHandler);
             playerHandler.setLastWeaponUse(currentTime);
+        }
+    }
+
+    public void enemyAttack(int x, int y, EnemyHandler enemyHandler) {
+        double currentTime = System.nanoTime()/1e+9;
+        double delta = currentTime - enemyHandler.getLastWeaponUse();
+        double max = (-1/Math.pow(enemyHandler.getEnemyInstance().getDexterity()/10, 2)+1) +1.75;
+        if (delta > 2.75 - max) {
+            Weapon weapon = enemyHandler.getEnemyInstance().getWeapon();
+            WeaponEffect weaponEffect = new WeaponEffect(null, 2, 2, weapon); //THIS IS NOT REAL CODE
+            WeaponEffectInstance weaponEffectInstance = new WeaponEffectInstance(enemyHandler.getEnemyInstance().getX(), enemyHandler.getEnemyInstance().getY(), weaponEffect, System.nanoTime()/1e+9, x, y, (double)System.nanoTime());
+            WeaponEffectHandler weaponEffectHandler = new WeaponEffectHandler(weaponEffectInstance, this);
+            weaponEffectIDs.add(weaponEffectInstance.getID());
+            weaponEffectHandlerHashMap.put(weaponEffectInstance.getID(),weaponEffectHandler);
+            enemyHandler.setLastWeaponUse(currentTime);
         }
     }
 }

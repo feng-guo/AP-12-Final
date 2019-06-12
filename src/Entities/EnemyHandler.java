@@ -1,15 +1,18 @@
 package Entities;
 
-import World.Clock;
 import World.Location;
+import World.LocationHandler;
 
 public class EnemyHandler extends CharacterHandler {
     private EnemyInstance enemyInstance;
     private PlayerInstance p;
 
-    public EnemyHandler(EnemyInstance enemyInstance, Location location) {
+    private double lastWeaponUse;
+
+    public EnemyHandler(EnemyInstance enemyInstance, LocationHandler location) {
         super(enemyInstance, location);
         this.enemyInstance = enemyInstance;
+        this.lastWeaponUse = 0;
     }
 
     public EnemyInstance getEnemyInstance() {
@@ -84,11 +87,16 @@ public class EnemyHandler extends CharacterHandler {
 
     public void attack() {
         if (Math.sqrt(Math.pow(p.getX()-enemyInstance.getX(), 2)+ Math.pow(p.getY()-enemyInstance.getY(),2)) < 5){
-            int weaponRange = enemyInstance.getWeapon().getRange();
-            int weaponDamage = enemyInstance.getWeapon().getDamage();
-            // not sure what to do
-
+            getLocationHandler().enemyAttack(p.getX(), p.getY(), this);
         }
+    }
+
+    public double getLastWeaponUse() {
+        return lastWeaponUse;
+    }
+
+    public void setLastWeaponUse(double lastWeaponUse) {
+        this.lastWeaponUse = lastWeaponUse;
     }
 
     @Override

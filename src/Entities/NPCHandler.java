@@ -1,11 +1,11 @@
 package Entities;
 
-import World.Location;
+import World.LocationHandler;
 
 public class NPCHandler extends CharacterHandler {
     private NPCInstance npcInstance;
 
-    public NPCHandler(NPCInstance npcInstance, Location location) {
+    public NPCHandler(NPCInstance npcInstance, LocationHandler location) {
         super(npcInstance, location);
         this.npcInstance = npcInstance;
     }
