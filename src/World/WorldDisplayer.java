@@ -121,12 +121,16 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		switch(player.getDirection()){
 			case 0:
 				g.drawImage(player.drawDown(), center[0] - (size / 2), center[1] - (size / 2),size,size, null);
+				break;
 			case 1:
 				g.drawImage(player.drawUp(),center[0] - (size / 2), center[1] - (size / 2),size,size, null);
+				break;
 			case 2:
 				g.drawImage(player.drawRight(),center[0] - (size / 2), center[1] - (size / 2),size,size, null);
+				break;
 			case 3:
-				g.drawImage(player.drawLeft(),center[0] - (size / 2), center[1] - (size / 2),size,size, null)	;
+				g.drawImage(player.drawLeft(),center[0] - (size / 2), center[1] - (size / 2),size,size, null);
+				break;
 		}
 
 		g.setColor(Color.RED);

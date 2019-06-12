@@ -26,23 +26,25 @@ public class PlayerInstance extends CharacterInstance {
 
     public void loadSprites() {
         try {
-            BufferedImage sheet = ImageIO.read(new File("Zombie Spritesheet.png"));
-            final int width = 50;
-            final int height = 60;
+            BufferedImage sheet = ImageIO.read(new File("PlayerPose.png"));
+            final int width = 42;
+            final int height = 62;
             final int cols = 4;
+
             spritesDown = new BufferedImage[cols];
             spritesUp = new BufferedImage[cols];
             spritesRight = new BufferedImage[cols];
             spritesLeft = new BufferedImage[cols];
+
             for (int j = 0; j < cols; j++) {
-                spritesDown[j] = sheet.getSubimage(j * (width+30) , 0 * height, width, height);
+                spritesDown[j] = sheet.getSubimage(j * width, 0 * height, width, height);
                 spritesUp[j] = sheet.getSubimage(j * width, 3 * height, width, height);
                 spritesRight[j] = sheet.getSubimage(j * width, 2 * height, width, height);
                 spritesLeft[j] = sheet.getSubimage(j * width, 1 * height, width, height);
             }
-        } catch(Exception e) { System.out.println("error loading sheet");};
-    }
 
+        }catch(Exception e) { System.out.println(e.getMessage());};
+    }
     public Inventory getInventory() {
         return inventory;
     }
