@@ -15,5 +15,7 @@ public abstract class EntityHandler implements Runnable{
         return entity;
     }
 
+    public Location getLocation() { return location; }
+
     public abstract void move();
 }
