@@ -6,7 +6,6 @@ import World.Location;
 public class EnemyHandler extends CharacterHandler {
     private EnemyInstance enemyInstance;
     private PlayerInstance p;
-    private boolean playerSpotted = false;
 
     public EnemyHandler(EnemyInstance enemyInstance, Location location) {
         super(enemyInstance, location);
@@ -19,7 +18,8 @@ public class EnemyHandler extends CharacterHandler {
 
     @Override
     public void move() {
-        if (playerSpotted == false) {
+
+        if (playerInRange() == false) {
             double rand = Math.random();
             if (rand < 0.25) {
                 enemyInstance.moveX(-8 * enemyInstance.getSpeed());
@@ -32,6 +32,7 @@ public class EnemyHandler extends CharacterHandler {
             }
 
         } else {
+
             double dX = p.getX() - enemyInstance.getX();
             double dY = p.getY() - enemyInstance.getY();
 
@@ -40,17 +41,18 @@ public class EnemyHandler extends CharacterHandler {
             dX /= divider;
             dY /= divider;
 
-            dX *= enemyInstance.getSpeed();
-            dY *= enemyInstance.getSpeed();
+            dX *= 8*enemyInstance.getSpeed();
+            dY *= 8*enemyInstance.getSpeed();
 
             enemyInstance.moveX((int)dX);
             enemyInstance.moveY((int)dY);
+
         }
     }
 
     public boolean playerInRange () {
         getClosestPlayer();
-        if (Math.sqrt(Math.pow(p.getX()-enemyInstance.getX(), 2)+ Math.pow(p.getY()-enemyInstance.getY(),2)) < 20){
+        if (Math.sqrt(Math.pow(p.getX()-enemyInstance.getX(), 2)+ Math.pow(p.getY()-enemyInstance.getY(),2)) < 200){
             return true;
         }
         return false;
@@ -62,8 +64,8 @@ public class EnemyHandler extends CharacterHandler {
         double tempMinDistance = 0;
         int playerOnMapNumber = -1;
 
-        for (int i =0; i < location.getPlayerIDs().size(); i ++){
-            p = location.getPlayer(location.getIDs.get(i));
+        for (int i =0; i < getLocation().getPlayerIDs().size(); i ++){
+            p = getLocation().getPlayer(getLocation().getPlayerIDs().get(i));
             int playerX = p.getX();
             int playerY = p.getY();
             tempMinDistance = Math.sqrt(Math.pow(p.getX()-enemyInstance.getX(), 2)+ Math.pow(p.getY()-enemyInstance.getY(),2));
@@ -77,7 +79,7 @@ public class EnemyHandler extends CharacterHandler {
             }
 
         }
-        p = location.getPlayer(location.getIDs.get(playerOnMapNumber));
+        p = getLocation().getPlayer(getLocation().getPlayerIDs().get(playerOnMapNumber));
     }
 
     /**
