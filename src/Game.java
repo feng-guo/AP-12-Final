@@ -138,7 +138,7 @@ public class Game extends JFrame {
 		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
 		Image cakeSprite = Toolkit.getDefaultToolkit().createImage("Cake.png");
 		Image breadSprite = Toolkit.getDefaultToolkit().createImage("Bread.png");
-		Item woodSword = new Sword("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2);
+		Item woodSword = new Pickaxe("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2, 5);
 		Item stick = new Material("Stick", "A wood stick", stickSprite);
 		Item cake = new Food("Cake", "A delicious cake lovingly baked by Feng", cakeSprite,0 ,8);
 		Item bread = new Food("Bread", "A delicious loaf of bread lovingly baked by Feng", breadSprite, 0, 5);
@@ -1393,7 +1393,9 @@ public class Game extends JFrame {
 					if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
 						mapHan.playerAttack(mouseClickX, mouseClickY, playerHandler);
 					} else if (mouseEvent.getButton() == 3) {
-						//code here
+						if (item instanceof Tool) {
+							mapHan.hitEnvironmental((Tool)item, playerHandler);
+						}
 					}
 				} else if (item instanceof Consumable) {
 					if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
