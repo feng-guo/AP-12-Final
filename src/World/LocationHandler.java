@@ -295,7 +295,19 @@ public class LocationHandler implements Runnable {
             weaponEffectIDs.add(weaponEffectInstance.getID());
             weaponEffectHandlerHashMap.put(weaponEffectInstance.getID(),weaponEffectHandler);
             enemyHandler.setLastWeaponUse(currentTime);
+
+            /*
+            playerHandlerHashMap.forEach((k,player)->{
+                if ((Math.abs(weaponEffectHandler.getWeaponEffectInstance().getX -player.getPlayerInstance().getX)<=100)&&
+                        (Math.abs(weaponEffectHandler.getWeaponEffectInstance().getY -player.getPlayerInstance().getY)<=100)
+                ) {
+                    player.getPlayerInstance().damage(weaponEffectHandler.getWeaponEffectInstance().getWeaponEffect().getDamage());
+                    return;
+                }
+            });
+           */
         }
+
     }
 
     private void checkEnvironmentals() {

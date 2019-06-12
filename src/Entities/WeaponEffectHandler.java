@@ -21,6 +21,20 @@ public class WeaponEffectHandler extends EntityHandler {
 
     @Override
     public void move() {
+        double deltaX=targetX-initialX;
+        double deltaY=targetY-initialY;
+        double hypotenuse=Math.sqrt(deltaX*deltaX+deltaY*deltaY);
+
+        //change per tick for x is cosine and for y is sine
+        deltaX /= hypotenuse;
+        deltaY /= hypotenuse;
+
+        /*
+        deltaX*=speed;
+        deltaY*=speed;
+         */
+        weaponEffectInstance.moveX((int)deltaX);
+        weaponEffectInstance.moveY((int)deltaY);
 
     }
 
