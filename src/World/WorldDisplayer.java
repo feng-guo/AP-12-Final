@@ -22,6 +22,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	PlayerInstance player;
 	Location map;
 	int[][] mapTile;
+	String[][] mapBlocks;
 	int size = 64;
 	private int mouseClickX;
 	private int mouseClickY;
@@ -37,6 +38,12 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	BufferedImage currentHealth;
 	BufferedImage hotbar;
 	BufferedImage hotbarSelect;
+
+	BufferedImage grass;
+	BufferedImage stone;
+	BufferedImage water;
+	BufferedImage wood;
+
 	private GameMouseWheelListener gameMouseWheelListener;
 
 	public WorldDisplayer(PlayerInstance player, Location map) {
@@ -44,16 +51,22 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		player.loadSprites();
 		this.map = map;
 		this.mapTile = map.getMap();
+		this.mapBlocks = map.getBlocks();
 
 		//move this later
 		try {
+			grass = ImageIO.read(new File("assets/blocks/grass.png"));
+			stone = ImageIO.read(new File("assets/blocks/stone.png"));
+			water = ImageIO.read(new File("assets/blocks/water.png"));
+			wood = ImageIO.read(new File("assets/blocks/wood.png"));
+
 			healthEmpty = ImageIO.read(new File("assets/gui/health_empty.png"));
 			healthFull = ImageIO.read(new File("assets/gui/health_full.png"));
 
 			hotbar = ImageIO.read(new File("assets/gui/hotbar.png"));
 			hotbarSelect = ImageIO.read(new File("assets/gui/selected.png"));
 		} catch (IOException e) {
-			//image not found ?
+			System.out.println(e.getMessage());
 		}
 
 		this.gameMouseWheelListener = new GameMouseWheelListener();
@@ -87,6 +100,23 @@ public class WorldDisplayer extends JPanel implements Runnable {
 				}
 				//g.fillRect(r*size, c*size, size,size);
 				g.fillRect((r*size) + relative[0],(c*size) + relative[1],size,size);
+			}
+		}
+		for (int r = 0; r < mapBlocks.length; r++) {
+			for (int c = 0; c < mapBlocks[r].length; c++) {
+				if (mapBlocks[r][c].equals("g")) {
+					g.drawImage(grass,(r*size) + relative[0],(c*size) + relative[1], size, size, null);
+				}else if (mapBlocks[r][c].equals("s")){
+					g.drawImage(stone,(r*size) + relative[0],(c*size) + relative[1], size, size, null);
+				}else if (mapBlocks[r][c].equals("w")){
+					g.drawImage(stone,(r*size) + relative[0],(c*size) + relative[1], size, size, null);
+					g.drawImage(water,(r*size) + relative[0],(c*size) + relative[1], size, size, null);
+				}else if (mapBlocks[r][c].equals("p")){
+					g.drawImage(wood,(r*size) + relative[0],(c*size) + relative[1], size, size, null);
+				}else{
+					g.drawImage(grass,(r*size) + relative[0],(c*size) + relative[1], size, size, null);
+				}
+				//g.fillRect((r*size) + relative[0],(c*size) + relative[1],size,size);
 			}
 		}
 		//enemies = map.getEnemyIDs();
@@ -168,7 +198,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 				break;
 		}
 
-		g.setColor(Color.RED);
+		//g.setColor(Color.RED);
 		//g.fillRect(center[0] - (size / 2), center[1] - (size / 2), size, size);
 
 		//g.drawString(Double.toString(Clock.getFps()), 10,10);

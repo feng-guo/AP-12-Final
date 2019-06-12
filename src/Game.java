@@ -133,6 +133,12 @@ public class Game extends JFrame {
 
 	private void startNewSingleplayerGame() {
 		//Might want to remove this later
+		Image houseASprite = Toolkit.getDefaultToolkit().createImage("assets/blocks/3x3a.png");
+		Image houseBSprite = Toolkit.getDefaultToolkit().createImage("assets/blocks/3x3b.png");
+		Image buildingASprite = Toolkit.getDefaultToolkit().createImage("assets/blocks/5x4a.png");
+		Image buildingBSpirte = Toolkit.getDefaultToolkit().createImage("assets/blocks/5x4b.png");
+		Image librarySprite = Toolkit.getDefaultToolkit().createImage("assets/blocks/4x3.png");
+		Image smithSprite = Toolkit.getDefaultToolkit().createImage("assets/blocks/2x1.png");
 
 		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("WoodenSword.png");
 		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
@@ -173,7 +179,7 @@ public class Game extends JFrame {
 
 
 		String[][] town = getBlocks("Spawntown.txt");
-		map = new Location(breadSprite, getCollision(town));
+		map = new Location(breadSprite, getCollision(town), town);
 
 		mapHan = new LocationHandler(map);
 		playerHandler = new PlayerHandler(playerInstance, mapHan);
@@ -183,7 +189,9 @@ public class Game extends JFrame {
 		EnvironmentalInstance copperOreEnv = new EnvironmentalInstance(20,20,copperOre,1);
 		EnvironmentalInstance titOre = new EnvironmentalInstance(130, 130, titaniumOre,2);
 		EnvironmentalInstance breadOreThing = new EnvironmentalInstance(400, 0, breadOre,3);
+
 		Structure breadStructure = new Structure(breadSprite, map, "Bread", 400, 200, 1200, 400);
+
 		map.getStructures().add(breadStructure);
 		mapHan.addEnvironmental(copperOreEnv);
 		mapHan.addEnvironmental(titOre);
@@ -261,7 +269,7 @@ public class Game extends JFrame {
      for (int i = 0; i < size; i++) {
       String[] line = in.nextLine().trim().split(",");
       for (int j = 0; j < size; j++) {
-       blocks[i][j] = line[j];
+       blocks[j][i] = line[j];
       }
      }
      return blocks;
@@ -273,9 +281,9 @@ public class Game extends JFrame {
      for(int i = 0; i < size; i++){
       for(int j = 0; j < size; j++){
        if (blocks[i][j].equals("s") || blocks[i][j].equals("g") || blocks[i][j].equals("p")){
-        collisions[j][i] = 0;
+        collisions[i][j] = 0;
        } else {
-        collisions[j][i] = 1;
+        collisions[i][j] = 1;
        }
       }
      }
