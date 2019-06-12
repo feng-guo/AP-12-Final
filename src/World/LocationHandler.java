@@ -3,6 +3,8 @@ package World;
 import Entities.*;
 import Items.Item;
 import Items.Stack;
+import Items.Weapon;
+
 import java.util.*;
 
 public class LocationHandler implements Runnable {
@@ -255,13 +257,22 @@ public class LocationHandler implements Runnable {
                 double id = (double) System.nanoTime();
                 ItemDropInstance itemDropInstance = new ItemDropInstance(e.getX(), e.getY(), itemDrop, id);
                 addItemDrop(itemDropInstance);
-
                 return;
             }
         }
     }
 
-    public void playerAttack(int x, int y, PlayerInstance playerInstance) {
-
+    public void playerAttack(int x, int y, PlayerHandler playerHandler) {
+        double currentTime = System.nanoTime()/1e+9;
+        double delta = currentTime - playerHandler.getLastWeaponUse();
+        double max = (-1/Math.pow(playerHandler.getPlayerInstance().getDexterity(), 2)+1) +1.75;
+        if (delta > 2 - max) {
+            Weapon weapon = (Weapon) playerHandler.getPlayerInstance().getInventory().getCurrentItem().getItem();
+            WeaponEffect weaponEffect = new WeaponEffect(null, 2, 2, weapon); //THIS IS NOT REAL CODE
+            WeaponEffectInstance weaponEffectInstance = new WeaponEffectInstance(playerHandler.getPlayerInstance().getX(), playerHandler.getPlayerInstance().getY(), weaponEffect, System.nanoTime()/1e+9, x, y, (double)System.nanoTime());
+            WeaponEffectHandler weaponEffectHandler = new WeaponEffectHandler(weaponEffectInstance, location);
+            weaponEffectIDs.add(weaponEffectInstance.getID());
+            weaponEffectHandlerHashMap.put(weaponEffectInstance.getID(),weaponEffectHandler);
+        }
     }
 }

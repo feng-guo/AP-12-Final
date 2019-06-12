@@ -18,6 +18,8 @@ public class PlayerInstance extends CharacterInstance {
     private int currentSprite;
     private int currentHunger;
 
+
+
     public PlayerInstance(int x, int y, Player player, double id) {
         super(x,y, player, id);
         loadSprites();

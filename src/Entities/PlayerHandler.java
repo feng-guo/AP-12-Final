@@ -12,25 +12,26 @@ public class PlayerHandler extends CharacterHandler {
     private int xDirection;
     private int yDirection;
 
+    private double lastWeaponUse;
+    private double lastConsumableUse;
+    private double lastHungerChange;
+    private double lastStarveChange;
+
 
     public PlayerHandler(PlayerInstance playerInstance, Location location) {
         super(playerInstance, location);
         this.playerInstance = playerInstance;
         this.keyPresses = new boolean[4];
+        this.lastWeaponUse = 0;
+        this.lastConsumableUse = 0;
+        this.lastHungerChange = System.nanoTime()/1e+9;
+        this.lastStarveChange = 0;
     }
 
     public PlayerInstance getPlayerInstance() {
         return playerInstance;
     }
-/*
-    public void setCurrentImage(BufferedImage image){
-        currentImage = image;
-    }
 
-    public void draw(Graphics g){
-        g.drawImage(currentImage)
-    }
-*/
     private void determineMovement() {
         if (keyPresses[2]) {
             if (!keyPresses[3]) {
@@ -129,7 +130,38 @@ public class PlayerHandler extends CharacterHandler {
         //Code here
     }
 
-    public void use() {
-        //Code here
+    private void starveToDeath() {
+        double currentTime = (System.nanoTime()/1e+9);
+        double delta = currentTime - lastStarveChange;
+        if (delta > 20) {
+            playerInstance.heal(-1);
+            lastStarveChange = currentTime;
+        }
     }
+
+    private void decreaseHunger() {
+        double currentTime = (System.nanoTime()/1e+9);
+        double delta = currentTime - lastHungerChange;
+        if (delta > 120) {
+            playerInstance.changeCurrentHunger(-1);
+            lastHungerChange = currentTime;
+        }
+    }
+
+    public double getLastWeaponUse() {
+        return lastWeaponUse;
+    }
+
+    public double getLastConsumableUse() {
+        return lastConsumableUse;
+    }
+
+    public void setLastWeaponUse(double lastWeaponUse) {
+        this.lastWeaponUse = lastWeaponUse;
+    }
+
+    public void setLastConsumableUse(double lastConsumableUse) {
+        this.lastConsumableUse = lastConsumableUse;
+    }
+
 }

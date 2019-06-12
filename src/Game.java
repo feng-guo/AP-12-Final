@@ -1390,7 +1390,7 @@ public class Game extends JFrame {
 			if (item != null) {
 				if (item instanceof Weapon) {
 					if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
-						mapHan.playerAttack(mouseClickX, mouseClickY, playerInstance);
+						mapHan.playerAttack(mouseClickX, mouseClickY, playerHandler);
 					} else if (mouseEvent.getButton() == 3) {
 						//code here
 					}
