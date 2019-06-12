@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class PlayerInstance extends CharacterInstance {
     private int direction;
+    private int steps = 0;
     private BufferedImage[] spritesDown;
     private BufferedImage[] spritesUp;
     private BufferedImage[] spritesRight;
@@ -31,7 +32,7 @@ public class PlayerInstance extends CharacterInstance {
 
     public void loadSprites() {
         try {
-            BufferedImage sheet = ImageIO.read(new File("PlayerPose.png"));
+            BufferedImage sheet = ImageIO.read(new File("assets/player/PlayerPose.png"));
             final int width = 42;
             final int height = 62;
             final int cols = 4;
@@ -42,10 +43,10 @@ public class PlayerInstance extends CharacterInstance {
             spritesLeft = new BufferedImage[cols];
 
             for (int j = 0; j < cols; j++) {
-                spritesDown[j] = sheet.getSubimage(j * width, 0 * height, width, height);
-                spritesUp[j] = sheet.getSubimage(j * width, 3 * height, width, height);
-                spritesRight[j] = sheet.getSubimage(j * width, 2 * height, width, height);
-                spritesLeft[j] = sheet.getSubimage(j * width, 1 * height, width, height);
+                    spritesDown[j] = sheet.getSubimage(j * width, 0 * height, width, height);
+                    spritesUp[j] = sheet.getSubimage(j * width, 3 * height, width, height);
+                    spritesRight[j] = sheet.getSubimage(j * width, 2 * height, width, height);
+                    spritesLeft[j] = sheet.getSubimage(j * width, 1 * height, width, height);
             }
 
         }catch(Exception e) { System.out.println(e.getMessage());};
@@ -76,9 +77,13 @@ public class PlayerInstance extends CharacterInstance {
     }
 
     public void move() {
-        currentSprite++;
-        if (currentSprite >= 4)
-            currentSprite = 0;
+        steps++;
+        if (steps == 4) {
+            steps = 0;
+            currentSprite++;
+            if (currentSprite >= 4)
+                currentSprite = 0;
+        }
     }
 
     public void setDirection(int direction){
