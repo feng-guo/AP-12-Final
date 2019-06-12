@@ -19,6 +19,7 @@ public class PlayerHandler extends CharacterHandler {
     private double lastConsumableUse;
     private double lastHungerChange;
     private double lastStarveChange;
+    private double lastMove;
 
 
     public PlayerHandler(PlayerInstance playerInstance, LocationHandler location) {
@@ -29,6 +30,7 @@ public class PlayerHandler extends CharacterHandler {
         this.lastConsumableUse = 0;
         this.lastHungerChange = System.nanoTime()/1e+9;
         this.lastStarveChange = 0;
+        this.lastMove = 0;
     }
 
     public PlayerInstance getPlayerInstance() {
@@ -65,13 +67,19 @@ public class PlayerHandler extends CharacterHandler {
     @Override
     public void run() {
         while (true) {
-            determineMovement();
-            move();
+            double currentTime = System.nanoTime()/1e+9;
+            if (currentTime-lastMove > 0.25) {
+                determineMovement();
+                move();
+            }
             decreaseHunger();
+            if (playerInstance.getCurrentHunger() == 0) {
+                starveToDeath();
+            }
             try {
                 Thread.sleep(20);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+
             }
         }
     }
@@ -130,10 +138,6 @@ public class PlayerHandler extends CharacterHandler {
         }
     }
 
-    public void attack() {
-        //Code here
-    }
-
     private void starveToDeath() {
         double currentTime = (System.nanoTime()/1e+9);
         double delta = currentTime - lastStarveChange;
@@ -183,5 +187,13 @@ public class PlayerHandler extends CharacterHandler {
             playerInstance.getInventory().remove(index);
             lastConsumableUse = currentTime;
         }
+    }
+
+    public int getxDirection() {
+        return xDirection;
+    }
+
+    public int getyDirection() {
+        return yDirection;
     }
 }
