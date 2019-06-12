@@ -82,14 +82,6 @@ public class EnemyHandler extends CharacterHandler {
         p = getLocation().getPlayer(getLocation().getPlayerIDs().get(playerOnMapNumber));
     }
 
-    /**
-     for (int i =0; i < location.getPlayerIDs().size(); i ++){
-     PlayerInstance p = location.getPlayer(location.getIDs.get(i));
-     int playerX = p.getX();
-     int playerY = p.getY();
-     }
-     */
-
     public void attack() {
         if (Math.sqrt(Math.pow(p.getX()-enemyInstance.getX(), 2)+ Math.pow(p.getY()-enemyInstance.getY(),2)) < 5){
             int weaponRange = enemyInstance.getWeapon().getRange();
