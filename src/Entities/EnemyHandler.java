@@ -36,19 +36,19 @@ public class EnemyHandler extends CharacterHandler {
 
         } else {
 
-            double dX = p.getX() - enemyInstance.getX();
-            double dY = p.getY() - enemyInstance.getY();
-
-            double divider = Math.sqrt(dX * dX + dY * dY);
-
-            dX /= divider;
-            dY /= divider;
-
-            dX *= 8*enemyInstance.getSpeed();
-            dY *= 8*enemyInstance.getSpeed();
-
-            enemyInstance.moveX((int)dX);
-            enemyInstance.moveY((int)dY);
+            if (Math.abs(p.getX() - enemyInstance.getX()) >= Math.abs(p.getY() - enemyInstance.getY())){
+                if ((p.getX() - enemyInstance.getX())>=0) {
+                    enemyInstance.moveX(8*enemyInstance.getSpeed());
+                } else {
+                    enemyInstance.moveX(-8*enemyInstance.getSpeed());
+                }
+            } else {
+                if ((p.getY() - enemyInstance.getY())>=0) {
+                    enemyInstance.moveY(8*enemyInstance.getSpeed());
+                } else {
+                    enemyInstance.moveY(-8*enemyInstance.getSpeed());
+                }
+            }
 
         }
     }
@@ -86,7 +86,7 @@ public class EnemyHandler extends CharacterHandler {
     }
 
     public void attack() {
-        if (Math.sqrt(Math.pow(p.getX()-enemyInstance.getX(), 2)+ Math.pow(p.getY()-enemyInstance.getY(),2)) < 5){
+        if (Math.sqrt(Math.pow(p.getX()-enemyInstance.getX(), 2)+ Math.pow(p.getY()-enemyInstance.getY(),2)) <= enemyInstance.getWeapon().getRange()){
             getLocationHandler().enemyAttack(p.getX(), p.getY(), this);
         }
     }
