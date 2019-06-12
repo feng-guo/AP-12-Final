@@ -349,7 +349,23 @@ public class LocationHandler implements Runnable {
                                                                       })
     }
     */
-    
+    public void attackCollision(){
+        for (int i=0;i<weaponEffectIDs.size();i++){
+            WeaponEffectInstance  weaponEffect= weaponEffectHandlerHashMap.get(weaponEffectIDs.get(i)).getWeaponEffectInstance();
+            for (int j=0;j<enemyIDs.size();j++){
+                EnemyInstance enemy=enemyHandlerHashMap.get(enemyIDs.get(i)).getEnemyInstance();
+                if (Math.abs(enemy.getX()-weaponEffect.getX())<=100 && Math.abs(enemy.getY()-weaponEffect.getY())<=100){
+                    enemy.damage(weaponEffect.getWeaponEffect().getDamage());
+                }
+            }
+            for (int j=0;j<playerIDs.size();j++){
+                PlayerInstance player=playerHandlerHashMap.get(playerIDs.get(i)).getPlayerInstance();
+                if (Math.abs(player.getX()-weaponEffect.getX())<=100 && Math.abs(player.getY()-weaponEffect.getY())<=100){
+                    player.damage(weaponEffect.getWeaponEffect().getDamage());
+                }
+            }
+        }
+    }
     private void checkEnvironmentals() {
         for (int i=0; i<environmentalIDs.size(); i++){
             double id = environmentalIDs.get(i);
