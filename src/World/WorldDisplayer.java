@@ -3,6 +3,9 @@ package World;
 import Entities.EnemyInstance;
 import Entities.*;
 import Entities.PlayerInstance;
+import Items.Consumable;
+import Items.Stack;
+import Items.Weapon;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -38,6 +41,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	BufferedImage hungerFull;
 	BufferedImage hotbar;
 	BufferedImage hotbarSelect;
+	Color darken;
 
 	BufferedImage grass;
 	BufferedImage stone;
@@ -67,6 +71,9 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 			hotbar = ImageIO.read(new File("assets/gui/hotbar.png"));
 			hotbarSelect = ImageIO.read(new File("assets/gui/selected.png"));
+
+			darken = new Color(0,0,0,127);
+
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
@@ -230,15 +237,33 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		g.drawImage(hotbarSelect, center[0] - (hotbar.getWidth() / 2) - 4 + (current * 80), (2 * center[1]) - (hotbar.getHeight()) - 12, null);
 
 		//Other items
-		g.setColor(Color.BLACK);
+		double cooldown = (-1/Math.pow(player.getDexterity()/10, 2)+1) + 1;
 		for (int i = 0; i <= 9; i++) {
 			try {
-				Image image = player.getInventory().get(i + 27).getItem().getSprite();
-				int quantity = player.getInventory().get(i + 27).getStackAmount();
+				Stack currentStack = player.getInventory().get(i + 27);
+				Image image = currentStack.getItem().getSprite();
+				int quantity = currentStack.getStackAmount();
 				g.drawImage(image, (center[0] - 29) + ((i - 4) * 80) + 1,(center[1] * 2) - 56 - 24,60,60,null);
 				//Only draw stack amount if quantity > 1
 				if (quantity > 1) {
+					g.setColor(Color.WHITE);
 					g.drawString(Integer.toString(quantity), (center[0] - 29) + ((i - 4) * 80) + 52, (center[1] * 2) - 24);
+				}
+				//Check for cooldown
+				if (currentStack.getItem() instanceof Consumable) {
+					double delta = System.nanoTime()/1e+9 - player.getLastConsumableUse();
+					if (delta < 5) {
+						g.setColor(darken);
+						g.fillRect((center[0] - 29) + ((i - 4) * 80) - 3, (center[1] * 2) - 56 - 28, 64, 64);
+						g.setColor(Color.WHITE);
+					}
+				}
+				if (currentStack.getItem() instanceof Weapon) {
+					double delta = System.nanoTime()/1e+9 - player.getLastWeaponUse();
+					if (delta < cooldown) {
+						g.setColor(darken);
+						g.fillRect((center[0] - 29) + ((i - 4) * 80) - 3,(center[1] * 2) - 56 - 28,64,64);
+					}
 				}
 			} catch (NullPointerException e) {
 				//No item in slot
