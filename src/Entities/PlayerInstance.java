@@ -105,7 +105,7 @@ public class PlayerInstance extends CharacterInstance {
 
     public void move() {
         steps++;
-        if (steps == 4) {
+        if (steps == 6) {
             steps = 0;
             currentSprite++;
             if (currentSprite >= 4)
