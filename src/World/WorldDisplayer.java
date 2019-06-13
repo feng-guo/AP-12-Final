@@ -116,7 +116,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 				}else if (mapBlocks[r][c].equals("p")){
 					g.drawImage(wood,(r*size) + relative[0],(c*size) + relative[1], size, size, null);
 				}else{
-					g.drawImage(grass,(r*size) + relative[0],(c*size) + relative[1], size, size, null);
+					//g.drawImage(grass,(r*size) + relative[0],(c*size) + relative[1], size, size, null);
 				}
 				//g.fillRect((r*size) + relative[0],(c*size) + relative[1],size,size);
 			}

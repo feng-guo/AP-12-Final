@@ -103,7 +103,7 @@ public class Game extends JFrame {
 			//Code here
 		});
 		quitButton.addActionListener(actionEvent -> {
-			//Code here
+			System.exit(0);
 		});
 		backButton.addActionListener(actionEvent -> {
 			//Code here
@@ -162,7 +162,7 @@ public class Game extends JFrame {
 		Armour berryRing = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/berry.png"), 200, 20, "Ring");
 		Armour riceRing = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/rice.png"), 200, 20, "Ring");
 		Armour potato = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/root_vegetable.png"), 200, 20, "Ring");
-		playerInstance = new PlayerInstance(0,0,player,1);
+		playerInstance = new PlayerInstance(1050, 1050,player,1);
 
 		this.inventory = playerInstance.getInventory();
 		inventory.setArmour(titanium);
@@ -190,9 +190,23 @@ public class Game extends JFrame {
 		EnvironmentalInstance titOre = new EnvironmentalInstance(130, 130, titaniumOre,2);
 		EnvironmentalInstance breadOreThing = new EnvironmentalInstance(400, 0, breadOre,3);
 
-		Structure breadStructure = new Structure(breadSprite, map, "Bread", 400, 200, 1200, 400);
+		Structure houseA = new Structure(houseASprite, map, "House", 1500, 1500, 100, 100);
+		Structure houseB = new Structure(houseBSprite, map, "House", 0, 0, 100, 100);
+		Structure buildingA = new Structure(buildingASprite, map, "Building", 0, 100, 100, 100);
+		Structure buildingB = new Structure(buildingBSpirte, map, "Building", 0, 100, 100, 100);
+		Structure library = new Structure(librarySprite, map, "House", 0, 0, 100, 100);
+		Structure smith = new Structure(smithSprite, map, "House", 0, 0, 100, 100);
 
-		map.getStructures().add(breadStructure);
+		//Structure breadStructure = new Structure(breadSprite, map, "Bread", 400, 200, 1200, 400);
+		//map.getStructures().add(breadStructure);
+
+		map.getStructures().add(houseA);
+		map.getStructures().add(houseB);
+		map.getStructures().add(buildingA);
+		map.getStructures().add(buildingB);
+		map.getStructures().add(library);
+		map.getStructures().add(smith);
+
 		mapHan.addEnvironmental(copperOreEnv);
 		mapHan.addEnvironmental(titOre);
 		mapHan.addPlayer(playerHandler);
