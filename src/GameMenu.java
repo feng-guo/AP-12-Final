@@ -110,7 +110,10 @@ public class GameMenu {
   
   public class EventListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
-      
+
+      if (e.getSource()== quitButton){
+        System.exit(0);
+      }
       if (e.getSource() == playButton) {
         mainFrame.getContentPane().removeAll();
         mainFrame.setTitle("Find Server");
