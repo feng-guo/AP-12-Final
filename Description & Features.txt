@@ -12,3 +12,10 @@ Features (sorted by priority)
 - village building/management
 - farming
 - potion brewing
+
+Controls
+WASD - movement
+Left click - attack
+Right click - use
+F - pick up items
+E - open inventory
