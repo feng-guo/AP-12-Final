@@ -19,12 +19,12 @@ public class PlayerInstance extends CharacterInstance {
     private Player player;
     private int currentSprite;
     private int currentHunger;
-
-
+    private int lastDirection;
 
     public PlayerInstance(int x, int y, Player player, double id) {
         super(x,y, player, id);
         loadSprites();
+        lastDirection = 0;
         this.direction = 0;
         currentSprite = 0;
         this.inventory = new Inventory(36);
@@ -75,21 +75,43 @@ public class PlayerInstance extends CharacterInstance {
     }
 
     public BufferedImage drawDown() {
+        lastDirection = 0;
         return spritesDown[currentSprite];
     }
     public BufferedImage drawUp() {
+        lastDirection = 1;
         return spritesUp[currentSprite];
     }
     public BufferedImage drawRight() {
+        lastDirection = 2;
         return spritesRight[currentSprite];
     }
     public BufferedImage drawLeft() {
+        lastDirection = 3;
         return spritesLeft[currentSprite];
     }
 
+    public BufferedImage drawLast() {
+        if (lastDirection == 0) {
+            return spritesDown[0];
+        }else if (lastDirection == 1){
+            return spritesUp[0];
+        }else if (lastDirection == 2){
+            return spritesRight[0];
+        }else{
+            return spritesLeft[0];
+        }
+    }
+
     public void move() {
-        if (currentSprite >= 4)
-            currentSprite = 0;
+        steps++;
+        if (steps == 4) {
+            steps = 0;
+            currentSprite++;
+            if (currentSprite >= 4)
+                currentSprite = 0;
+        }
+
     }
 
     public void setDirection(int direction){
