@@ -26,7 +26,8 @@ public class Game extends JFrame {
 	private JPanel currentPanel;
 
 	//START PANELS
-    private JPanel background;
+
+        // private JPanel background;
     private JPanel optionPanel;
 
 	private Listener listener = new Listener();
@@ -65,12 +66,15 @@ public class Game extends JFrame {
 
 	private void initializeStartPanels() {
 
-	    background = new JPanel();
+	        // background = new JPanel();
+
+	    BackgroundPanel background = new BackgroundPanel();
 
 		optionPanel = new JPanel();
 		optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
 		optionPanel.setOpaque(false);
 
+		/****
 		try {
             BufferedImage backgroundImage = ImageIO.read(new File("assets/menu/Background.png"));
             JLabel backgroundLabel = new JLabel(new ImageIcon(backgroundImage));
@@ -78,6 +82,7 @@ public class Game extends JFrame {
         } catch (IOException e){
 		    e.printStackTrace();
         }
+         */
 
         /*
         JLabel backgroundLabel = new JLabel();
@@ -152,9 +157,9 @@ public class Game extends JFrame {
 
         //this.setContentPane(backgroundLabel);
         //this.add(optionPanel, gbc1);
-        this.add(background);
-        this.pack();
+            //this.pack();
         this.add(optionPanel);
+        this.add(background);
         this.revalidate();
 	}
 
@@ -349,28 +354,27 @@ public class Game extends JFrame {
 		repaint();
 	}
 
-	/*
-    class BackgroundPanel extends JPanel
-    {
-        Image image;
-        public BackgroundPanel()
-        {
-            try
-            {
-                image = javax.imageio.ImageIO.read(new java.net.URL(getClass().getResource("Test.gif"), "Test.gif"));
+
+    private class BackgroundPanel extends JPanel {
+        BufferedImage backgroundImage;
+
+        public BackgroundPanel() {
+            File f = new File("assets/menu/Background.png");
+
+            try {
+                backgroundImage = ImageIO.read(f);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            catch (Exception e) { -handled in paintComponent()- }
         }
 
         @Override
-        protected void paintComponent(Graphics g)
-        {
+        public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            if (image != null)
-                g.drawImage(image, 0,0,this.getWidth(),this.getHeight(),this);
+            g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), null);
         }
     }
-    */
+
 
 	private class GamePanel extends JPanel {
 		Clock clock = new Clock();
