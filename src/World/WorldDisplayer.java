@@ -51,10 +51,10 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 	private GameMouseWheelListener gameMouseWheelListener;
 
-	public WorldDisplayer(PlayerInstance player, Location map, PlayerHandler playerHandler) {
-		this.player = player;
-		this.playerHandler = playerHandler;
-		player.loadSprites();
+	public WorldDisplayer(PlayerHandler playerHan, Location map) {
+		this.player = playerHan.getPlayerInstance();
+		this.playerHandler = playerHan;
+		this.player.loadSprites();
 		this.map = map;
 		this.mapTile = map.getMap();
 		this.mapBlocks = map.getBlocks();
@@ -258,16 +258,23 @@ public class WorldDisplayer extends JPanel implements Runnable {
 				if (currentStack.getItem() instanceof Consumable) {
 					double delta = System.nanoTime()/1e+9 - player.getLastConsumableUse();
 					if (delta < 5) {
+						double percent = (5 - delta) / 5;
 						g.setColor(darken);
 						g.fillRect((center[0] - 29) + ((i - 4) * 80) - 3, (center[1] * 2) - 56 - 28, 64, 64);
+						g.fillRect((center[0] - 29) + ((i - 4) * 80) - 3, (center[1] * 2) - 56 - 28 + (int)(64 * (1 - percent)), 64, (int)(64 * percent));
 						g.setColor(Color.WHITE);
+						g.drawString(Integer.toString((int)(Math.round(5 - delta))), (center[0] - 29) + ((i - 4) * 80) + 28, (center[1] * 2) - 56 + 8);
 					}
 				}
 				if (currentStack.getItem() instanceof Weapon) {
 					double delta = System.nanoTime()/1e+9 - player.getLastWeaponUse();
 					if (delta < cooldown) {
+						double percent = (cooldown - delta) / cooldown;
 						g.setColor(darken);
 						g.fillRect((center[0] - 29) + ((i - 4) * 80) - 3,(center[1] * 2) - 56 - 28,64,64);
+						g.fillRect((center[0] - 29) + ((i - 4) * 80) - 3, (center[1] * 2) - 56 - 28 + (int)(64 * (1 - percent)), 64, (int)(64 * percent));
+						g.setColor(Color.WHITE);
+						g.drawString(Integer.toString((int)(Math.round(cooldown - delta))), (center[0] - 29) + ((i - 4) * 80) + 28, (center[1] * 2) - 56 + 8);
 					}
 				}
 			} catch (NullPointerException e) {
