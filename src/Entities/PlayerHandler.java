@@ -128,7 +128,7 @@ public class PlayerHandler extends CharacterHandler {
     private void starveToDeath() {
         double currentTime = (System.nanoTime()/1e+9);
         double delta = currentTime - playerInstance.getLastStarveChange();
-        if (delta > 20) {
+        if (delta > 20 && playerInstance.getCurrentHunger() <= 0) {
             playerInstance.heal(-1);
             playerInstance.setLastStarveChange(currentTime);
         }
