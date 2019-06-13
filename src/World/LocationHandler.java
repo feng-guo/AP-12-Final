@@ -401,8 +401,8 @@ public class LocationHandler implements Runnable {
                 int environmentalY = (environmentalInstance.getY() + environmentalInstance.getEntity().getLength())/2;
                 int deltaX = Math.abs(environmentalX-playerX);
                 int deltaY = Math.abs(environmentalY-playerY);
-                int maxDeltaX = environmentalInstance.getEntity().getWidth()/2 + playerInstance.getEntity().getWidth()/2 + 30;
-                int maxDeltaY = environmentalInstance.getEntity().getLength()/2 + playerInstance.getEntity().getLength()/2 + 30;
+                int maxDeltaX = environmentalInstance.getEntity().getWidth()/2 + playerInstance.getEntity().getWidth()/2 + 10;
+                int maxDeltaY = environmentalInstance.getEntity().getLength()/2 + playerInstance.getEntity().getLength()/2 + 10;
                 if (deltaX < maxDeltaX && deltaY < maxDeltaY) {
                     environmentalInstance.hit(tool.getToolHit());
                     return;

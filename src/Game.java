@@ -45,7 +45,7 @@ public class Game extends JFrame {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
-
+		initializeAssets();
 		initializeStartPanels();
 		//startNewSingleplayerGame();
 		//this.add(worldPanel);
@@ -159,6 +159,7 @@ public class Game extends JFrame {
 	}
 
 	private void startNewSingleplayerGame() {
+
 		//Might want to remove this later
 		Image houseASprite = Toolkit.getDefaultToolkit().createImage("assets/blocks/3x3a.png");
 		Image houseBSprite = Toolkit.getDefaultToolkit().createImage("assets/blocks/3x3b.png");
@@ -225,9 +226,6 @@ public class Game extends JFrame {
 		Structure buildingB = new Structure(buildingBSpirte, map, "Building", 275, 1090, 350, 343);
 		Structure library = new Structure(librarySprite, map, "Library", 670, 705, 350, 325);
 		Structure smith = new Structure(smithSprite, map, "Smith", 545, 415, 250, 415);
-
-		//Structure breadStructure = new Structure(breadSprite, map, "Bread", 400, 200, 1200, 400);
-		//map.getStructures().add(breadStructure);
 
 		map.getStructures().add(houseA);
 		map.getStructures().add(houseB);

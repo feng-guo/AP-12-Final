@@ -186,6 +186,21 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			int y = environmentalInstance.getY();
 			Entity e = environmentalInstance.getEntity();
 			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
+			Color c = g.getColor();
+			g.setColor(Color.RED);
+			for (int j=0; j<environmentalInstance.hitSize(); j++) {
+				double currentTime = System.nanoTime()/1e+9;
+				double delta = currentTime - environmentalInstance.getHitTime(j);
+				if (delta < 0.5) {
+					int drawX = x + environmentalInstance.getEntity().getWidth()/2 + (int)(delta*10);
+					int drawY = y + environmentalInstance.getEntity().getLength()/2 + (int)(delta*10);
+					g.drawString(Integer.toString(environmentalInstance.getHit(j)), drawX + relative[0] - (size/2), drawY + + relative[1] - (size/2));
+				} else {
+					environmentalInstance.removeHit(j);
+					j--;
+				}
+			}
+			g.setColor(c);
 		}
 		for (int i=0; i <map.getItemDropIDs().size(); i++) {
 			ItemDropInstance itemDropInstance = map.getItemDrop(map.getItemDropIDs().get(i));
