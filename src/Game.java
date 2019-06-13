@@ -190,12 +190,12 @@ public class Game extends JFrame {
 		EnvironmentalInstance titOre = new EnvironmentalInstance(130, 130, titaniumOre,2);
 		EnvironmentalInstance breadOreThing = new EnvironmentalInstance(400, 0, breadOre,3);
 
-		Structure houseA = new Structure(houseASprite, map, "House", 1500, 1500, 100, 100);
-		Structure houseB = new Structure(houseBSprite, map, "House", 0, 0, 100, 100);
-		Structure buildingA = new Structure(buildingASprite, map, "Building", 0, 100, 100, 100);
-		Structure buildingB = new Structure(buildingBSpirte, map, "Building", 0, 100, 100, 100);
-		Structure library = new Structure(librarySprite, map, "House", 0, 0, 100, 100);
-		Structure smith = new Structure(smithSprite, map, "House", 0, 0, 100, 100);
+		Structure houseA = new Structure(houseASprite, map, "House", 1325, 565, 300, 300);
+		Structure houseB = new Structure(houseBSprite, map, "House", 1325, 185, 300, 300);
+		Structure buildingA = new Structure(buildingASprite, map, "Building", 1300, 965, 350, 343);
+		Structure buildingB = new Structure(buildingBSpirte, map, "Building", 275, 1090, 350, 343);
+		Structure library = new Structure(librarySprite, map, "Library", 300, 945, 100, 100);
+		Structure smith = new Structure(smithSprite, map, "Smith", 450, 420, 250, 450);
 
 		//Structure breadStructure = new Structure(breadSprite, map, "Bread", 400, 200, 1200, 400);
 		//map.getStructures().add(breadStructure);

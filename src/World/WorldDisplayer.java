@@ -200,21 +200,24 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			int y = e.getY();
 			g.drawString(Integer.toString(e.getStack().getStackAmount()),x + relative[0] - (size/2),y + relative[1] - (size/2));
 		}
-
-		switch(player.getDirection()){
-			case 0:
-				g.drawImage(player.drawDown(), center[0] - (size / 2), center[1] - (size / 2),size,size, null);
-				break;
-			case 1:
-				g.drawImage(player.drawUp(),center[0] - (size / 2), center[1] - (size / 2),size,size, null);
-				break;
-			case 2:
-				g.drawImage(player.drawRight(),center[0] - (size / 2), center[1] - (size / 2),size,size, null);
-				break;
-			case 3:
-				g.drawImage(player.drawLeft(),center[0] - (size / 2), center[1] - (size / 2),size,size, null);
-				break;
+		
+		if (playerHandler.getxDirection() == 0 && playerHandler.getyDirection() == 0){
+			g.drawImage(player.drawLast(),center[0] - (size / 2), center[1] - (size / 2),size,size, null);
+		} else if (playerHandler.getyDirection() == 1){
+			g.drawImage(player.drawDown(), center[0] - (size / 2), center[1] - (size / 2),size,size, null);
+			player.move();
+		} else if (playerHandler.getyDirection() == -1){
+			g.drawImage(player.drawUp(),center[0] - (size / 2), center[1] - (size / 2),size,size, null);
+			player.move();
+		} else if (playerHandler.getxDirection() ==  1){
+			g.drawImage(player.drawRight(),center[0] - (size / 2), center[1] - (size / 2),size,size, null);
+			player.move();
+		} else if (playerHandler.getxDirection() == -1) {
+			g.drawImage(player.drawLeft(), center[0] - (size / 2), center[1] - (size / 2), size, size, null);
+			player.move();
 		}
+
+
 
 		//g.setColor(Color.RED);
 		//g.fillRect(center[0] - (size / 2), center[1] - (size / 2), size, size);
