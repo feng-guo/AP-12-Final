@@ -147,10 +147,6 @@ public class PlayerHandler extends CharacterHandler {
         return playerInstance.getLastWeaponUse();
     }
 
-    public double getLastConsumableUse() {
-        return playerInstance.getLastConsumableUse();
-    }
-
     public void setLastWeaponUse(double lastWeaponUse) {
         playerInstance.setLastWeaponUse(lastWeaponUse);
     }
