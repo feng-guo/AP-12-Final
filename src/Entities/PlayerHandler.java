@@ -15,22 +15,14 @@ public class PlayerHandler extends CharacterHandler {
     private int xDirection;
     private int yDirection;
 
-    private double lastWeaponUse;
-    private double lastConsumableUse;
-    private double lastHungerChange;
-    private double lastStarveChange;
-    private double lastMove;
+
 
 
     public PlayerHandler(PlayerInstance playerInstance, LocationHandler location) {
         super(playerInstance, location);
         this.playerInstance = playerInstance;
         this.keyPresses = new boolean[4];
-        this.lastWeaponUse = 0;
-        this.lastConsumableUse = 0;
-        this.lastHungerChange = System.nanoTime()/1e+9;
-        this.lastStarveChange = 0;
-        this.lastMove = 0;
+
     }
 
     public PlayerInstance getPlayerInstance() {
@@ -67,15 +59,10 @@ public class PlayerHandler extends CharacterHandler {
     @Override
     public void run() {
         while (true) {
-            double currentTime = System.nanoTime()/1e+9;
-            if (currentTime-lastMove > 0.25) {
-                determineMovement();
-                move();
-            }
+            determineMovement();
+            move();
             decreaseHunger();
-            if (playerInstance.getCurrentHunger() == 0) {
-                starveToDeath();
-            }
+            starveToDeath();
             try {
                 Thread.sleep(20);
             } catch (InterruptedException e) {
@@ -140,52 +127,52 @@ public class PlayerHandler extends CharacterHandler {
 
     private void starveToDeath() {
         double currentTime = (System.nanoTime()/1e+9);
-        double delta = currentTime - lastStarveChange;
+        double delta = currentTime - playerInstance.getLastStarveChange();
         if (delta > 20) {
             playerInstance.heal(-1);
-            lastStarveChange = currentTime;
+            playerInstance.setLastStarveChange(currentTime);
         }
     }
 
     private void decreaseHunger() {
         double currentTime = (System.nanoTime()/1e+9);
-        double delta = currentTime - lastHungerChange;
+        double delta = currentTime - playerInstance.getLastHungerChange();
         if (delta > 120) {
             playerInstance.changeCurrentHunger(-1);
-            lastHungerChange = currentTime;
+            playerInstance.setLastHungerChange(currentTime);
         }
     }
 
     public double getLastWeaponUse() {
-        return lastWeaponUse;
+        return playerInstance.getLastWeaponUse();
     }
 
     public double getLastConsumableUse() {
-        return lastConsumableUse;
+        return playerInstance.getLastConsumableUse();
     }
 
     public void setLastWeaponUse(double lastWeaponUse) {
-        this.lastWeaponUse = lastWeaponUse;
+        playerInstance.setLastWeaponUse(lastWeaponUse);
     }
 
     public void eat(Food food, int index) {
         double currentTime = System.nanoTime()/1e+9;
-        if (currentTime - lastConsumableUse > 5) {
+        if (currentTime - playerInstance.getLastConsumableUse() > 5) {
             food.use(playerInstance);
             playerInstance.getInventory().get(index).remove(1);
             if (playerInstance.getInventory().get(index).getStackAmount() == 0) {
                 playerInstance.getInventory().remove(index);
             }
-            lastConsumableUse = currentTime;
+            playerInstance.setLastConsumableUse(currentTime);
         }
     }
 
     public void drinkPotion(Potion potion, int index) {
         double currentTime = System.nanoTime()/1e+9;
-        if (currentTime - lastConsumableUse > 5) {
+        if (currentTime - playerInstance.getLastConsumableUse() > 5) {
             potion.use(playerInstance);
             playerInstance.getInventory().remove(index);
-            lastConsumableUse = currentTime;
+            playerInstance.setLastConsumableUse(currentTime);
         }
     }
 
