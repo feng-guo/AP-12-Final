@@ -32,6 +32,9 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	private int mouseClickY;
 	//ArrayList<Double> enemies;
 
+	Font gameFont;
+	FontMetrics fm;
+
 	private String frameRate;
 	private long lastTimeCheck;
 	private long deltaTime;
@@ -61,6 +64,13 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 		//move this later
 		try {
+			//create font
+			gameFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/font/vcr_osd_mono.ttf")).deriveFont(18f);
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			//register font
+			ge.registerFont(gameFont);
+			this.setFont(gameFont);
+
 			grass = ImageIO.read(new File("assets/blocks/grass.png"));
 			stone = ImageIO.read(new File("assets/blocks/stone.png"));
 			water = ImageIO.read(new File("assets/blocks/water.png"));
@@ -76,7 +86,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 			darken = new Color(0,0,0,127);
 
-		} catch (IOException e) {
+		} catch (IOException | FontFormatException e) {
 			System.out.println(e.getMessage());
 		}
 
@@ -99,6 +109,9 @@ public class WorldDisplayer extends JPanel implements Runnable {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Dimension panelSize = this.getSize();
+		super.setFont(gameFont);
+		fm = g.getFontMetrics(gameFont);
+
 		int[] center = {panelSize.width / 2, panelSize.height / 2};
 		int[] relative = {center[0] - player.getX(), center[1] - player.getY()};
 		for (int r = 0; r < mapTile.length; r++) {
@@ -181,18 +194,12 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			Entity e = itemDropInstance.getEntity();
 			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
 		}
-		Font currentFont = g.getFont();
 		if (player.getNearbyItem() != null) {
 			ItemDropInstance e = player.getNearbyItem();
 			int x = e.getX();
 			int y = e.getY();
-
-			Font newFont = currentFont.deriveFont(Font.BOLD);
-			g.setFont(newFont);
 			g.drawString(Integer.toString(e.getStack().getStackAmount()),x + relative[0] - (size/2),y + relative[1] - (size/2));
 		}
-
-		g.setFont(currentFont);
 
 		switch(player.getDirection()){
 			case 0:
@@ -249,7 +256,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 				//Only draw stack amount if quantity > 1
 				if (quantity > 1) {
 					g.setColor(Color.WHITE);
-					g.drawString(Integer.toString(quantity), (center[0] - 29) + ((i - 4) * 80) + 52, (center[1] * 2) - 24);
+					g.drawString(Integer.toString(quantity), (center[0] - 29) + ((i - 4) * 80) + 60 - fm.stringWidth(Integer.toString(quantity)), (center[1] * 2) - 20);
 				}
 				//Check for cooldown
 				if (currentStack.getItem() instanceof Consumable) {
@@ -260,7 +267,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 						g.fillRect((center[0] - 29) + ((i - 4) * 80) - 3, (center[1] * 2) - 56 - 28, 64, 64);
 						g.fillRect((center[0] - 29) + ((i - 4) * 80) - 3, (center[1] * 2) - 56 - 28 + (int)(64 * (1 - percent)), 64, (int)(64 * percent));
 						g.setColor(Color.WHITE);
-						g.drawString(Integer.toString((int)(Math.round(5 - delta))), (center[0] - 29) + ((i - 4) * 80) + 28, (center[1] * 2) - 56 + 8);
+						g.drawString(Integer.toString((int)(Math.round(5 - delta))), (center[0] - 29) + ((i - 4) * 80) + 36 - fm.stringWidth(Integer.toString((int)(Math.round(5 - delta)))), (center[1] * 2) - 56 + 10);
 					}
 				}
 				if (currentStack.getItem() instanceof Weapon) {
@@ -271,7 +278,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 						g.fillRect((center[0] - 29) + ((i - 4) * 80) - 3,(center[1] * 2) - 56 - 28,64,64);
 						g.fillRect((center[0] - 29) + ((i - 4) * 80) - 3, (center[1] * 2) - 56 - 28 + (int)(64 * (1 - percent)), 64, (int)(64 * percent));
 						g.setColor(Color.WHITE);
-						g.drawString(Integer.toString((int)(Math.round(cooldown - delta))), (center[0] - 29) + ((i - 4) * 80) + 28, (center[1] * 2) - 56 + 8);
+						g.drawString(Integer.toString((int)(Math.round(cooldown - delta))), (center[0] - 29) + ((i - 4) * 80) + 36 - fm.stringWidth(Integer.toString((int)(Math.round(cooldown - delta)))), (center[1] * 2) - 56 + 10);
 					}
 				}
 			} catch (NullPointerException e) {

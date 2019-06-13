@@ -31,7 +31,6 @@ public class Game extends JFrame {
 	private JPanel ipPanel;
 	private JPanel portPanel;
 
-
 	private Listener listener = new Listener();
 
 	//*****TEMPORARY VARIABLES*****//
@@ -47,6 +46,7 @@ public class Game extends JFrame {
 		this.setSize(1280,760);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(false);
 
 		initializeStartPanels();
 		//startNewSingleplayerGame();
@@ -385,6 +385,9 @@ public class Game extends JFrame {
 		private PanelMouseMotionListener motionListener = new PanelMouseMotionListener();
 		private Stack handStack;
 
+		private Font inventoryFont;
+		FontMetrics fm;
+
 		private int x;
 		private int y;
 		private int mouseX;
@@ -404,7 +407,14 @@ public class Game extends JFrame {
 			File f = new File("InventoryGUI_2.png");
 			try {
 				this.inventoryGUI = ImageIO.read(f);
-			} catch (IOException e) {
+				//create font
+				inventoryFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/font/vcr_osd_mono.ttf")).deriveFont(18f);
+				GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+				//register font
+				ge.registerFont(inventoryFont);
+				this.setFont(inventoryFont);
+
+			} catch (IOException | FontFormatException e) {
 				e.printStackTrace();
 			}
 			this.addMouseListener(mouseListener);
@@ -414,6 +424,10 @@ public class Game extends JFrame {
 
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			super.setFont(inventoryFont);
+
+			fm = getFontMetrics(inventoryFont);
+
 			g.setColor(Color.BLACK);
 			g.fillRect(0,0, 1280, 720);
 
@@ -450,7 +464,8 @@ public class Game extends JFrame {
 								}
 							}
 							if (itemCount > 1) {
-								g.drawString(Integer.toString(itemCount), 372 + 72 * j, 415 + 72 * i);
+								g.setColor(Color.WHITE);
+								g.drawString(Integer.toString(itemCount), 372 + 72 * j + 12 - fm.stringWidth(Integer.toString(itemCount)), 415 + 72 * i + 12);
 								g.setColor(Color.BLACK);
 							}
 						} else if (tempInventory[i*9+j] != null) {
@@ -463,7 +478,7 @@ public class Game extends JFrame {
 								if (tempInventorySlots > 1) {
 									g.setColor(Color.YELLOW);
 								}
-								g.drawString(Integer.toString(itemCount), 372 + 72 * j, 415 + 72 * i);
+								g.drawString(Integer.toString(itemCount), 372 + 72 * j + 12 - fm.stringWidth(Integer.toString(itemCount)), 415 + 72 * i + 12);
 								g.setColor(Color.BLACK);
 							}
 						}
@@ -472,6 +487,7 @@ public class Game extends JFrame {
 					}
 				}
 			}
+			//hotbar
 			for (int i =0; i<9; i++) {
 				try {
 					if (inventory.get(27+i) != null) {
@@ -487,7 +503,8 @@ public class Game extends JFrame {
 							}
 						}
 						if (itemCount > 1) {
-							g.drawString(Integer.toString(itemCount), 372 + 72 * i, 647);
+							g.setColor(Color.WHITE);
+							g.drawString(Integer.toString(itemCount), 372 + 72 * i + 10 - fm.stringWidth(Integer.toString(itemCount)), 658);
 							g.setColor(Color.BLACK);
 						}
 					} else if (tempInventory[27+i] != null) {
@@ -497,10 +514,12 @@ public class Game extends JFrame {
 						g.drawRect(320+72*i,596,63,63);
 						g.setColor(Color.BLACK);
 						if (itemCount > 1) {
+							g.setColor(Color.WHITE);
 							if (tempInventorySlots > 1) {
 								g.setColor(Color.YELLOW);
 							}
-							g.drawString(Integer.toString(itemCount), 372 + 72 * i, 647);
+							g.drawString(Integer.toString(itemCount), 372 + 72 * i + 10 - fm.stringWidth(Integer.toString(itemCount)), 658);
+							//g.drawString(Integer.toString(itemCount), 372 + 72 * i, 647);
 							g.setColor(Color.BLACK);
 						}
 					}
@@ -737,8 +756,9 @@ public class Game extends JFrame {
 		private void paintHandStack(Graphics g) {
 			g.drawImage(handStack.getItem().getSprite(), mouseX-27, mouseY-27, 58,58, null);
 			if (handStack.getStackAmount() > 1) {
-				g.setColor(Color.BLACK);
-				g.drawString(Integer.toString(handStack.getStackAmount()), mouseX+22, mouseY+21);
+				g.setColor(Color.WHITE);
+				g.drawString(Integer.toString(handStack.getStackAmount()), mouseX+34 - fm.stringWidth(Integer.toString(handStack.getStackAmount())), mouseY+34);
+				//g.drawString(Integer.toString(handStack.getStackAmount()), mouseX+22, mouseY+21);
 			}
 		}
 
