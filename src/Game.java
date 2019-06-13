@@ -69,21 +69,13 @@ public class Game extends JFrame {
 		optionPanel = new JPanel();
 		optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
 
-		serverPanel = new JPanel();
-		serverPanel.setLayout(new BoxLayout(serverPanel, BoxLayout.Y_AXIS));
-
-		ipPanel = new JPanel();
-		portPanel = new JPanel();
-
 		//Create JButtons
 		JButton singlePlayerButton = new JButton();
-		JButton multiplayerButton = new JButton(); //add later
 		JButton instructionButton = new JButton();
 		JButton quitButton = new JButton();
 		JButton backButton = new JButton();
 
 		singlePlayerButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Play.png")));
-		multiplayerButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("Bread.png")));
 		instructionButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Instructions.png")));
 		quitButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Quit.png")));
 		backButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Back.png")));
@@ -109,25 +101,20 @@ public class Game extends JFrame {
 			//Code here
 		});
 
-		ipPanel.setAlignmentX(JPanel.CENTER_ALIGNMENT);
-		portPanel.setAlignmentX(JPanel.CENTER_ALIGNMENT);
-
-		serverPanel.add(ipPanel);
-		serverPanel.add(Box.createVerticalStrut(10)); //Creates space between components
-		serverPanel.add(portPanel);
-		serverPanel.add(Box.createVerticalStrut(20));
-
 		//Add buttons to panels
-		singlePlayerButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
-		instructionButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
-		quitButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		singlePlayerButton.setAlignmentX(JButton.RIGHT_ALIGNMENT);
+		instructionButton.setAlignmentX(JButton.RIGHT_ALIGNMENT);
+		quitButton.setAlignmentX(JButton.RIGHT_ALIGNMENT);
 
-		optionPanel.add(singlePlayerButton);
-		optionPanel.add(Box.createVerticalStrut(10));
+        optionPanel.add(Box.createVerticalGlue());
+        optionPanel.add(singlePlayerButton);
+		optionPanel.add(Box.createVerticalStrut(25));
 		optionPanel.add(instructionButton);
-		optionPanel.add(Box.createVerticalStrut(10));
+		optionPanel.add(Box.createVerticalStrut(25));
 		optionPanel.add(quitButton);
-		this.add(optionPanel);
+        optionPanel.add(Box.createVerticalStrut(25));
+
+        this.add(optionPanel);
 		this.revalidate();
 	}
 
