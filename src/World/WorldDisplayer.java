@@ -20,6 +20,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 	boolean running = true;
 	PlayerInstance player;
+	PlayerHandler playerHandler;
 	Location map;
 	int[][] mapTile;
 	String[][] mapBlocks;
@@ -46,9 +47,10 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 	private GameMouseWheelListener gameMouseWheelListener;
 
-	public WorldDisplayer(PlayerInstance player, Location map) {
-		this.player = player;
-		player.loadSprites();
+	public WorldDisplayer(PlayerHandler playerHan, Location map) {
+		this.player = playerHan.getPlayerInstance();
+		this.playerHandler = playerHan;
+		this.player.loadSprites();
 		this.map = map;
 		this.mapTile = map.getMap();
 		this.mapBlocks = map.getBlocks();
