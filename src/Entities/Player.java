@@ -1,3 +1,11 @@
+/**
+ * class for the user player
+ * @author David Bao
+ * @author Armanya Dalmia
+ * @author Feng Guo
+ * @author Victor Lin
+ * @author Arjun Pillai
+ */
 package Entities;
 
 import java.awt.Image;
@@ -12,10 +20,18 @@ public class Player extends Character {
         this.playerName = playerName;
     }
 
+    /**
+     * getID
+     * @return String the unique ID of the player
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * getPlayerName
+     * @return String the name of the player
+     */
     public String getPlayerName() {
         return playerName;
     }

@@ -1,3 +1,12 @@
+/**
+ * List of enemies taken from database
+ * @author David Bao
+ * @author Armanya Dalmia
+ * @author Feng Guo
+ * @author Victor Lin
+ * @author Arjun Pillai
+ */
+
 package Entities;
 import Database.DatabaseConnector;
 import Items.ItemsList;
@@ -11,6 +20,10 @@ import java.sql.ResultSet;
 public class EnemiesList {
     private static HashMap<String, Enemy> enemyHashMap;
 
+    /**
+     * initialize
+     * sets up the list
+     */
     public static void initialize() {
         enemyHashMap = new HashMap<>();
         String s = "SELECT * FROM Enemy";
@@ -18,6 +31,11 @@ public class EnemiesList {
         addToMap(enemies);
     }
 
+    /**
+     * addToMap
+     * creates the hashmap of enemies and the possible loot they can drop
+     * @param resultSet the database
+     */
     private static void addToMap(ResultSet resultSet) {
         try {
             while (resultSet.next()) {
