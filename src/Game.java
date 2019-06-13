@@ -26,10 +26,8 @@ public class Game extends JFrame {
 	private JPanel currentPanel;
 
 	//START PANELS
-	private JPanel optionPanel;
-	private JPanel serverPanel;
-	private JPanel ipPanel;
-	private JPanel portPanel;
+    private JPanel background;
+    private JPanel optionPanel;
 
 	private Listener listener = new Listener();
 
@@ -66,10 +64,22 @@ public class Game extends JFrame {
 	}
 
 	private void initializeStartPanels() {
+
+	    background = new JPanel();
+
 		optionPanel = new JPanel();
 		optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
 		optionPanel.setOpaque(false);
 
+		try {
+            BufferedImage backgroundImage = ImageIO.read(new File("assets/menu/Background.png"));
+            JLabel backgroundLabel = new JLabel(new ImageIcon(backgroundImage));
+            background.add(backgroundLabel);
+        } catch (IOException e){
+		    e.printStackTrace();
+        }
+
+        /*
         JLabel backgroundLabel = new JLabel();
         ImageIcon background = new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Background.png"));
         Image unscaledBackgroundImage = background.getImage();
@@ -77,6 +87,7 @@ public class Game extends JFrame {
         background = new ImageIcon(scaledBackgroundImage);
         backgroundLabel.setIcon(background);
         backgroundLabel.setLayout(new GridBagLayout());
+        */
 
 		//Create JButtons
 		JButton singlePlayerButton = new JButton();
@@ -91,9 +102,18 @@ public class Game extends JFrame {
 
 		singlePlayerButton.addActionListener(actionEvent -> {
 			//removeAllPanels();
-			this.remove(optionPanel);
-			this.repaint();
-			//addPanel(worldPanel);
+            //this.getContentPane().remove(backgroundLabel);
+            //this.setContentPane(new BorderLayout());
+            this.remove(optionPanel);
+
+            //JPanel generalPanel = new JPanel();
+            //this.setContentPane(generalPanel);
+            //this.getContentPane().setPreferredSize(new Dimension(1280, 726));
+            //this.pack();
+            //this.revalidate();
+
+            this.repaint();
+            //addPanel(worldPanel);
 			startNewSingleplayerGame();
 			//this.add(worldPanel);
 			//currentPanel = worldPanel;
@@ -110,16 +130,19 @@ public class Game extends JFrame {
 			//Code here
 		});
 
+		/*
         GridBagConstraints gbc1 = new GridBagConstraints();
         gbc1.fill = GridBagConstraints.HORIZONTAL;
         gbc1.insets = new Insets(400, 0, 0, 20);
         gbc1.weightx = 1;
+        */
 
 		//Add buttons to panels
 		singlePlayerButton.setAlignmentX(JButton.RIGHT_ALIGNMENT);
 		instructionButton.setAlignmentX(JButton.RIGHT_ALIGNMENT);
 		quitButton.setAlignmentX(JButton.RIGHT_ALIGNMENT);
 
+        optionPanel.add(Box.createVerticalGlue());
         optionPanel.add(singlePlayerButton);
 		optionPanel.add(Box.createVerticalStrut(25));
 		optionPanel.add(instructionButton);
@@ -127,9 +150,12 @@ public class Game extends JFrame {
 		optionPanel.add(quitButton);
         optionPanel.add(Box.createVerticalStrut(25));
 
-        this.setContentPane(backgroundLabel);
-        this.add(optionPanel, gbc1);
-		this.revalidate();
+        //this.setContentPane(backgroundLabel);
+        //this.add(optionPanel, gbc1);
+        this.add(background);
+        this.pack();
+        this.add(optionPanel);
+        this.revalidate();
 	}
 
 	private void startNewSingleplayerGame() {
@@ -322,6 +348,29 @@ public class Game extends JFrame {
 		add(panel);
 		repaint();
 	}
+
+	/*
+    class BackgroundPanel extends JPanel
+    {
+        Image image;
+        public BackgroundPanel()
+        {
+            try
+            {
+                image = javax.imageio.ImageIO.read(new java.net.URL(getClass().getResource("Test.gif"), "Test.gif"));
+            }
+            catch (Exception e) { -handled in paintComponent()- }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g)
+        {
+            super.paintComponent(g);
+            if (image != null)
+                g.drawImage(image, 0,0,this.getWidth(),this.getHeight(),this);
+        }
+    }
+    */
 
 	private class GamePanel extends JPanel {
 		Clock clock = new Clock();
