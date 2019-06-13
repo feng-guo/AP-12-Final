@@ -144,6 +144,8 @@ public class Game extends JFrame {
 		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
 		Image cakeSprite = Toolkit.getDefaultToolkit().createImage("Cake.png");
 		Image breadSprite = Toolkit.getDefaultToolkit().createImage("Bread.png");
+		Image garlicSprite = Toolkit.getDefaultToolkit().createImage("assets/enemies/Garlic.png");
+		Image pepperSprite = Toolkit.getDefaultToolkit().createImage("assets/enemies/Pepper.png");
 		Item woodSword = new Pickaxe("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2, 5);
 		Item stick = new Material("Stick", "A wood stick", stickSprite);
 		Item cake = new Food("Cake", "A delicious cake lovingly baked by Feng", cakeSprite,0 ,8);
@@ -194,8 +196,8 @@ public class Game extends JFrame {
 		Structure houseB = new Structure(houseBSprite, map, "House", 1325, 185, 300, 300);
 		Structure buildingA = new Structure(buildingASprite, map, "Building", 1300, 965, 350, 343);
 		Structure buildingB = new Structure(buildingBSpirte, map, "Building", 275, 1090, 350, 343);
-		Structure library = new Structure(librarySprite, map, "Library", 300, 945, 100, 100);
-		Structure smith = new Structure(smithSprite, map, "Smith", 450, 420, 250, 450);
+		Structure library = new Structure(librarySprite, map, "Library", 670, 705, 350, 325);
+		Structure smith = new Structure(smithSprite, map, "Smith", 545, 415, 250, 415);
 
 		//Structure breadStructure = new Structure(breadSprite, map, "Bread", 400, 200, 1200, 400);
 		//map.getStructures().add(breadStructure);
@@ -221,8 +223,8 @@ public class Game extends JFrame {
 		HashMap<Double, Stack> temp = new HashMap<>();
 		Stack stackOne = new Stack(1, woodSword);
 		temp.put(1.0, stackOne);
-		Enemy enemy1 = new Enemy(cakeSprite, 64, 64, 20, 2, 2, 2, "Cake", "Cake", temp);
-		Enemy enemy2 = new Enemy(stickSprite, 64, 64, 20, 3, 3, 3, "Stick", "Wood", temp);
+		Enemy enemy1 = new Enemy(garlicSprite, 64, 64, 20, 2, 2, 2, "Garlic", "Vegetable", temp);
+		Enemy enemy2 = new Enemy(pepperSprite, 64, 64, 20, 3, 3, 3, "Pepper", "Vegetable", temp);
 		EnemyInstance enemy1Ins = new EnemyInstance(20, 40, enemy1, (Weapon)woodSword, 231);
 		EnemyInstance enemy2Ins = new EnemyInstance(100, 400, enemy2, (Weapon)woodSword,22);
 		EnemyHandler enemy1Han = new EnemyHandler(enemy1Ins, mapHan);

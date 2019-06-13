@@ -84,6 +84,7 @@ public class PlayerHandler extends CharacterHandler {
             } else {
                 playerInstance.moveY(-playerInstance.getSpeed());
             }
+
         } else if (yDirection == 1) {
             if (xDirection == -1) {
                 playerInstance.moveX(-d);
