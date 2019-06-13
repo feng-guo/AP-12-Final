@@ -16,6 +16,7 @@ public class PlayerInstance extends CharacterInstance {
     private BufferedImage[] spritesLeft;
     private Inventory inventory;
     private ItemDropInstance nearbyItem;
+    private Player player;
     private int currentSprite;
     private int currentHunger;
     private int lastDirection;
@@ -27,6 +28,7 @@ public class PlayerInstance extends CharacterInstance {
         this.direction = 0;
         currentSprite = 0;
         this.inventory = new Inventory(36);
+        this.player=player;
         this.currentHunger = 10;
         this.lastWeaponUse = 0;
         this.lastConsumableUse = 0;
@@ -58,6 +60,10 @@ public class PlayerInstance extends CharacterInstance {
     }
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public Player getPlayer(){
+        return this.player;
     }
 
     public ItemDropInstance getNearbyItem() {
