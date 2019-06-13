@@ -1,3 +1,12 @@
+/**
+ * class for game enemy
+ * @author David Bao
+ * @author Armanya Dalmia
+ * @author Feng Guo
+ * @author Victor Lin
+ * @author Arjun Pillai
+ */
+
 package Entities;
 
 import Items.Stack;
@@ -15,10 +24,18 @@ public class Enemy extends Character {
         this.lootTable = lootTable;
     }
 
+    /**
+     * getSpecies
+     * @return String name of the species
+     */
     public String getSpecies() {
         return species;
     }
 
+    /**
+     * getLootTable
+     * @return HashMap for the potential loot from enemy
+     */
     public HashMap<Double, Stack> getLootTable() {
         return lootTable;
     }

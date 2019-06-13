@@ -25,6 +25,10 @@ public class Armour extends Equipable {
         this.dexterity = dexterity;
     }
 
+    /**
+     * getArmourPoints
+     * @return int number of armour points
+     */
     public int getArmourPoints() {
         return armourPoints;
     }
