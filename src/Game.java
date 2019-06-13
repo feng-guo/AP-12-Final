@@ -41,11 +41,14 @@ public class Game extends JFrame {
 	LocationHandler mapHan;
 
 	Game() {
-		this.setSize(1280,760);
+		//this.setSize(1280,720);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
-		initializeAssets();
+		this.getContentPane().setPreferredSize(new Dimension(1280,720));
+		this.pack();
+		this.setTitle("Light of the Living Dead");
+		//initializeAssets();
 		initializeStartPanels();
 		//startNewSingleplayerGame();
 		//this.add(worldPanel);
