@@ -1,3 +1,11 @@
+/**
+ * Class that defines specific type of quest
+ * @author David Bao
+ * @author Armanya Dalmia
+ * @author Feng Guo
+ * @author Victor Lin
+ * @author Arjun Pillai
+ */
 package NPCMechanics;
 
 import Entities.Enemy;

@@ -1,3 +1,11 @@
+/**
+ * Class that defines instances of environmentals (specific objects ceated)
+ * @author David Bao
+ * @author Armanya Dalmia
+ * @author Feng Guo
+ * @author Victor Lin
+ * @author Arjun Pillai
+ */
 package Entities;
 
 import java.util.ArrayList;

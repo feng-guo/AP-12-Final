@@ -1,3 +1,11 @@
+/**
+ * Class that defines the weapon effect
+ * @author David Bao
+ * @author Armanya Dalmia
+ * @author Feng Guo
+ * @author Victor Lin
+ * @author Arjun Pillai
+ */
 package Entities;
 
 import Items.Weapon;

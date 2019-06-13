@@ -1,3 +1,11 @@
+/**
+ * Class that defines general specifications for quests
+ * @author David Bao
+ * @author Armanya Dalmia
+ * @author Feng Guo
+ * @author Victor Lin
+ * @author Arjun Pillai
+ */
 package NPCMechanics;
 
 import Items.Item;
