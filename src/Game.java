@@ -597,10 +597,11 @@ public class Game extends JFrame {
 						r = (highlightY-364)/72;
 					}
 					int c = (highlightX-320)/72;
+					String description = inventory.get(r * 9 + c).getItem().getDescription();
 					g.setColor(Color.WHITE);
-					g.fillRect(highlightX+64, highlightY, 100, 200);
+					g.fillRect(highlightX+64, highlightY, 32 + fm.stringWidth(description), 48);
 					g.setColor(Color.BLACK);
-					g.drawString(inventory.get(r * 9 + c).getItem().getDescription(), highlightX + 74, highlightY + 30);
+					g.drawString(description, highlightX + 80, highlightY + 30);
 				} catch (NullPointerException e) {
 					//oops
 				}
@@ -617,9 +618,9 @@ public class Game extends JFrame {
 					int topY = 132;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getArms()[0].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getArms()[0].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getArms()[0].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -631,9 +632,9 @@ public class Game extends JFrame {
 					int topY = 132+72;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getLegs()[0].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getLegs()[0].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getLegs()[0].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -645,9 +646,9 @@ public class Game extends JFrame {
 					int topY = 96;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getHelmet().getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getHelmet().getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getHelmet().getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -659,9 +660,9 @@ public class Game extends JFrame {
 					int topY = 96+72;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getArmour().getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getArmour().getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getArmour().getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -673,9 +674,9 @@ public class Game extends JFrame {
 					int topY = 96+72*2;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getBoots().getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getBoots().getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getBoots().getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -687,9 +688,9 @@ public class Game extends JFrame {
 					int topY = 132;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getArms()[1].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getArms()[1].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getArms()[1].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -701,9 +702,9 @@ public class Game extends JFrame {
 					int topY = 132+72;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getLegs()[0].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getLegs()[0].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getLegs()[0].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -715,9 +716,9 @@ public class Game extends JFrame {
 					int topY = 96;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getRings()[0].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getRings()[0].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getRings()[0].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -729,9 +730,9 @@ public class Game extends JFrame {
 					int topY = 96+72;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getRings()[1].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getRings()[1].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getRings()[1].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -743,9 +744,9 @@ public class Game extends JFrame {
 					int topY = 96+72*2;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getRings()[2].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getRings()[2].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getRings()[2].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
