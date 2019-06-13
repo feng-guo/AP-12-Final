@@ -28,6 +28,11 @@ public class PlayerInstance extends CharacterInstance {
         currentSprite = 0;
         this.inventory = new Inventory(36);
         this.currentHunger = 10;
+        this.lastWeaponUse = 0;
+        this.lastConsumableUse = 0;
+        this.lastHungerChange = System.nanoTime()/1e+9;
+        this.lastStarveChange = 0;
+        this.lastMove = 0;
     }
 
     public void loadSprites() {
@@ -109,4 +114,43 @@ public class PlayerInstance extends CharacterInstance {
             this.currentHunger += c;
         }
     }
+
+    private double lastWeaponUse;
+    private double lastConsumableUse;
+    private double lastHungerChange;
+    private double lastStarveChange;
+    private double lastMove;
+
+    public double getLastWeaponUse() {
+        return lastWeaponUse;
+    }
+
+    public void setLastWeaponUse(double lastWeaponUse) {
+        this.lastWeaponUse = lastWeaponUse;
+    }
+
+    public double getLastConsumableUse() {
+        return lastConsumableUse;
+    }
+
+    public void setLastConsumableUse(double lastConsumableUse) {
+        this.lastConsumableUse = lastConsumableUse;
+    }
+
+    public double getLastHungerChange() {
+        return lastHungerChange;
+    }
+
+    public void setLastHungerChange(double lastHungerChange) {
+        this.lastHungerChange = lastHungerChange;
+    }
+
+    public double getLastStarveChange() {
+        return lastStarveChange;
+    }
+
+    public void setLastStarveChange(double lastStarveChange) {
+        this.lastStarveChange = lastStarveChange;
+    }
+
 }
