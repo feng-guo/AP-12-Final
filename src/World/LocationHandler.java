@@ -51,8 +51,10 @@ public class LocationHandler implements Runnable {
         while(true) {
             checkPlayerItemDrops();
             revalidatePlayerItemDrops();
+            attackCollision();
             checkEnemies();
             checkEnvironmentals();
+            
             try {
                 Thread.sleep(30);
 
@@ -88,6 +90,8 @@ public class LocationHandler implements Runnable {
         weaponEffectIDs.add(id);
         weaponEffectHandlerHashMap.put(id, weaponEffect);
         location.addWeaponEffect(weaponEffect.getWeaponEffectInstance(), id);
+        Thread t= new Thread(weaponEffect);
+        t.start();
     }
 
     public void addEnvironmental(EnvironmentalInstance environmental) {
