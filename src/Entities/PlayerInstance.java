@@ -108,7 +108,9 @@ public class PlayerInstance extends CharacterInstance {
     }
 
     public void changeCurrentHunger(int c) {
-        if (currentHunger + c > 10) {
+        if (c < 0 && currentHunger <= 0) {
+            currentHunger = 0;
+        } else if (currentHunger + c > 10) {
             this.currentHunger = 10;
         } else {
             this.currentHunger += c;
