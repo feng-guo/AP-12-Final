@@ -1,3 +1,11 @@
+/**
+ * Class that defines handler for specific instances of Weapon effects
+ * @author David Bao
+ * @author Armanya Dalmia
+ * @author Feng Guo
+ * @author Victor Lin
+ * @author Arjun Pillai
+ */
 package Entities;
 
 import World.LocationHandler;

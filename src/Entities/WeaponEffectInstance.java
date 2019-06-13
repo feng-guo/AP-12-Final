@@ -1,3 +1,11 @@
+/**
+ * Class that defines specific instances of weapon effects
+ * @author David Bao
+ * @author Armanya Dalmia
+ * @author Feng Guo
+ * @author Victor Lin
+ * @author Arjun Pillai
+ */
 package Entities;
 
 public class WeaponEffectInstance extends EntityInstance {

@@ -1,3 +1,11 @@
+/**
+ * Class that defines a handler for specific instances of NPCs
+ * @author David Bao
+ * @author Armanya Dalmia
+ * @author Feng Guo
+ * @author Victor Lin
+ * @author Arjun Pillai
+ */
 package Entities;
 
 import World.LocationHandler;
