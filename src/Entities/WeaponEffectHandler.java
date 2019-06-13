@@ -40,7 +40,14 @@ public class WeaponEffectHandler extends EntityHandler {
 
     @Override
     public void run() {
-
+      while(true){
+        move();
+        try{
+          Thread.sleep(10);
+        }catch(InterruptedException e){
+          
+        }
+      }
     }
 
     public WeaponEffectInstance getWeaponEffectInstance() {
