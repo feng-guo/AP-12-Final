@@ -68,6 +68,15 @@ public class Game extends JFrame {
 	private void initializeStartPanels() {
 		optionPanel = new JPanel();
 		optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
+		optionPanel.setOpaque(false);
+
+        JLabel backgroundLabel = new JLabel();
+        ImageIcon background = new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Background.png"));
+        Image unscaledBackgroundImage = background.getImage();
+        Image scaledBackgroundImage = unscaledBackgroundImage.getScaledInstance(1280,726,Image.SCALE_DEFAULT);
+        background = new ImageIcon(scaledBackgroundImage);
+        backgroundLabel.setIcon(background);
+        backgroundLabel.setLayout(new GridBagLayout());
 
 		//Create JButtons
 		JButton singlePlayerButton = new JButton();
@@ -101,12 +110,16 @@ public class Game extends JFrame {
 			//Code here
 		});
 
+        GridBagConstraints gbc1 = new GridBagConstraints();
+        gbc1.fill = GridBagConstraints.HORIZONTAL;
+        gbc1.insets = new Insets(400, 0, 0, 20);
+        gbc1.weightx = 1;
+
 		//Add buttons to panels
 		singlePlayerButton.setAlignmentX(JButton.RIGHT_ALIGNMENT);
 		instructionButton.setAlignmentX(JButton.RIGHT_ALIGNMENT);
 		quitButton.setAlignmentX(JButton.RIGHT_ALIGNMENT);
 
-        optionPanel.add(Box.createVerticalGlue());
         optionPanel.add(singlePlayerButton);
 		optionPanel.add(Box.createVerticalStrut(25));
 		optionPanel.add(instructionButton);
@@ -114,7 +127,8 @@ public class Game extends JFrame {
 		optionPanel.add(quitButton);
         optionPanel.add(Box.createVerticalStrut(25));
 
-        this.add(optionPanel);
+        this.setContentPane(backgroundLabel);
+        this.add(optionPanel, gbc1);
 		this.revalidate();
 	}
 
