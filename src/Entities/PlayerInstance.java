@@ -82,13 +82,8 @@ public class PlayerInstance extends CharacterInstance {
     }
 
     public void move() {
-        steps++;
-        if (steps == 4) {
-            steps = 0;
-            currentSprite++;
-            if (currentSprite >= 4)
-                currentSprite = 0;
-        }
+        if (currentSprite >= 4)
+            currentSprite = 0;
     }
 
     public void setDirection(int direction){
