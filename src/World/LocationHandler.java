@@ -6,7 +6,9 @@ import Items.Stack;
 import Items.Tool;
 import Items.Weapon;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class LocationHandler implements Runnable {
     private Location location;
@@ -274,11 +276,13 @@ public class LocationHandler implements Runnable {
         double max = (-1/Math.pow(playerHandler.getPlayerInstance().getDexterity()/10, 2)+1) +1.75;
         if (delta > 2.75 - max) {
             Weapon weapon = (Weapon) playerHandler.getPlayerInstance().getInventory().getCurrentItem().getItem();
-            WeaponEffect weaponEffect = new WeaponEffect(null, 2, 2, weapon); //THIS IS NOT REAL CODE
-            WeaponEffectInstance weaponEffectInstance = new WeaponEffectInstance(playerHandler.getPlayerInstance().getX(), playerHandler.getPlayerInstance().getY(), weaponEffect, System.nanoTime()/1e+9, x, y, (double)System.nanoTime());
+            int newX = playerHandler.getPlayerInstance().getX() + playerHandler.getPlayerInstance().getEntity().getLength()/2;
+            int newY = playerHandler.getPlayerInstance().getY() + playerHandler.getPlayerInstance().getEntity().getWidth()/2;
+            WeaponEffect weaponEffect = new WeaponEffect(Toolkit.getDefaultToolkit().createImage("Bread.png"), 30, 30, weapon);
+            WeaponEffectInstance weaponEffectInstance = new WeaponEffectInstance(newX, newY, weaponEffect, System.nanoTime()/1e+9, x, y, (double)System.nanoTime());
             WeaponEffectHandler weaponEffectHandler = new WeaponEffectHandler(weaponEffectInstance, this);
-            weaponEffectIDs.add(weaponEffectInstance.getID());
-            weaponEffectHandlerHashMap.put(weaponEffectInstance.getID(),weaponEffectHandler);
+            addWeaponEffect(weaponEffectHandler);
+
             playerHandler.setLastWeaponUse(currentTime);
             
             /*
@@ -300,7 +304,7 @@ public class LocationHandler implements Runnable {
         double max = (-1/Math.pow(enemyHandler.getEnemyInstance().getDexterity()/10, 2)+1) +1.75;
         if (delta > 2.75 - max) {
             Weapon weapon = enemyHandler.getEnemyInstance().getWeapon();
-            WeaponEffect weaponEffect = new WeaponEffect(null, 2, 2, weapon); //THIS IS NOT REAL CODE
+            WeaponEffect weaponEffect = new WeaponEffect(null, 20, 20, weapon); //THIS IS NOT REAL CODE
             WeaponEffectInstance weaponEffectInstance = new WeaponEffectInstance(enemyHandler.getEnemyInstance().getX(), enemyHandler.getEnemyInstance().getY(), weaponEffect, System.nanoTime()/1e+9, x, y, (double)System.nanoTime());
             WeaponEffectHandler weaponEffectHandler = new WeaponEffectHandler(weaponEffectInstance, this);
             weaponEffectIDs.add(weaponEffectInstance.getID());
@@ -345,7 +349,25 @@ public class LocationHandler implements Runnable {
                                                                       })
     }
     */
-    
+    public void attackCollision(){
+        for (int i=0;i<weaponEffectIDs.size();i++){
+            WeaponEffectInstance  weaponEffect= weaponEffectHandlerHashMap.get(weaponEffectIDs.get(i)).getWeaponEffectInstance();
+            for (int j=0;j<enemyIDs.size();j++){
+                EnemyInstance enemy=enemyHandlerHashMap.get(enemyIDs.get(i)).getEnemyInstance();
+                if (Math.abs(enemy.getX()+(enemy.getEnemy().getWidth()/2)-weaponEffect.getX()+(weaponEffect.getWeaponEffect().getWidth()/2))<=100 &&
+                        Math.abs(enemy.getY()+(enemy.getEnemy().getLength()/2)-weaponEffect.getY()+(weaponEffect.getWeaponEffect().getLength()/2))<=100){
+                    enemy.damage(weaponEffect.getWeaponEffect().getDamage());
+                }
+            }
+            for (int j=0;j<playerIDs.size();j++){
+                PlayerInstance player=playerHandlerHashMap.get(playerIDs.get(i)).getPlayerInstance();
+                if (Math.abs(player.getX()+(player.getPlayer().getWidth()/2)-weaponEffect.getX()+(weaponEffect.getWeaponEffect().getWidth()/2))<=100 &&
+                        Math.abs(player.getY()+(player.getPlayer().getLength()/2)-weaponEffect.getY()+(weaponEffect.getWeaponEffect().getLength()/2))<=100){
+                    player.damage(weaponEffect.getWeaponEffect().getDamage());
+                }
+            }
+        }
+    }
     private void checkEnvironmentals() {
         for (int i=0; i<environmentalIDs.size(); i++){
             double id = environmentalIDs.get(i);
@@ -379,8 +401,8 @@ public class LocationHandler implements Runnable {
                 int environmentalY = (environmentalInstance.getY() + environmentalInstance.getEntity().getLength())/2;
                 int deltaX = Math.abs(environmentalX-playerX);
                 int deltaY = Math.abs(environmentalY-playerY);
-                int maxDeltaX = environmentalInstance.getEntity().getWidth()/2 + playerInstance.getEntity().getWidth()/2 + 30;
-                int maxDeltaY = environmentalInstance.getEntity().getLength()/2 + playerInstance.getEntity().getLength()/2 + 30;
+                int maxDeltaX = environmentalInstance.getEntity().getWidth()/2 + playerInstance.getEntity().getWidth()/2 + 10;
+                int maxDeltaY = environmentalInstance.getEntity().getLength()/2 + playerInstance.getEntity().getLength()/2 + 10;
                 if (deltaX < maxDeltaX && deltaY < maxDeltaY) {
                     environmentalInstance.hit(tool.getToolHit());
                     return;

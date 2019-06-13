@@ -1,3 +1,12 @@
+/**
+ * abstract class that branches into player, enemy, and npc
+ * @author David Bao
+ * @author Armanya Dalmia
+ * @author Feng Guo
+ * @author Victor Lin
+ * @author Arjun Pillai
+ */
+
 package Entities;
 
 import javax.imageio.ImageIO;
@@ -21,22 +30,42 @@ abstract class Character extends Entity {
         this.name = name;
     }
 
+    /**
+     * getBaseHealth
+     * @return int the base health
+     */
     public int getBaseHealth() {
         return baseHealth;
     }
 
+    /**
+     * getBaseSpeed
+     * @return int the base speed
+     */
     public int getBaseSpeed() {
         return baseSpeed;
     }
 
+    /**
+     * getBaseDefense
+     * @return int the base defense
+     */
     public int getBaseDefense() {
         return baseDefense;
     }
 
+    /**
+     * getBaseDexterity
+     * @return int the base dexterity
+     */
     public int getBaseDexterity() {
         return baseDexterity;
     }
 
+    /**
+     * getName
+     * @return String the name of the character
+     */
     public String getName() {
         return name;
     }

@@ -26,11 +26,8 @@ public class Game extends JFrame {
 	private JPanel currentPanel;
 
 	//START PANELS
-	private JPanel optionPanel;
-	private JPanel serverPanel;
-	private JPanel ipPanel;
-	private JPanel portPanel;
-
+    private JPanel background;
+    private JPanel optionPanel;
 
 	private Listener listener = new Listener();
 
@@ -47,7 +44,8 @@ public class Game extends JFrame {
 		this.setSize(1280,760);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		this.setResizable(false);
+		initializeAssets();
 		initializeStartPanels();
 		//startNewSingleplayerGame();
 		//this.add(worldPanel);
@@ -66,33 +64,56 @@ public class Game extends JFrame {
 	}
 
 	private void initializeStartPanels() {
+
+	    background = new JPanel();
+
 		optionPanel = new JPanel();
 		optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
+		optionPanel.setOpaque(false);
 
-		serverPanel = new JPanel();
-		serverPanel.setLayout(new BoxLayout(serverPanel, BoxLayout.Y_AXIS));
+		try {
+            BufferedImage backgroundImage = ImageIO.read(new File("assets/menu/Background.png"));
+            JLabel backgroundLabel = new JLabel(new ImageIcon(backgroundImage));
+            background.add(backgroundLabel);
+        } catch (IOException e){
+		    e.printStackTrace();
+        }
 
-		ipPanel = new JPanel();
-		portPanel = new JPanel();
+        /*
+        JLabel backgroundLabel = new JLabel();
+        ImageIcon background = new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Background.png"));
+        Image unscaledBackgroundImage = background.getImage();
+        Image scaledBackgroundImage = unscaledBackgroundImage.getScaledInstance(1280,726,Image.SCALE_DEFAULT);
+        background = new ImageIcon(scaledBackgroundImage);
+        backgroundLabel.setIcon(background);
+        backgroundLabel.setLayout(new GridBagLayout());
+        */
 
 		//Create JButtons
 		JButton singlePlayerButton = new JButton();
-		JButton multiplayerButton = new JButton(); //add later
 		JButton instructionButton = new JButton();
 		JButton quitButton = new JButton();
 		JButton backButton = new JButton();
 
 		singlePlayerButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Play.png")));
-		multiplayerButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("Bread.png")));
 		instructionButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Instructions.png")));
 		quitButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Quit.png")));
 		backButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/menu/Back.png")));
 
 		singlePlayerButton.addActionListener(actionEvent -> {
 			//removeAllPanels();
-			this.remove(optionPanel);
-			this.repaint();
-			//addPanel(worldPanel);
+            //this.getContentPane().remove(backgroundLabel);
+            //this.setContentPane(new BorderLayout());
+            this.remove(optionPanel);
+
+            //JPanel generalPanel = new JPanel();
+            //this.setContentPane(generalPanel);
+            //this.getContentPane().setPreferredSize(new Dimension(1280, 726));
+            //this.pack();
+            //this.revalidate();
+
+            this.repaint();
+            //addPanel(worldPanel);
 			startNewSingleplayerGame();
 			//this.add(worldPanel);
 			//currentPanel = worldPanel;
@@ -103,41 +124,56 @@ public class Game extends JFrame {
 			//Code here
 		});
 		quitButton.addActionListener(actionEvent -> {
-			//Code here
+			System.exit(0);
 		});
 		backButton.addActionListener(actionEvent -> {
 			//Code here
 		});
 
-		ipPanel.setAlignmentX(JPanel.CENTER_ALIGNMENT);
-		portPanel.setAlignmentX(JPanel.CENTER_ALIGNMENT);
-
-		serverPanel.add(ipPanel);
-		serverPanel.add(Box.createVerticalStrut(10)); //Creates space between components
-		serverPanel.add(portPanel);
-		serverPanel.add(Box.createVerticalStrut(20));
+		/*
+        GridBagConstraints gbc1 = new GridBagConstraints();
+        gbc1.fill = GridBagConstraints.HORIZONTAL;
+        gbc1.insets = new Insets(400, 0, 0, 20);
+        gbc1.weightx = 1;
+        */
 
 		//Add buttons to panels
-		singlePlayerButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
-		instructionButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
-		quitButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		singlePlayerButton.setAlignmentX(JButton.RIGHT_ALIGNMENT);
+		instructionButton.setAlignmentX(JButton.RIGHT_ALIGNMENT);
+		quitButton.setAlignmentX(JButton.RIGHT_ALIGNMENT);
 
-		optionPanel.add(singlePlayerButton);
-		optionPanel.add(Box.createVerticalStrut(10));
+        optionPanel.add(Box.createVerticalGlue());
+        optionPanel.add(singlePlayerButton);
+		optionPanel.add(Box.createVerticalStrut(25));
 		optionPanel.add(instructionButton);
-		optionPanel.add(Box.createVerticalStrut(10));
+		optionPanel.add(Box.createVerticalStrut(25));
 		optionPanel.add(quitButton);
-		this.add(optionPanel);
-		this.revalidate();
+        optionPanel.add(Box.createVerticalStrut(25));
+
+        //this.setContentPane(backgroundLabel);
+        //this.add(optionPanel, gbc1);
+        this.add(background);
+        this.pack();
+        this.add(optionPanel);
+        this.revalidate();
 	}
 
 	private void startNewSingleplayerGame() {
+
 		//Might want to remove this later
+		Image houseASprite = Toolkit.getDefaultToolkit().createImage("assets/blocks/3x3a.png");
+		Image houseBSprite = Toolkit.getDefaultToolkit().createImage("assets/blocks/3x3b.png");
+		Image buildingASprite = Toolkit.getDefaultToolkit().createImage("assets/blocks/5x4a.png");
+		Image buildingBSpirte = Toolkit.getDefaultToolkit().createImage("assets/blocks/5x4b.png");
+		Image librarySprite = Toolkit.getDefaultToolkit().createImage("assets/blocks/4x3.png");
+		Image smithSprite = Toolkit.getDefaultToolkit().createImage("assets/blocks/2x1.png");
 
 		Image woodSwordSprite = Toolkit.getDefaultToolkit().createImage("WoodenSword.png");
 		Image stickSprite = Toolkit.getDefaultToolkit().createImage("Stick.png");
 		Image cakeSprite = Toolkit.getDefaultToolkit().createImage("Cake.png");
 		Image breadSprite = Toolkit.getDefaultToolkit().createImage("Bread.png");
+		Image garlicSprite = Toolkit.getDefaultToolkit().createImage("assets/enemies/Garlic.png");
+		Image pepperSprite = Toolkit.getDefaultToolkit().createImage("assets/enemies/Pepper.png");
 		Item woodSword = new Pickaxe("Wood Sword", "A wooden sword.", woodSwordSprite,2,2,2, 5);
 		Item stick = new Material("Stick", "A wood stick", stickSprite);
 		Item cake = new Food("Cake", "A delicious cake lovingly baked by Feng", cakeSprite,0 ,8);
@@ -156,7 +192,7 @@ public class Game extends JFrame {
 		Armour berryRing = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/berry.png"), 200, 20, "Ring");
 		Armour riceRing = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/rice.png"), 200, 20, "Ring");
 		Armour potato = new Armour("Bread Helmet", "A helmet made of bread", Toolkit.getDefaultToolkit().createImage("assets/root_vegetable.png"), 200, 20, "Ring");
-		playerInstance = new PlayerInstance(0,0,player,1);
+		playerInstance = new PlayerInstance(1050, 1050,player,1);
 
 		this.inventory = playerInstance.getInventory();
 		inventory.setArmour(titanium);
@@ -173,7 +209,7 @@ public class Game extends JFrame {
 
 
 		String[][] town = getBlocks("Spawntown.txt");
-		map = new Location(breadSprite, getCollision(town));
+		map = new Location(breadSprite, getCollision(town), town);
 
 		mapHan = new LocationHandler(map);
 		playerHandler = new PlayerHandler(playerInstance, mapHan);
@@ -183,8 +219,21 @@ public class Game extends JFrame {
 		EnvironmentalInstance copperOreEnv = new EnvironmentalInstance(20,20,copperOre,1);
 		EnvironmentalInstance titOre = new EnvironmentalInstance(130, 130, titaniumOre,2);
 		EnvironmentalInstance breadOreThing = new EnvironmentalInstance(400, 0, breadOre,3);
-		Structure breadStructure = new Structure(breadSprite, map, "Bread", 400, 200, 1200, 400);
-		map.getStructures().add(breadStructure);
+
+		Structure houseA = new Structure(houseASprite, map, "House", 1325, 565, 300, 300);
+		Structure houseB = new Structure(houseBSprite, map, "House", 1325, 185, 300, 300);
+		Structure buildingA = new Structure(buildingASprite, map, "Building", 1300, 965, 350, 343);
+		Structure buildingB = new Structure(buildingBSpirte, map, "Building", 275, 1090, 350, 343);
+		Structure library = new Structure(librarySprite, map, "Library", 670, 705, 350, 325);
+		Structure smith = new Structure(smithSprite, map, "Smith", 545, 415, 250, 415);
+
+		map.getStructures().add(houseA);
+		map.getStructures().add(houseB);
+		map.getStructures().add(buildingA);
+		map.getStructures().add(buildingB);
+		map.getStructures().add(library);
+		map.getStructures().add(smith);
+
 		mapHan.addEnvironmental(copperOreEnv);
 		mapHan.addEnvironmental(titOre);
 		mapHan.addPlayer(playerHandler);
@@ -199,8 +248,8 @@ public class Game extends JFrame {
 		HashMap<Double, Stack> temp = new HashMap<>();
 		Stack stackOne = new Stack(1, woodSword);
 		temp.put(1.0, stackOne);
-		Enemy enemy1 = new Enemy(cakeSprite, 64, 64, 20, 2, 2, 2, "Cake", "Cake", temp);
-		Enemy enemy2 = new Enemy(stickSprite, 64, 64, 20, 3, 3, 3, "Stick", "Wood", temp);
+		Enemy enemy1 = new Enemy(garlicSprite, 64, 64, 20, 2, 2, 2, "Garlic", "Vegetable", temp);
+		Enemy enemy2 = new Enemy(pepperSprite, 64, 64, 20, 3, 3, 3, "Pepper", "Vegetable", temp);
 		EnemyInstance enemy1Ins = new EnemyInstance(20, 40, enemy1, (Weapon)woodSword, 231);
 		EnemyInstance enemy2Ins = new EnemyInstance(100, 400, enemy2, (Weapon)woodSword,22);
 		EnemyHandler enemy1Han = new EnemyHandler(enemy1Ins, mapHan);
@@ -214,7 +263,7 @@ public class Game extends JFrame {
 		mapHan.addEnvironmental(envIns);
 		mapHan.addEnemy(enemy1Han);
 		mapHan.addEnemy(enemy2Han);
-		worldPanel = new WorldDisplayer(playerInstance, map);
+		worldPanel = new WorldDisplayer(playerHandler, map);
 		worldPanel.addMouseListener(gameMouseListener);
 
 		Stack cakeStack = new Stack(2, cake);
@@ -261,7 +310,7 @@ public class Game extends JFrame {
      for (int i = 0; i < size; i++) {
       String[] line = in.nextLine().trim().split(",");
       for (int j = 0; j < size; j++) {
-       blocks[i][j] = line[j];
+       blocks[j][i] = line[j];
       }
      }
      return blocks;
@@ -273,9 +322,9 @@ public class Game extends JFrame {
      for(int i = 0; i < size; i++){
       for(int j = 0; j < size; j++){
        if (blocks[i][j].equals("s") || blocks[i][j].equals("g") || blocks[i][j].equals("p")){
-        collisions[j][i] = 0;
+        collisions[i][j] = 0;
        } else {
-        collisions[j][i] = 1;
+        collisions[i][j] = 1;
        }
       }
      }
@@ -297,6 +346,29 @@ public class Game extends JFrame {
 		add(panel);
 		repaint();
 	}
+
+	/*
+    class BackgroundPanel extends JPanel
+    {
+        Image image;
+        public BackgroundPanel()
+        {
+            try
+            {
+                image = javax.imageio.ImageIO.read(new java.net.URL(getClass().getResource("Test.gif"), "Test.gif"));
+            }
+            catch (Exception e) { -handled in paintComponent()- }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g)
+        {
+            super.paintComponent(g);
+            if (image != null)
+                g.drawImage(image, 0,0,this.getWidth(),this.getHeight(),this);
+        }
+    }
+    */
 
 	private class GamePanel extends JPanel {
 		Clock clock = new Clock();
@@ -363,6 +435,9 @@ public class Game extends JFrame {
 		private PanelMouseMotionListener motionListener = new PanelMouseMotionListener();
 		private Stack handStack;
 
+		private Font inventoryFont;
+		FontMetrics fm;
+
 		private int x;
 		private int y;
 		private int mouseX;
@@ -382,7 +457,14 @@ public class Game extends JFrame {
 			File f = new File("InventoryGUI_2.png");
 			try {
 				this.inventoryGUI = ImageIO.read(f);
-			} catch (IOException e) {
+				//create font
+				inventoryFont = Font.createFont(Font.TRUETYPE_FONT, new File("assets/font/vcr_osd_mono.ttf")).deriveFont(18f);
+				GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+				//register font
+				ge.registerFont(inventoryFont);
+				this.setFont(inventoryFont);
+
+			} catch (IOException | FontFormatException e) {
 				e.printStackTrace();
 			}
 			this.addMouseListener(mouseListener);
@@ -392,11 +474,14 @@ public class Game extends JFrame {
 
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			super.setFont(inventoryFont);
+
+			fm = getFontMetrics(inventoryFont);
+
 			g.setColor(Color.BLACK);
 			g.fillRect(0,0, 1280, 720);
 
 			g.drawImage(inventoryGUI,288,28,704, 664,null);
-
 
 			paintInventory(g);
 
@@ -429,7 +514,8 @@ public class Game extends JFrame {
 								}
 							}
 							if (itemCount > 1) {
-								g.drawString(Integer.toString(itemCount), 372 + 72 * j, 415 + 72 * i);
+								g.setColor(Color.WHITE);
+								g.drawString(Integer.toString(itemCount), 372 + 72 * j + 12 - fm.stringWidth(Integer.toString(itemCount)), 415 + 72 * i + 12);
 								g.setColor(Color.BLACK);
 							}
 						} else if (tempInventory[i*9+j] != null) {
@@ -442,7 +528,7 @@ public class Game extends JFrame {
 								if (tempInventorySlots > 1) {
 									g.setColor(Color.YELLOW);
 								}
-								g.drawString(Integer.toString(itemCount), 372 + 72 * j, 415 + 72 * i);
+								g.drawString(Integer.toString(itemCount), 372 + 72 * j + 12 - fm.stringWidth(Integer.toString(itemCount)), 415 + 72 * i + 12);
 								g.setColor(Color.BLACK);
 							}
 						}
@@ -451,6 +537,7 @@ public class Game extends JFrame {
 					}
 				}
 			}
+			//hotbar
 			for (int i =0; i<9; i++) {
 				try {
 					if (inventory.get(27+i) != null) {
@@ -466,7 +553,8 @@ public class Game extends JFrame {
 							}
 						}
 						if (itemCount > 1) {
-							g.drawString(Integer.toString(itemCount), 372 + 72 * i, 647);
+							g.setColor(Color.WHITE);
+							g.drawString(Integer.toString(itemCount), 372 + 72 * i + 10 - fm.stringWidth(Integer.toString(itemCount)), 658);
 							g.setColor(Color.BLACK);
 						}
 					} else if (tempInventory[27+i] != null) {
@@ -476,10 +564,12 @@ public class Game extends JFrame {
 						g.drawRect(320+72*i,596,63,63);
 						g.setColor(Color.BLACK);
 						if (itemCount > 1) {
+							g.setColor(Color.WHITE);
 							if (tempInventorySlots > 1) {
 								g.setColor(Color.YELLOW);
 							}
-							g.drawString(Integer.toString(itemCount), 372 + 72 * i, 647);
+							g.drawString(Integer.toString(itemCount), 372 + 72 * i + 10 - fm.stringWidth(Integer.toString(itemCount)), 658);
+							//g.drawString(Integer.toString(itemCount), 372 + 72 * i, 647);
 							g.setColor(Color.BLACK);
 						}
 					}
@@ -557,10 +647,11 @@ public class Game extends JFrame {
 						r = (highlightY-364)/72;
 					}
 					int c = (highlightX-320)/72;
+					String description = inventory.get(r * 9 + c).getItem().getDescription();
 					g.setColor(Color.WHITE);
-					g.fillRect(highlightX+64, highlightY, 100, 200);
+					g.fillRect(highlightX+64, highlightY, 32 + fm.stringWidth(description), 48);
 					g.setColor(Color.BLACK);
-					g.drawString(inventory.get(r * 9 + c).getItem().getDescription(), highlightX + 74, highlightY + 30);
+					g.drawString(description, highlightX + 80, highlightY + 30);
 				} catch (NullPointerException e) {
 					//oops
 				}
@@ -577,9 +668,9 @@ public class Game extends JFrame {
 					int topY = 132;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getArms()[0].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getArms()[0].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getArms()[0].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -591,9 +682,9 @@ public class Game extends JFrame {
 					int topY = 132+72;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getLegs()[0].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getLegs()[0].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getLegs()[0].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -605,9 +696,9 @@ public class Game extends JFrame {
 					int topY = 96;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getHelmet().getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getHelmet().getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getHelmet().getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -619,9 +710,9 @@ public class Game extends JFrame {
 					int topY = 96+72;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getArmour().getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getArmour().getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getArmour().getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -633,9 +724,9 @@ public class Game extends JFrame {
 					int topY = 96+72*2;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getBoots().getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getBoots().getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getBoots().getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -647,9 +738,9 @@ public class Game extends JFrame {
 					int topY = 132;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getArms()[1].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getArms()[1].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getArms()[1].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -661,9 +752,9 @@ public class Game extends JFrame {
 					int topY = 132+72;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getLegs()[0].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getLegs()[0].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getLegs()[0].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -675,9 +766,9 @@ public class Game extends JFrame {
 					int topY = 96;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getRings()[0].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getRings()[0].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getRings()[0].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -689,9 +780,9 @@ public class Game extends JFrame {
 					int topY = 96+72;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getRings()[1].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getRings()[1].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getRings()[1].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -703,9 +794,9 @@ public class Game extends JFrame {
 					int topY = 96+72*2;
 					try {
 						g.setColor(Color.WHITE);
-						g.fillRect(topX+64, topY, 100, 200);
+						g.fillRect(topX+64, topY, 32 + fm.stringWidth(inventory.getRings()[2].getDescription()), 48);
 						g.setColor(Color.BLACK);
-						g.drawString(inventory.getRings()[2].getDescription(), topX + 74, topY + 30);
+						g.drawString(inventory.getRings()[2].getDescription(), topX + 80, topY + 30);
 					} catch (NullPointerException e) {
 
 					}
@@ -716,8 +807,9 @@ public class Game extends JFrame {
 		private void paintHandStack(Graphics g) {
 			g.drawImage(handStack.getItem().getSprite(), mouseX-27, mouseY-27, 58,58, null);
 			if (handStack.getStackAmount() > 1) {
-				g.setColor(Color.BLACK);
-				g.drawString(Integer.toString(handStack.getStackAmount()), mouseX+22, mouseY+21);
+				g.setColor(Color.WHITE);
+				g.drawString(Integer.toString(handStack.getStackAmount()), mouseX+34 - fm.stringWidth(Integer.toString(handStack.getStackAmount())), mouseY+34);
+				//g.drawString(Integer.toString(handStack.getStackAmount()), mouseX+22, mouseY+21);
 			}
 		}
 
@@ -1286,22 +1378,18 @@ public class Game extends JFrame {
 		public void keyPressed(KeyEvent e) {
 			if (currentPanel == worldPanel) {
 				if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {  //W
-					worldPanel.setDirection(1);
 					//playerHandler.move();
 					playerHandler.keyPressed("W");
 				}
 				if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")) {  //D
-					worldPanel.setDirection(2);
 					//playerHandler.move();
 					playerHandler.keyPressed("D");
 				}
 				if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")) {  //S
-					worldPanel.setDirection(0);
 					//playerHandler.move();
 					playerHandler.keyPressed("S");
 				}
 				if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")) {  //A
-					worldPanel.setDirection(3);
 					//playerHandler.move();
 					playerHandler.keyPressed("A");
 				}
@@ -1319,22 +1407,18 @@ public class Game extends JFrame {
 		public void keyTyped(KeyEvent e) {
 			if (currentPanel == worldPanel) {
 				if (KeyEvent.getKeyText(e.getKeyCode()).equals("W")) {  //W
-					worldPanel.setDirection(1);
 					//playerHandler.move();
 					//playerHandler.keyPressed("W");
 				}
 				if (KeyEvent.getKeyText(e.getKeyCode()).equals("D")) {  //D
-					worldPanel.setDirection(2);
 					//playerHandler.move();
 					//playerHandler.keyPressed("D");
 				}
 				if (KeyEvent.getKeyText(e.getKeyCode()).equals("S")) {  //S
-					worldPanel.setDirection(0);
 					//playerHandler.move();
 					//playerHandler.keyPressed("S");
 				}
 				if (KeyEvent.getKeyText(e.getKeyCode()).equals("A")) {  //A
-					worldPanel.setDirection(3);
 					//playerHandler.move();
 					//playerHandler.keyPressed("A");
 				}

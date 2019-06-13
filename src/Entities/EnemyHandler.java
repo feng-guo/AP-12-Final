@@ -1,3 +1,11 @@
+/**
+ * class to handle instances of an enemy
+ * @author David Bao
+ * @author Armanya Dalmia
+ * @author Feng Guo
+ * @author Victor Lin
+ * @author Arjun Pillai
+ */
 package Entities;
 
 import World.Location;
@@ -15,10 +23,19 @@ public class EnemyHandler extends CharacterHandler {
         this.lastWeaponUse = 0;
     }
 
+    /**
+     * getEnemyInstance
+     * @return EnemyInstance the specific enemy
+     */
     public EnemyInstance getEnemyInstance() {
         return enemyInstance;
     }
 
+    /**
+     * move
+     * Movement for the enemy, behavior is dynamic
+     * wanders randomly by default but heads towards player when player enters its territory
+     */
     @Override
     public void move() {
 
@@ -53,6 +70,10 @@ public class EnemyHandler extends CharacterHandler {
         }
     }
 
+    /**
+     * playerInRange
+     * @return boolean whether a player is within the enemy's range
+     */
     public boolean playerInRange () {
         getClosestPlayer();
         if (Math.sqrt(Math.pow(p.getX()-enemyInstance.getX(), 2)+ Math.pow(p.getY()-enemyInstance.getY(),2)) < 200){
@@ -61,6 +82,10 @@ public class EnemyHandler extends CharacterHandler {
         return false;
     }
 
+    /**
+     * getClosestPlayer
+     * identify which player is closest to this enemy
+     */
     public void getClosestPlayer() {
 
         double minDistance = 0;
@@ -85,20 +110,35 @@ public class EnemyHandler extends CharacterHandler {
         p = getLocation().getPlayer(getLocation().getPlayerIDs().get(playerOnMapNumber));
     }
 
+    /**
+     * attack
+     * attack the player if they are within attack range
+     */
     public void attack() {
         if (Math.sqrt(Math.pow(p.getX()-enemyInstance.getX(), 2)+ Math.pow(p.getY()-enemyInstance.getY(),2)) <= enemyInstance.getWeapon().getRange()){
             getLocationHandler().enemyAttack(p.getX(), p.getY(), this);
         }
     }
 
+    /**
+     * getLastWeaponUse
+     * @return double the last time the weapon was used
+     */
     public double getLastWeaponUse() {
         return lastWeaponUse;
     }
 
+    /**
+     * setLastWeaponUse
+     * @param lastWeaponUse when the weapon was last used
+     */
     public void setLastWeaponUse(double lastWeaponUse) {
         this.lastWeaponUse = lastWeaponUse;
     }
 
+    /**
+     * runs the thread for the enemy
+     */
     @Override
     public void run() {
         while (true) {

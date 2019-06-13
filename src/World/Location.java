@@ -23,6 +23,7 @@ public class Location {
     private ArrayList<Structure> structures;
     //fix later
     private int[][] map;
+    private String[][] blocks;
     /**
            {
             {1,1,1,1,1},
@@ -31,8 +32,9 @@ public class Location {
             {1,0,0,0,1},
             {1,1,1,1,1}};**/
 
-    public Location(Image background, int[][] map) {
+    public Location(Image background, int[][] map, String[][] blocks) {
         this.map = map;
+        this.blocks = blocks;
         this.background = background;
         playerIDs = new ArrayList<>();
         npcIDs = new ArrayList<>();
@@ -206,5 +208,8 @@ public class Location {
 
     public int[][] getMap() {
         return this.map;
+    }
+    public String[][] getBlocks(){
+        return this.blocks;
     }
 }
