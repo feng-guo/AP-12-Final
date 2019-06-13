@@ -35,7 +35,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 	BufferedImage healthEmpty;
 	BufferedImage healthFull;
-	BufferedImage currentHealth;
+	BufferedImage hungerFull;
 	BufferedImage hotbar;
 	BufferedImage hotbarSelect;
 
@@ -62,6 +62,8 @@ public class WorldDisplayer extends JPanel implements Runnable {
 
 			healthEmpty = ImageIO.read(new File("assets/gui/health_empty.png"));
 			healthFull = ImageIO.read(new File("assets/gui/health_full.png"));
+			hungerFull = ImageIO.read(new File("assets/gui/hunger_full.png"));
+
 
 			hotbar = ImageIO.read(new File("assets/gui/hotbar.png"));
 			hotbarSelect = ImageIO.read(new File("assets/gui/selected.png"));
@@ -149,13 +151,13 @@ public class WorldDisplayer extends JPanel implements Runnable {
 			Entity e = npcInstance.getEntity();
 			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
 		}
-		for (int i=0; i<map.getPlayerIDs().size(); i++) {
-			PlayerInstance playerInstance = map.getPlayer(map.getPlayerIDs().get(i));
-			int x = playerInstance.getX();
-			int y = playerInstance.getY();
-			Entity e = playerInstance.getEntity();
-			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
-		}
+//		for (int i=0; i<map.getPlayerIDs().size(); i++) {
+//			PlayerInstance playerInstance = map.getPlayer(map.getPlayerIDs().get(i));
+//			int x = playerInstance.getX();
+//			int y = playerInstance.getY();
+//			Entity e = playerInstance.getEntity();
+//			g.drawImage(e.getSprite(),x + relative[0] - (size/2),y + relative[1] - (size/2),e.getWidth(),e.getLength(),null);
+//		}
 		for (int i=0; i<map.getEnvironmentalIDs().size(); i++) {
 			EnvironmentalInstance environmentalInstance = map.getEnvironmental(map.getEnvironmentalIDs().get(i));
 			int x = environmentalInstance.getX();
@@ -212,6 +214,13 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		//Crop full health bar to be a percentage of the max health
 		double percentHealth = (double)(player.getCurrentHealth()) / (double)(player.getMaxHealth());
 		g.drawImage(cropImage(healthFull, percentHealth), center[0] - (hotbar.getWidth() / 2),(2 * center[1]) - (hotbar.getHeight()) - 40, null);
+
+		//Hunger bar
+		g.drawImage(healthEmpty, center[0] + (hotbar.getWidth() / 2) - healthEmpty.getWidth(),(2 * center[1]) - (hotbar.getHeight()) - 40, null);
+
+		//Crop full hunger bar to be a percentage of the max hunger
+		double percentHunger = (double)(player.getCurrentHunger()) / 10.0;
+		g.drawImage(cropImage(hungerFull, percentHunger), center[0] + (hotbar.getWidth() / 2) - healthEmpty.getWidth(),(2 * center[1]) - (hotbar.getHeight()) - 40, null);
 
 		//Inventory hotbar
 		g.drawImage(hotbar, center[0] - (hotbar.getWidth() / 2), (2 * center[1]) - (hotbar.getHeight()) - 8, null);
