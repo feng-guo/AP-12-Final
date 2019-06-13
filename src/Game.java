@@ -103,7 +103,7 @@ public class Game extends JFrame {
 			//Code here
 		});
 		quitButton.addActionListener(actionEvent -> {
-			//Code here
+			System.exit(0);
 		});
 		backButton.addActionListener(actionEvent -> {
 			//Code here
