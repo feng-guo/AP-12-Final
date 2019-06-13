@@ -1,3 +1,7 @@
+/**
+ * LocationHandler
+ * Class to handle all interactions with entities in the game world
+ */
 package World;
 
 import Entities.*;
@@ -274,6 +278,13 @@ public class LocationHandler implements Runnable {
         }
     }
 
+    /**
+     * playerAttack
+     * Creates the weapon effect from the player
+     * @param x x position of the attack
+     * @param y y position of the attack
+     * @param playerHandler the handler of the player who attacks
+     */
     public void playerAttack(int x, int y, PlayerHandler playerHandler) {
         double currentTime = System.nanoTime()/1e+9;
         double delta = currentTime - playerHandler.getLastWeaponUse();
@@ -302,6 +313,13 @@ public class LocationHandler implements Runnable {
         }
     }
 
+    /**
+     * enemyAttack
+     * Creates the weapon effect from the enemy
+     * @param x x position of the attack
+     * @param y y position of the attack
+     * @param enemyHandler the handler of the enemy who attacks
+     */
     public void enemyAttack(int x, int y, EnemyHandler enemyHandler) {
         double currentTime = System.nanoTime()/1e+9;
         double delta = currentTime - enemyHandler.getLastWeaponUse();
@@ -353,6 +371,11 @@ public class LocationHandler implements Runnable {
                                                                       })
     }
     */
+
+    /**
+     * attackCollision
+     * Goes through all weapon effects in play and see if they interact with an enemy
+     */
     public void attackCollision(){
         for (int i=0;i<weaponEffectIDs.size();i++){
             WeaponEffectInstance  weaponEffect= weaponEffectHandlerHashMap.get(weaponEffectIDs.get(i)).getWeaponEffectInstance();
@@ -363,13 +386,13 @@ public class LocationHandler implements Runnable {
                     enemy.damage(weaponEffect.getWeaponEffect().getDamage());
                 }
             }
-            for (int j=0;j<playerIDs.size();j++){
-                PlayerInstance player=playerHandlerHashMap.get(playerIDs.get(i)).getPlayerInstance();
-                if (Math.abs(player.getX()+(player.getPlayer().getWidth()/2)-weaponEffect.getX()+(weaponEffect.getWeaponEffect().getWidth()/2))<=100 &&
-                        Math.abs(player.getY()+(player.getPlayer().getLength()/2)-weaponEffect.getY()+(weaponEffect.getWeaponEffect().getLength()/2))<=100){
-                    player.damage(weaponEffect.getWeaponEffect().getDamage());
-                }
-            }
+//            for (int j=0;j<playerIDs.size();j++){
+//                PlayerInstance player=playerHandlerHashMap.get(playerIDs.get(i)).getPlayerInstance();
+//                if (Math.abs(player.getX()+(player.getPlayer().getWidth()/2)-weaponEffect.getX()+(weaponEffect.getWeaponEffect().getWidth()/2))<=100 &&
+//                        Math.abs(player.getY()+(player.getPlayer().getLength()/2)-weaponEffect.getY()+(weaponEffect.getWeaponEffect().getLength()/2))<=100){
+//                    player.damage(weaponEffect.getWeaponEffect().getDamage());
+//                }
+//            }
         }
     }
     private void checkEnvironmentals() {
@@ -389,7 +412,13 @@ public class LocationHandler implements Runnable {
         addItemDrop(itemDropInstance);
         removeEnvironmental(id);
     }
-    
+
+    /**
+     * hitEnvironmental
+     * does damage to the environment
+     * @param tool the tool used by the player
+     * @param playerHandler the player who performed the attack
+     */
     public void hitEnvironmental(Tool tool, PlayerHandler playerHandler) {
         double currentTime = System.nanoTime()/1e+9;
         double delta = currentTime - playerHandler.getLastWeaponUse();

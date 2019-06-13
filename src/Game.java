@@ -1,3 +1,8 @@
+/**
+ * Game
+ * The actual game file to be run, including panels to work with
+ */
+
 import Database.DatabaseConnector;
 import Entities.*;
 import Items.*;
@@ -16,6 +21,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.Scanner;
+
 
 public class Game extends JFrame {
 	private GamePanel panel;

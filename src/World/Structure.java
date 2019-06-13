@@ -1,3 +1,7 @@
+/**
+ * Structure
+ * class for the in game buildings
+ */
 package World;
 
 import java.awt.*;

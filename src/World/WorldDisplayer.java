@@ -1,3 +1,7 @@
+/**
+ * WorldDisplayer
+ * what appears on screen when the game runs
+ */
 package World;
 
 import Entities.EnemyInstance;
@@ -106,6 +110,11 @@ public class WorldDisplayer extends JPanel implements Runnable {
 		player.move();
 	}
 
+	/**
+	 * paintComponent
+	 * display different components
+	 * @param g
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Dimension panelSize = this.getSize();
@@ -126,6 +135,7 @@ public class WorldDisplayer extends JPanel implements Runnable {
 				g.fillRect((r*size) + relative[0],(c*size) + relative[1],size,size);
 			}
 		}
+		//display different tiles according to array
 		for (int r = 0; r < mapBlocks.length; r++) {
 			for (int c = 0; c < mapBlocks[r].length; c++) {
 				if (mapBlocks[r][c].equals("g")) {

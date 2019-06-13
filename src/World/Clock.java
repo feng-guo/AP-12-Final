@@ -1,3 +1,7 @@
+/**
+ * Clock
+ * class to handle timed actions in the game, specifically for cooldowns
+ */
 package World;
 
 public class Clock {
@@ -14,6 +18,10 @@ public class Clock {
 		elapsedTime = 0;
 	}
 
+	/**
+	 * update
+	 * when to refresh the time
+	 */
 	public static void update() {
 		long currentTime = System.nanoTime();  //if the computer is fast you need more precision
 		elapsedTime = currentTime - lastTimeCheck;
@@ -34,6 +42,7 @@ public class Clock {
 			//lol
 		}
 	}
+
 
 	public static int getFps() {
 		return (int)Math.round(fps);
