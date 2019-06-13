@@ -354,13 +354,15 @@ public class LocationHandler implements Runnable {
             WeaponEffectInstance  weaponEffect= weaponEffectHandlerHashMap.get(weaponEffectIDs.get(i)).getWeaponEffectInstance();
             for (int j=0;j<enemyIDs.size();j++){
                 EnemyInstance enemy=enemyHandlerHashMap.get(enemyIDs.get(i)).getEnemyInstance();
-                if (Math.abs(enemy.getX()-weaponEffect.getX())<=100 && Math.abs(enemy.getY()-weaponEffect.getY())<=100){
+                if (Math.abs(enemy.getX()+(enemy.getEnemy().getWidth()/2)-weaponEffect.getX()+(weaponEffect.getWeaponEffect().getWidth()/2))<=100 &&
+                        Math.abs(enemy.getY()+(enemy.getEnemy().getLength()/2)-weaponEffect.getY()+(weaponEffect.getWeaponEffect().getLength()/2))<=100){
                     enemy.damage(weaponEffect.getWeaponEffect().getDamage());
                 }
             }
             for (int j=0;j<playerIDs.size();j++){
                 PlayerInstance player=playerHandlerHashMap.get(playerIDs.get(i)).getPlayerInstance();
-                if (Math.abs(player.getX()-weaponEffect.getX())<=100 && Math.abs(player.getY()-weaponEffect.getY())<=100){
+                if (Math.abs(player.getX()+(player.getPlayer().getWidth()/2)-weaponEffect.getX()+(weaponEffect.getWeaponEffect().getWidth()/2))<=100 &&
+                        Math.abs(player.getY()+(player.getPlayer().getLength()/2)-weaponEffect.getY()+(weaponEffect.getWeaponEffect().getLength()/2))<=100){
                     player.damage(weaponEffect.getWeaponEffect().getDamage());
                 }
             }
